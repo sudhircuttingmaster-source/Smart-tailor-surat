@@ -1199,8 +1199,11 @@ function lockAppNow() {
   customerDirectory = saved;
   closeDeliveryModal();
   updateDeliveryAlertsCounts();
-  renderCustomerTableModal();
-
+  if (deliveredBill && deliveredBill.due > 0) {
+    switchCustomerTab('delivered_due');
+  } else {
+    switchCustomerTab('delivered');
+ }
   if (deliveredBill) {
    let delivMsg = `🟢 *ऑर्डर डिलीवर हो गया (Delivery Done)*\n──────────────────────\nनमस्ते *${deliveredBill.name}* जी,\nShiv Shakti Smart Tailor से आपका ऑर्डर प्राप्त करने के लिए धन्यवाद!`;
    if (deliveredBill.due > 0) {
@@ -1210,17 +1213,17 @@ function lockAppNow() {
    }
    delivMsg += `\n\n⭐ कृपया हमारे काम को Google पर 5-स्टार रेटिंग देकर अपना अनुभव साझा करें:\nhttps://maps.app.goo.gl/9XvybN9yggjytDTb7\n\nपुनः पधारें! 🙏`;
    dispatchAutomatedWhatsApp(deliveredBill.mobile, delivMsg, deliveredBill.invNo);
-  }
-  alert("✓ ऑर्डर डिलीवर हो गया और ग्राहक को रेटिंग लिंक के साथ मैसेज भेज दिया गया!");
- }
-
- async function sendPendingDueWhatsAppReminder(invNo) {
+  async function sendPendingDueWhatsAppReminder(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
   if (!b) return;
   const digitalBillLink = window.location.origin + window.location.pathname + `?inv=${b.invNo}`;
-  const msg = `📢 *बकाया पेमेंट रिमाइंडर (Shiv Shakti Smart Tailor)*\n──────────────────────\nनमस्ते *${b.name}* जी,\nआप अपना कपड़ा ले जा चुके हैं। आपके बिल नं *${b.invNo}* का बकाया पेमेंट *₹${b.due}* अभी पेंडिंग है।\n\n📄 डिजिटल बिल यहाँ देखें:\n${digitalBillLink}\n\nकृपया Google Pay / PhonePe (9662232193) या दुकान पर आकर जमा करवाएं। धन्यवाद! 🙏`;
+  const upiId = "9662232193@upi";
+  const upiPayLink = `upi://pay?pa=${upiId}&pn=Shiv%20Shakti%20Smart%20Tailor&am=${b.due}&cu=INR`;
+
+  const msg = `📢 *बकाया पेमेंट रिमाइंडर (Shiv Shakti Smart Tailor)*\n──────────────────────\nनमस्ते *${b.name}* जी,\nआप अपना कपड़ा ले जा चुके हैं। आपके बिल नं *${b.invNo}* का बकाया पेमेंट *₹${b.due}* अभी बाकी है।\n\n📄 डिजिटल बिल लिंक:\n${digitalBillLink}\n\n💳 *1-क्लिक में UPI से भुगतान करने के लिए यहाँ दबाएँ:*\n${upiPayLink}\n\nया Google Pay / PhonePe नंबर: *9662232193*\nधन्यवाद! 🙏`;
+
   dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
-  alert(`✓ ${b.name} को ₹${b.due} बकाया का रिमाइंडर भेज दिया गया!`);
+  alert(`✓ ${b.name} को ₹${b.due} बकाया और UPI लिंक का रिमाइंडर भेज दिया गया!`);
  }
 
  function openQuickPaymentModal(invNo) {
