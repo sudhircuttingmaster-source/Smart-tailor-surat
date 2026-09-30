@@ -1216,15 +1216,15 @@ function lockAppNow() {
   async function sendPendingDueWhatsAppReminder(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
   if (!b) return;
-  const digitalBillLink = window.location.origin + window.location.pathname + `?inv=${b.invNo}`;
+  const digitalBillLink = window.location.origin + window.location.pathname + "?inv=" + encodeURIComponent(b.invNo);
   const upiId = "9662232193@upi";
-  const upiPayLink = `upi://pay?pa=${upiId}&pn=Shiv%20Shakti%20Smart%20Tailor&am=${b.due}&cu=INR`;
+  const upiPayLink = "upi://pay?pa=" + upiId + "&pn=Shiv%20Shakti%20Smart%20Tailor&am=" + b.due + "&cu=INR";
 
-  const msg = `📢 *बकाया पेमेंट रिमाइंडर (Shiv Shakti Smart Tailor)*\n──────────────────────\nनमस्ते *${b.name}* जी,\nआप अपना कपड़ा ले जा चुके हैं। आपके बिल नं *${b.invNo}* का बकाया पेमेंट *₹${b.due}* अभी बाकी है।\n\n📄 डिजिटल बिल लिंक:\n${digitalBillLink}\n\n💳 *1-क्लिक में UPI से भुगतान करने के लिए यहाँ दबाएँ:*\n${upiPayLink}\n\nया Google Pay / PhonePe नंबर: *9662232193*\nधन्यवाद! 🙏`;
+  const msg = "📢 *बकाया पेमेंट रिमाइंडर (Shiv Shakti Smart Tailor)*\n──────────────────────\nनमस्ते *" + b.name + "* जी,\nआप अपना कपड़ा ले जा चुके हैं। आपके बिल नं *" + b.invNo + "* का बकाया पेमेंट *₹" + b.due + "* अभी बाकी है।\n\n📄 डिजिटल बिल लिंक:\n" + digitalBillLink + "\n\n💳 *UPI से भुगतान करने के लिए क्लिक करें:*\n" + upiPayLink + "\n\nया Google Pay / PhonePe नंबर: *9662232193*\nधन्यवाद! 🙏";
 
   dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
-  alert(`✓ ${b.name} को ₹${b.due} बकाया और UPI लिंक का रिमाइंडर भेज दिया गया!`);
- }
+  alert("✓ " + b.name + " को ₹" + b.due + " बकाया और UPI लिंक का रिमाइंडर भेज दिया गया!");
+  }
 
  function openQuickPaymentModal(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
