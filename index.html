@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Shiv Shakti Smart Tailor - Pro Billing & Automation</title>
+<title>Shiv Shakti Smart Tailor - Pro Billing & Management</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -43,7 +43,6 @@
    const urlParams = new URLSearchParams(window.location.search);
    const overlay = document.getElementById('app-lock-overlay');
 
-   // अगर ग्राहक लिंक से आया है तो लॉक स्क्रीन तुरंत छुपा दें
    if (urlParams.get('inv')) {
      if (overlay) overlay.style.display = 'none';
      return;
@@ -74,20 +73,21 @@
  
  .banner-btns { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
  .btn-top-rate { background: #2563eb; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
- .btn-top-wa { background: #16a34a; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
  .btn-top-lock { background: #dc2626; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
 
  .delivery-alerts-panel { background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
- .alerts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+ .alerts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(125px, 1fr)); gap: 10px; }
  .alert-card { padding: 10px 12px; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; justify-content: center; transition: transform 0.15s ease; border-width: 1.5px; border-style: solid; }
  .alert-card:hover { transform: translateY(-2px); }
  .card-delivered-due { background: #fff1f2; border-color: #f43f5e; color: #9f1239; }
+ .card-due60 { background: #fff7ed; border-color: #f97316; color: #c2410c; }
  .card-overdue { background: #fef2f2; border-color: #f87171; color: #991b1b; }
  .card-today { background: #fefce8; border-color: #facc15; color: #854d0e; }
  .card-tomorrow { background: #f0f9ff; border-color: #7dd3fc; color: #075985; }
  .card-ready { background: #fef9c3; border-color: #eab308; color: #a16207; }
- .alert-card .count { font-size: 22px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
- .alert-card .label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; }
+ .card-unclaimed { background: #f1f5f9; border-color: #64748b; color: #334155; }
+ .alert-card .count { font-size: 20px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+ .alert-card .label { font-size: 10px; font-weight: 800; text-transform: uppercase; }
 
  .form-section { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
  .section-heading { font-size: 15px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #cbd5e1; padding-bottom: 6px; }
@@ -165,7 +165,7 @@
 
  .btn-action-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
  .btn-act { border: none; padding: 12px; border-radius: 8px; font-size: 12.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; }
- .btn-save { background: #4f46e5; }
+ .btn-save { background: #16a34a; }
  .btn-print-merged { background: #0284c7; }
  .btn-slip { background: #d97706; }
  .btn-toggle-list { background: #2563eb; }
@@ -179,7 +179,7 @@
  .modal-close { background: none; border: none; color: white; font-size: 24px; cursor: pointer; font-weight: bold; }
  .modal-body { padding: 14px; overflow-y: auto; flex: 1; }
 
- #delivery-modal, #payment-modal, #disposal-modal, #broadcast-modal, #wa-config-modal, #rate-modal, #image-zoom-modal {
+ #delivery-modal, #payment-modal, #disposal-modal, #broadcast-modal, #rate-modal, #image-zoom-modal {
   z-index: 2500 !important;
  }
 
@@ -209,6 +209,7 @@
  .st-stitching { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
  .st-ready { background: #fef9c3; color: #854d0e; border: 1px solid #facc15; }
  .st-delivered { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+ .st-due60 { background: #ffedd5; color: #c2410c; border: 1px solid #fb923c; }
  .st-unclaimed { background: #e2e8f0; color: #475569; border: 1px solid #94a3b8; }
  .st-disposed { background: #f43f5e; color: #fff; }
 
@@ -459,7 +460,6 @@
 <div class="app-container">
  <div class="shop-banner">
   <div class="banner-btns">
-   <button type="button" class="btn-top-wa" onclick="openWhatsAppConfigModal()">⚙️ WA API</button>
    <button type="button" class="btn-top-rate" onclick="openRateSettingsModal()">⚙️ Rates</button>
    <button type="button" class="btn-top-lock" onclick="lockAppNow()">🚪 Lock</button>
   </div>
@@ -479,11 +479,15 @@
   <div class="alerts-grid">
    <div class="alert-card card-delivered-due" onclick="openAllCustomersModal('delivered_due')">
     <span class="count" id="count-delivered-due">₹0</span>
-    <span class="label">🔴 कपड़े ले गए (Delivered Due)</span>
+    <span class="label">🔴 कपड़े ले गए (Due)</span>
+   </div>
+   <div class="alert-card card-due60" onclick="openAllCustomersModal('due60')">
+    <span class="count" id="count-due60">0</span>
+    <span class="label">⚠️ 60+ दिन ड्यू अलर्ट</span>
    </div>
    <div class="alert-card card-overdue" onclick="openAllCustomersModal('overdue')">
     <span class="count" id="count-overdue">0</span>
-    <span class="label">🚨 लेट ऑर्डर्स (Overdue)</span>
+    <span class="label">🚨 लेट ऑर्डर्स</span>
    </div>
    <div class="alert-card card-today" onclick="openAllCustomersModal('today')">
     <span class="count" id="count-today">0</span>
@@ -499,7 +503,7 @@
    </div>
    <div class="alert-card card-unclaimed" onclick="openAllCustomersModal('unclaimed')">
     <span class="count" id="count-unclaimed">0</span>
-    <span class="label">📦 90+ दिन डिफ़ॉल्ट</span>
+    <span class="label">📦 90+ दिन डिफ़ॉल्टर</span>
    </div>
   </div>
  </div>
@@ -718,39 +722,22 @@
  </div>
 </div>
 
-<!-- MODAL: BROADCAST -->
+<!-- MODAL: BROADCAST (1-CLICK & COPY) -->
 <div class="modal-overlay" id="broadcast-modal" onclick="if(event.target===this) closeBroadcastModal();">
  <div class="modal-box" style="max-width: 500px;">
   <div class="modal-header">
-   <span>📢 Bulk WhatsApp Marketing</span>
+   <span>📢 Bulk WhatsApp Marketing (1-Click)</span>
    <button type="button" class="modal-close" onclick="closeBroadcastModal()">✕</button>
   </div>
   <div class="modal-body" style="padding: 16px;">
    <p style="font-size: 12px; color: #64748b; margin-bottom: 8px;">सभी सेव ग्राहकों (<span id="broadcast-cust-count">0</span> लोग) को त्यौहार या ऑफर का संदेश भेजें:</p>
-   <textarea id="broadcast-text" rows="5" style="width:100%; padding:8px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px;" placeholder="संदेश यहाँ टाइप करें..."></textarea>
-   <button type="button" onclick="startBulkBroadcast()" style="margin-top:12px; width:100%; background:#059669; color:#fff; padding:10px; border:none; border-radius:6px; font-weight:800; cursor:pointer;">🚀 Send Bulk Broadcast</button>
-  </div>
- </div>
-</div>
-
-<!-- MODAL: WA CONFIG -->
-<div class="modal-overlay" id="wa-config-modal" onclick="if(event.target===this) closeWhatsAppConfigModal();">
- <div class="modal-box" style="max-width: 500px;">
-  <div class="modal-header">
-   <span>⚙️ Meta WhatsApp Cloud API Setup</span>
-   <button type="button" class="modal-close" onclick="closeWhatsAppConfigModal()">✕</button>
-  </div>
-  <div class="modal-body" style="padding: 16px;">
-   <p style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Meta Developers अकाउंट से मिलने वाले Phone Number ID और Access Token यहाँ पेस्ट करें:</p>
-   <div class="form-group" style="margin-bottom: 10px;">
-    <label>Phone Number ID</label>
-    <input type="text" id="wa-phone-id" placeholder="उदा: 1058291823912">
+   <textarea id="broadcast-text" rows="4" style="width:100%; padding:8px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px;" placeholder="संदेश यहाँ टाइप करें..."></textarea>
+   
+   <div style="display:flex; gap:8px; margin-top:10px;">
+    <button type="button" onclick="startBulkBroadcastQueue()" style="flex:1; background:#059669; color:#fff; padding:10px; border:none; border-radius:6px; font-weight:800; font-size:12.5px; cursor:pointer;">🚀 1-by-1 WhatsApp Fast Send</button>
+    <button type="button" onclick="copyAllCustomerNumbers()" style="background:#2563eb; color:#fff; padding:10px 12px; border:none; border-radius:6px; font-weight:800; font-size:12.5px; cursor:pointer;">📋 Copy All Numbers</button>
    </div>
-   <div class="form-group" style="margin-bottom: 14px;">
-    <label>Permanent Access Token</label>
-    <textarea id="wa-token" rows="3" placeholder="EAAB..."></textarea>
-   </div>
-   <button type="button" onclick="saveWhatsAppCloudConfig()" style="width: 100%; background: #16a34a; color: #fff; padding: 10px; border: none; border-radius: 6px; font-weight: 800; cursor: pointer;">💾 Save API Credentials</button>
+   <p style="font-size:11px; color:#64748b; margin-top:8px;">* Fast Send दबाने पर क्रमवार WhatsApp चैट खुलती जाएगी और आप बस सेंड दबाते जाएँगे।</p>
   </div>
  </div>
 </div>
@@ -779,14 +766,15 @@
   <div class="modal-body">
    <div class="modal-tabs">
     <button type="button" class="tab-btn active-tab" id="tab-all-pending" onclick="switchCustomerTab('all_pending')">⚡ All Active</button>
-    <button type="button" class="tab-btn" id="tab-delivered-due" onclick="switchCustomerTab('delivered_due')" style="background:#fee2e2; color:#9f1239; font-weight:900;">🔴 Delivered Due (बाकी)</button>
+    <button type="button" class="tab-btn" id="tab-due60" onclick="switchCustomerTab('due60')" style="background:#ffedd5; color:#c2410c; font-weight:900;">⚠️️ 60+ दिन ड्यू</button>
+    <button type="button" class="tab-btn" id="tab-delivered-due" onclick="switchCustomerTab('delivered_due')" style="background:#fee2e2; color:#9f1239; font-weight:900;">🔴 Delivered Due</button>
     <button type="button" class="tab-btn" id="tab-overdue" onclick="switchCustomerTab('overdue')">🚨 Overdue</button>
     <button type="button" class="tab-btn" id="tab-today" onclick="switchCustomerTab('today')">⚠️ Today</button>
     <button type="button" class="tab-btn" id="tab-tomorrow" onclick="switchCustomerTab('tomorrow')">📅 Tomorrow</button>
     <button type="button" class="tab-btn" id="tab-stitching" onclick="switchCustomerTab('stitching')">✂️ Stitching</button>
     <button type="button" class="tab-btn" id="tab-ready" onclick="switchCustomerTab('ready')">🟡 Ready</button>
     <button type="button" class="tab-btn" id="tab-delivered" onclick="switchCustomerTab('delivered')">🟢 Delivered</button>
-    <button type="button" class="tab-btn" id="tab-unclaimed" onclick="switchCustomerTab('unclaimed')" style="background:#e2e8f0; color:#334155;">📦 90+ Unclaimed</button>
+    <button type="button" class="tab-btn" id="tab-unclaimed" onclick="switchCustomerTab('unclaimed')" style="background:#e2e8f0; color:#334155;">📦 90+ डिफ़ॉल्टर</button>
    </div>
    <input type="text" id="modal-search-box" class="modal-search" placeholder="🔍 Search name, mobile, invoice..." oninput="renderCustomerTableModal()">
    <div style="overflow-x: auto;">
@@ -798,7 +786,7 @@
        <th>Photo</th>
        <th>Customer Name</th>
        <th>Mobile</th>
-       <th>Status & WA</th>
+       <th>Status & Due</th>
        <th>Total / Due</th>
        <th>Actions</th>
       </tr>
@@ -1028,61 +1016,15 @@ function lockAppNow() {
   calculateTotals();
  }
 
- /* --- WHATSAPP CLOUD API SETUP & AUTO DISPATCH --- */
- function getWhatsAppCloudCredentials() {
-  return {
-   phoneId: localStorage.getItem('wa_cloud_phone_id') || '',
-   token: localStorage.getItem('wa_cloud_token') || ''
-  };
- }
- function openWhatsAppConfigModal() {
-  const creds = getWhatsAppCloudCredentials();
-  document.getElementById('wa-phone-id').value = creds.phoneId;
-  document.getElementById('wa-token').value = creds.token;
-  document.getElementById('wa-config-modal').style.display = 'flex';
- }
- function closeWhatsAppConfigModal() { document.getElementById('wa-config-modal').style.display = 'none'; }
- function saveWhatsAppCloudConfig() {
-  localStorage.setItem('wa_cloud_phone_id', document.getElementById('wa-phone-id').value.trim());
-  localStorage.setItem('wa_cloud_token', document.getElementById('wa-token').value.trim());
-  alert("✓ WhatsApp Cloud API सेटिंग्स सुरक्षित हो गईं!");
-  closeWhatsAppConfigModal();
- }
-
- async function dispatchAutomatedWhatsApp(mobile, messageText, billInvNo) {
+ /* --- 1-CLICK MANUAL WHATSAPP DISPATCH --- */
+ function dispatchAutomatedWhatsApp(mobile, messageText, billInvNo) {
   if (!mobile) return false;
   const cleanMob = mobile.replace(/\D/g, '').slice(-10);
-  const creds = getWhatsAppCloudCredentials();
-
-  if (creds.phoneId && creds.token) {
-   try {
-    const url = `https://graph.facebook.com/v19.0/${creds.phoneId}/messages`;
-    const res = await fetch(url, {
-     method: 'POST',
-     headers: { 'Authorization': `Bearer ${creds.token}`, 'Content-Type': 'application/json' },
-     body: JSON.stringify({
-      messaging_product: "whatsapp",
-      recipient_type: "individual",
-      to: "91" + cleanMob,
-      type: "text",
-      text: { body: messageText }
-     })
-    });
-    if (res.ok) {
-     if (billInvNo) updateBillMessageStatus(billInvNo, 'Delivered / Sent');
-     return true;
-    }
-   } catch (e) {
-    console.warn("Cloud WA API Error:", e);
-   }
-  }
-
   if (billInvNo) updateBillMessageStatus(billInvNo, 'Sent');
+  
   const encodedMsg = encodeURIComponent(messageText);
-  const appUrl = `whatsapp://send?phone=91${cleanMob}&text=${encodedMsg}`;
-  const link = document.createElement('a');
-  link.href = appUrl;
-  link.click();
+  const waUrl = `https://wa.me/91${cleanMob}?text=${encodedMsg}`;
+  window.open(waUrl, '_blank');
   return true;
  }
 
@@ -1102,34 +1044,32 @@ function lockAppNow() {
   setSavedBills(saved);
  }
 
- /* --- AUTO FOLLOWUPS (60 DAYS & 90 DAYS UNCLAIMED) --- */
+ /* --- DUE ALERT ENGINE (60 DAYS & 90 DAYS UNCLAIMED / DEFAULTER) --- */
  async function runAutomaticFollowUpEngine() {
   const saved = await getSavedBills();
   const today = new Date();
   let updatedAny = false;
 
   for (let b of saved) {
-   if (!b || b.status === 'delivered' || b.status === 'unclaimed') continue;
+   if (!b || b.status === 'disposed') continue;
+   
+   // यदि स्नूज़ किया हुआ है तो तब तक कुछ न करें
    if (b.snoozeUntil && new Date(b.snoozeUntil) > today) continue;
 
-   const delDate = b.delivery ? new Date(b.delivery) : (b.date ? new Date(b.date) : today);
-   const diffDays = Math.floor((today - delDate) / (1000 * 60 * 60 * 24));
+   const baseDateStr = b.delivery || b.date || '';
+   if (!baseDateStr) continue;
+   const baseDate = new Date(baseDateStr);
+   const diffDays = Math.floor((today - baseDate) / (1000 * 60 * 60 * 24));
+   const dueAmt = parseFloat(b.due) || 0;
 
-   if (diffDays >= 90) {
+   // 90 दिन से अधिक और बकाया या लावारिस होने पर डिफ़ॉल्टर
+   if (diffDays >= 90 && b.status !== 'unclaimed' && (b.status !== 'delivered' || dueAmt > 0)) {
     b.status = 'unclaimed';
     b.unclaimedSince = getLocalTodayDate();
     updatedAny = true;
     if (b.firebaseDocId) {
      try { window.updateDoc(window.doc(window.db, "shiv_shakti_bills", b.firebaseDocId), { status: 'unclaimed', unclaimedSince: b.unclaimedSince }); } catch(e){}
     }
-    continue;
-   }
-
-   if (diffDays >= 60 && !b.warned60) {
-    b.warned60 = true;
-    const msg = `⚠️ *अंतिम चेतावनी (Final Notice)*\nनमस्ते *${b.name}* जी, Shiv Shakti Smart Tailor से आपका कपड़ा सिलकर तैयार है और डिलीवरी तारीख से 60 दिन पूरे हो चुके हैं। कृपया 3 दिन में आकर ले जाएँ। बिल नं: *${b.invNo}*, बकाया: ₹${b.due}।\n📞 9662232193`;
-    dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
-    updatedAny = true;
    }
   }
 
@@ -1169,7 +1109,6 @@ function lockAppNow() {
   if (!b) return;
   const msg = `🔔 *रिमाइंडर (Shiv Shakti Smart Tailor)*\nनमस्ते *${b.name}* जी, आपका कपड़ा दुकान पर तैयार रखा है। कृपया समय निकालकर आकर ले जाएँ। बिल नं: *${b.invNo}*, बकाया: ₹${b.due}। धन्यवाद! 📞 9662232193`;
   dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
-  alert("✓ री-अलर्ट संदेश भेज दिया गया!");
  }
 
  function openSmartDeliveryModal(invNo) {
@@ -1237,7 +1176,16 @@ function lockAppNow() {
   const msg = "📢 *बकाया पेमेंट रिमाइंडर*\n*Shiv Shakti Smart Tailor*\n──────────────────────\nनमस्ते *" + b.name + "* जी,\nआप अपना कपड़ा ले जा चुके हैं।\nबिल नं: *" + b.invNo + "*\nबाकी रकम: *₹" + b.due + "*\n\n📄 डिजिटल बिल देखें:\n" + digitalBillLink + "\n\n💳 *UPI ID:* Smarttailor@sib\n\n📲 *QR कोड से भुगतान करने के लिए यहाँ देखें:*\nhttps://i.ibb.co/Rph92XRX/smarttailor-sib.jpg\n\nधन्यवाद! 🙏";
 
   dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
-  alert("✓ " + b.name + " को बकाया पेमेंट और QR कोड का रिमाइंडर भेज दिया गया!");
+ }
+
+ async function send60DayNoticeWhatsApp(invNo) {
+  const b = customerDirectory.find(x => x.invNo === invNo);
+  if (!b) return;
+  const digitalBillLink = window.location.origin + window.location.pathname + "?inv=" + encodeURIComponent(b.invNo);
+
+  const msg = `⚠️ *अंतिम सूचना (60 Days Payment Alert)*\n*Shiv Shakti Smart Tailor*\n──────────────────────\nनमस्ते *${b.name}* जी,\nआपके बिल नं *${b.invNo}* की देय तारीख को 60 दिन पूरे हो चुके हैं।\n💰 आपकी बकाया राशि: *₹${b.due}*\n\nकृपया 3 दिन के भीतर भुगतान करें।\n📄 बिल लिंक: ${digitalBillLink}\n💳 UPI: Smarttailor@sib\n📞 संपर्क: 9662232193\n\nधन्यवाद!`;
+
+  dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
  }
 
  function openQuickPaymentModal(invNo) {
@@ -1282,11 +1230,10 @@ function lockAppNow() {
    const msg = `💵 *पेमेंट रसीद (Payment Received)*\n──────────────────────\nनमस्ते *${updatedBill.name}* जी,\nShiv Shakti Smart Tailor में आपके बिल नं *${updatedBill.invNo}* के लिए *₹${amt}* [${pMode}] सफलतापूर्वक जमा हो गए हैं।\n\n💰 कुल बिल: ₹${updatedBill.total}\n🟢 कुल जमा (Total Paid): ₹${updatedBill.advance}\n🔴 बाकी रकम (Current Due): *₹${updatedBill.due}*\n\n📄 अपडेटेड बिल लिंक:\n${digitalBillLink}\n\nधन्यवाद! 🙏`;
    dispatchAutomatedWhatsApp(updatedBill.mobile, msg, updatedBill.invNo);
   }
-  alert("✓ पार्ट-पेमेंट जमा हो गया और ग्राहक को WhatsApp रसीद भेज दी गई!");
  }
 
  async function promptSnoozeOrder(invNo) {
-  const days = prompt("ग्राहक कितने दिन बाद आएगा? (दिन लिखें, उदा: 10 या 15):", "15");
+  const days = prompt("ग्राहक कितने दिन बाद भुगतान/कपड़ा लेने आएगा? (दिन लिखें, उदा: 7 या 15):", "7");
   if (!days || isNaN(days)) return;
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() + parseInt(days));
@@ -1303,7 +1250,8 @@ function lockAppNow() {
   }
   setSavedBills(saved);
   customerDirectory = saved;
-  alert(`✓ यह ऑर्डर ${days} दिनों के लिए आगे बढ़ा दिया गया है।`);
+  alert(`✓ यह ऑर्डर ${days} दिनों के लिए स्नूज़ (अलर्ट बंद) कर दिया गया है।`);
+  updateDeliveryAlertsCounts();
   renderCustomerTableModal();
  }
 
@@ -1360,37 +1308,52 @@ function lockAppNow() {
  function openBroadcastModal() {
   const uniqueList = getUniqueBroadcastCustomers();
   document.getElementById('broadcast-cust-count').innerText = uniqueList.length;
-  document.getElementById('broadcast-text').value = "🧵 Shiv Shakti Smart Tailor: नए सीज़न के कपड़े सिलवाने के लिए पधारें! बेहतरीन फिटिंग और नए डिज़ाइन उपलब्ध हैं। संपर्क: 9662232193";
+  document.getElementById('broadcast-text').value = "🧵 Shiv Shakti Smart Tailor: त्यौहारों के नए सीज़न के कपड़े सिलवाने के लिए पधारें! बेहतरीन फिटिंग और आकर्षक डिज़ाइन्स। संपर्क: 9662232193";
   document.getElementById('broadcast-modal').style.display = 'flex';
  }
  function closeBroadcastModal() { document.getElementById('broadcast-modal').style.display = 'none'; }
 
- async function startBulkBroadcast() {
+ function startBulkBroadcastQueue() {
   const text = document.getElementById('broadcast-text').value.trim();
   if (!text) return alert("कृपया संदेश टाइप करें!");
 
   const uniqueCustomers = getUniqueBroadcastCustomers();
-  if (uniqueCustomers.length === 0) return alert("कोई मान्य मोबाइल नंबर नहीं मिला!");
+  if (uniqueCustomers.length === 0) return alert("कोई मान्य ग्राहक नंबर नहीं मिला!");
 
-  const creds = getWhatsAppCloudCredentials();
-  const hasCloudApi = !!(creds.phoneId && creds.token);
+  if (!confirm(`कुल ${uniqueCustomers.length} ग्राहकों को क्रम से 1-क्लिक मैसेज भेजना शुरू करें?`)) return;
 
-  if (!confirm(`कुल ${uniqueCustomers.length} यूनिक ग्राहकों को यह मैसेज भेजा जाएगा (किसी को डबल मैसेज नहीं जाएगा)।\n\nक्या आप भेजना चाहते हैं?`)) return;
-
-  if (!hasCloudApi) {
-   alert("ध्यान दें: आपने अभी WhatsApp Cloud API सेटअप नहीं किया है। कृपया पहले ⚙️ WA API में जाकर क्रेडेंशियल्स सेव करें।");
-   return;
+  let index = 0;
+  function openNext() {
+   if (index >= uniqueCustomers.length) {
+    alert("✓ सभी ग्राहकों की सूची पूरी हो गई!");
+    return;
+   }
+   const cust = uniqueCustomers[index];
+   index++;
+   const url = `https://wa.me/91${cust.mobile}?text=${encodeURIComponent(text)}`;
+   window.open(url, '_blank');
+   
+   if (index < uniqueCustomers.length) {
+    setTimeout(() => {
+     if (confirm(`अगले ग्राहक (${uniqueCustomers[index].name} - ${uniqueCustomers[index].mobile}) को भेजें? (${index + 1}/${uniqueCustomers.length})`)) {
+      openNext();
+     }
+    }, 1000);
+   }
   }
-
-  let sentCount = 0;
-  for (let cust of uniqueCustomers) {
-   await dispatchAutomatedWhatsApp(cust.mobile, text, null);
-   sentCount++;
-   await new Promise(resolve => setTimeout(resolve, 800));
-  }
-
-  alert(`✓ ब्रॉडकास्ट पूरा हुआ! कुल ${sentCount} ग्राहकों को सफलतापूर्वक संदेश भेज दिया गया।`);
+  openNext();
   closeBroadcastModal();
+ }
+
+ function copyAllCustomerNumbers() {
+  const uniqueCustomers = getUniqueBroadcastCustomers();
+  if (uniqueCustomers.length === 0) return alert("कोई नंबर नहीं मिला!");
+  const numberList = uniqueCustomers.map(c => "+91" + c.mobile).join(",\n");
+  navigator.clipboard.writeText(numberList).then(() => {
+   alert(`✓ ${uniqueCustomers.length} ग्राहकों के नंबर कॉपी हो गए! आप WhatsApp Business Broadcast में पेस्ट कर सकते हैं।`);
+  }).catch(() => {
+   prompt("ये रहे सभी नंबर, कॉपी कर लें:", numberList);
+  });
  }
 
  /* --- AUTO SEARCH & LATEST MEASUREMENTS LOAD --- */
@@ -1761,7 +1724,7 @@ function lockAppNow() {
     <div><strong style="font-size:12px; color:#1e40af;">✍️ [${type}] रॉ स्केच पैड:</strong></div>
     <div style="display:flex; gap:6px;">
      <button type="button" class="btn-pad-activate" onclick="setActiveDrawingPad(${id}); event.stopPropagation();">🎯 ड्रॉ करें</button>
-     <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑️️ साफ़ करें</button>
+     <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑 साफ़ करें</button>
     </div>
    </div>
    <canvas id="draw-canvas-${id}" class="draw-canvas-elem"></canvas>
@@ -2010,7 +1973,7 @@ function lockAppNow() {
   return list;
  }
 
- /* --- FAST ASYNC BACKGROUND BILL SAVE & INSTANT WHATSAPP DISPATCH --- */
+ /* --- FAST ASYNC BILL SAVE & 1-CLICK WHATSAPP --- */
  async function saveCurrentBill(silent = false) {
   calculateTotals();
   const custName = document.getElementById('cust-name').value.trim();
@@ -2060,7 +2023,6 @@ function lockAppNow() {
    items: collectAllData()
   };
 
-  // लोकल मेमोरी में तुरंत सुरक्षित करें
   let updated = false;
   for (let i = 0; i < saved.length; i++) {
    if (saved[i] && saved[i].invNo === invNo) { saved[i] = billObj; updated = true; break; }
@@ -2070,7 +2032,6 @@ function lockAppNow() {
   customerDirectory = saved;
   updateDeliveryAlertsCounts();
 
-  // Firebase क्लाउड बैकग्राउंड में बिना स्क्रीन अटकाए चलेगा
   const cloudSyncPromise = firebaseDocId
    ? window.updateDoc(window.doc(window.db, "shiv_shakti_bills", firebaseDocId), billObj)
    : window.addDoc(window.collection(window.db, "shiv_shakti_bills"), billObj).then(docRef => {
@@ -2102,7 +2063,6 @@ function lockAppNow() {
   msg += `──────────────────────\n`;
   msg += `⚠️ कपडा 60 दिन में ले जाये उसके बाद हमारी कोई जवाबदारी नहीं होगी।\nधन्यवाद! Shiv Shakti Smart Tailor 🙏`;
 
-  // तुरंत ऑटो WhatsApp रवाना
   dispatchAutomatedWhatsApp(mobile, msg, invNo);
 
   if (saveBtn) {
@@ -2110,7 +2070,7 @@ function lockAppNow() {
    saveBtn.innerText = "💾 Save Bill & Send WhatsApp";
   }
 
-  if (!silent) alert(`✓ बिल तुरंत सुरक्षित हो गया!`);
+  if (!silent) alert(`✓ बिल तुरंत सुरक्षित हो गया और WhatsApp खुल गया!`);
  }
 
  function prepareInvoiceView() {
@@ -2283,17 +2243,26 @@ function lockAppNow() {
  function updateDeliveryAlertsCounts() {
   const saved = customerDirectory || [];
   const todayStr = getLocalTodayDate();
+  const today = new Date();
   const tm = new Date(); tm.setDate(tm.getDate()+1);
   const tomorrowStr = tm.toISOString().split('T')[0];
 
-  let od = 0, td = 0, tmCount = 0, rd = 0, deliveredDueSum = 0, unc = 0;
+  let od = 0, td = 0, tmCount = 0, rd = 0, deliveredDueSum = 0, unc = 0, d60Count = 0;
   saved.forEach(b => {
-   if (!b) return;
+   if (!b || b.status === 'disposed') return;
    const d = parseFloat(b.due) || 0;
    
    if (b.status === 'unclaimed') { unc++; return; }
    if (b.status === 'delivered' && d > 0) {
     deliveredDueSum += d;
+   }
+
+   // 60-दिन अलर्ट ट्रैकिंग
+   const baseDateStr = b.delivery || b.date || '';
+   if (baseDateStr && d > 0) {
+    const diff = Math.floor((today - new Date(baseDateStr)) / (1000 * 60 * 60 * 24));
+    const isSnoozed = b.snoozeUntil && new Date(b.snoozeUntil) > today;
+    if (diff >= 60 && !isSnoozed) d60Count++;
    }
 
    if (b.status === 'delivered') return;
@@ -2304,6 +2273,7 @@ function lockAppNow() {
   });
 
   document.getElementById('count-delivered-due').innerText = '₹' + deliveredDueSum;
+  document.getElementById('count-due60').innerText = d60Count;
   document.getElementById('count-overdue').innerText = od;
   document.getElementById('count-today').innerText = td;
   document.getElementById('count-tomorrow').innerText = tmCount;
@@ -2437,26 +2407,31 @@ function lockAppNow() {
   document.getElementById('pr-due').innerText = '₹' + (bill.due || 0);
  }
 
- /* --- FAST 0-SECOND CUSTOMER TABLE MODAL --- */
+ /* --- FAST CUSTOMER TABLE MODAL --- */
  async function renderCustomerTableModal() {
   const tbody = document.getElementById('modal-cust-tbody');
   let saved = customerDirectory;
   
   if (!saved || saved.length === 0) {
-   tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:15px;">Loading Queue...</td></tr>`;
+   tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:15px;">Loading Queue...</td></tr>`;
    saved = await getSavedBills();
    customerDirectory = saved;
   }
 
   const searchTxt = document.getElementById('modal-search-box').value.trim().toLowerCase();
   const todayStr = getLocalTodayDate();
+  const today = new Date();
 
   let filtered = saved.filter(b => {
    if (!b) return false;
    const st = b.status || 'pending';
    const del = b.delivery || '';
    const due = parseFloat(b.due) || 0;
+   const baseDateStr = b.delivery || b.date || '';
+   const diffDays = baseDateStr ? Math.floor((today - new Date(baseDateStr)) / (1000 * 60 * 60 * 24)) : 0;
+   const isSnoozed = b.snoozeUntil && new Date(b.snoozeUntil) > today;
 
+   if (currentModalTab === 'due60') return due > 0 && diffDays >= 60 && !isSnoozed && st !== 'disposed';
    if (currentModalTab === 'delivered_due') return st === 'delivered' && due > 0;
    if (currentModalTab === 'all_pending') return st !== 'delivered' && st !== 'unclaimed' && st !== 'disposed';
    if (currentModalTab === 'overdue') return st !== 'delivered' && st !== 'ready' && del && del < todayStr;
@@ -2477,7 +2452,7 @@ function lockAppNow() {
   }
 
   if (filtered.length === 0) {
-   tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:15px; color:#94a3b8;">कोई रिकॉर्ड नहीं मिला।</td></tr>`;
+   tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:15px; color:#94a3b8;">कोई रिकॉर्ड नहीं मिला।</td></tr>`;
    return;
   }
 
@@ -2490,15 +2465,27 @@ function lockAppNow() {
     sampleImgSrc = b.mainBillPhoto;
    }
 
+   const baseDateStr = b.delivery || b.date || '';
+   const diffDays = baseDateStr ? Math.floor((today - new Date(baseDateStr)) / (1000 * 60 * 60 * 24)) : 0;
+   const isSnoozed = b.snoozeUntil && new Date(b.snoozeUntil) > today;
+
    let photoTd = sampleImgSrc 
     ? `<img src="${sampleImgSrc}" onclick="openImageZoomModal('${sampleImgSrc}')" style="width:38px; height:38px; object-fit:cover; border-radius:6px; border:1.5px solid #cbd5e1; cursor:pointer;" title="बड़ा देखने के लिए क्लिक करें">`
     : `<span style="font-size:10px; color:#94a3b8;">No Pic</span>`;
+   
    let badge = `<span class="status-badge st-pending">🔴 Pending</span>`;
    if (b.status === 'stitching') badge = `<span class="status-badge st-stitching">✂️ Stitching</span>`;
    if (b.status === 'ready') badge = `<span class="status-badge st-ready">🟡 Ready</span>`;
    if (b.status === 'delivered') badge = `<span class="status-badge st-delivered">🟢 Delivered</span>`;
-   if (b.status === 'unclaimed') badge = `<span class="status-badge st-unclaimed">📦 Unclaimed</span>`;
+   if (b.status === 'unclaimed') badge = `<span class="status-badge st-unclaimed">📦 Defaulter (90+)</span>`;
    if (b.status === 'disposed') badge = `<span class="status-badge st-disposed">🏷️ Disposed</span>`;
+
+   if (parseFloat(b.due) > 0 && diffDays >= 60 && b.status !== 'unclaimed' && b.status !== 'disposed') {
+    badge += `<br><span class="status-badge st-due60" style="margin-top:2px;">⚠️ 60+ Days Due</span>`;
+   }
+   if (isSnoozed) {
+    badge += `<br><span style="font-size:9.5px; color:#6366f1; font-weight:bold;">⏰ Snoozed: ${formatDateToDMY(b.snoozeUntil)}</span>`;
+   }
 
    let actions = `<button class="btn-sm-act btn-tbl-open" onclick="loadBillFromModal('${b.invNo}')">Open</button>`;
    actions += `<button class="btn-sm-act btn-tbl-reuse" onclick="reuseCustomerData('${b.invNo}')" title="इसी नाप पर नया बिल बनाएं">🔁 Reuse</button>`;
@@ -2512,14 +2499,24 @@ function lockAppNow() {
    }
    if (b.status === 'ready') {
     actions += `<button class="btn-sm-act btn-tbl-realert" onclick="sendReAlertMessage('${b.invNo}')">🔔 Re-Alert</button>`;
+   }
+   
+   // Snooze Button (60+ दिन या पेंडिंग/रेडी के लिए)
+   if (b.status !== 'delivered' || parseFloat(b.due) > 0) {
     actions += `<button class="btn-sm-act btn-tbl-snooze" onclick="promptSnoozeOrder('${b.invNo}')">⏰ Snooze</button>`;
    }
+
    if (b.status !== 'delivered') {
     actions += `<button class="btn-sm-act btn-tbl-deliver" onclick="openSmartDeliveryModal('${b.invNo}')">🟢 Deliver</button>`;
    }
-   if (b.status === 'delivered' && parseFloat(b.due) > 0) {
+
+   // 60-दिन विशेष तकादा बटन
+   if (parseFloat(b.due) > 0 && diffDays >= 60) {
+    actions += `<button class="btn-sm-act btn-tbl-due-remind" onclick="send60DayNoticeWhatsApp('${b.invNo}')" title="60 दिन अंतिम तकादा">⚠️ 60D Alert</button>`;
+   } else if (b.status === 'delivered' && parseFloat(b.due) > 0) {
     actions += `<button class="btn-sm-act btn-tbl-due-remind" onclick="sendPendingDueWhatsAppReminder('${b.invNo}')">💬 Due Remind</button>`;
    }
+
    if (b.status === 'unclaimed') {
     actions += `<button class="btn-sm-act btn-tbl-dispose" onclick="openDisposalModal('${b.invNo}')">📦 Dispose</button>`;
    }
@@ -2690,4 +2687,4 @@ function lockAppNow() {
  });
 </script>
 </body>
- </html>
+       </html>
