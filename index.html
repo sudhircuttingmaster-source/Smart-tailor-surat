@@ -585,7 +585,7 @@
    <label>Cloth Amount (₹)</label>
    <input type="number" id="calc-cloth" value="0" oninput="calculateTotals()" placeholder="0">
   </div>
-  <div class="form-group">
+  <div class="form-group" style="color:#7c3aed;">
    <label style="color:#7c3aed;">Extra (₹)</label>
    <input type="number" id="calc-extra" value="0" oninput="calculateTotals()" placeholder="0" style="background:#faf5ff; color:#7c3aed; font-weight:bold;">
   </div>
@@ -907,27 +907,37 @@
 
 <script>
 async function handleManualAdminLogin() {
-  const email = document.getElementById('admin-email-input').value.trim();
-  const pass = document.getElementById('admin-pass-input').value.trim();
+  const emailInput = document.getElementById('admin-email-input');
+  const passInput = document.getElementById('admin-pass-input');
   const errDiv = document.getElementById('login-error-msg');
   const btn = document.getElementById('btn-login-submit');
 
+  const email = emailInput ? emailInput.value.trim() : '';
+  const pass = passInput ? passInput.value.trim() : '';
+
   if (!email || !pass) {
-    errDiv.innerText = "कृपया ईमेल और पासवर्ड दर्ज करें!";
+    if (errDiv) errDiv.innerText = "कृपया ईमेल और पासवर्ड दर्ज करें!";
     return;
   }
 
   btn.disabled = true;
   btn.innerText = "लॉगिन हो रहा है...";
-  errDiv.innerText = "";
+  if (errDiv) errDiv.innerText = "";
 
   try {
     await window.signInWithEmailAndPassword(window.auth, email, pass);
     btn.innerText = "✓ सफल!";
+    const overlay = document.getElementById('app-lock-overlay');
+    if (overlay) overlay.style.display = 'none';
+    if (typeof refreshCustomerDirectory === 'function') {
+      refreshCustomerDirectory();
+      setNextConsecutiveInvoice();
+    }
   } catch (error) {
     btn.disabled = false;
     btn.innerText = "🔓 Login Software";
-    errDiv.innerText = "❌ गलत ईमेल या पासवर्ड!";
+    if (errDiv) errDiv.innerText = "❌ गलत ईमेल या पासवर्ड!";
+    console.error("Login Error:", error);
   }
 }
 
@@ -1180,13 +1190,15 @@ function lockAppNow() {
   for (let b of saved) {
    if (b.invNo === activeDeliveryInv) {
     b.status = 'delivered';
+    const totalAmt = parseFloat(b.total) || 0;
+    const prevAdvance = parseFloat(b.advance) || 0;
     if (type === 'full') {
-     b.advance = b.total;
+     b.advance = totalAmt;
      b.due = 0;
     } else {
      const part = parseFloat(document.getElementById('deliv-partial-input').value) || 0;
-     b.advance = (parseFloat(b.advance) || 0) + part;
-     b.due = Math.max(0, (parseFloat(b.total) || 0) - b.advance);
+     b.advance = prevAdvance + part;
+     b.due = Math.max(0, totalAmt - b.advance);
     }
     deliveredBill = b;
     if (b.firebaseDocId) {
@@ -1203,7 +1215,8 @@ function lockAppNow() {
     switchCustomerTab('delivered_due');
   } else {
     switchCustomerTab('delivered');
- }
+  }
+
   if (deliveredBill) {
    let delivMsg = `🟢 *ऑर्डर डिलीवर हो गया (Delivery Done)*\n──────────────────────\nनमस्ते *${deliveredBill.name}* जी,\nShiv Shakti Smart Tailor से आपका ऑर्डर प्राप्त करने के लिए धन्यवाद!`;
    if (deliveredBill.due > 0) {
@@ -1213,7 +1226,10 @@ function lockAppNow() {
    }
    delivMsg += `\n\n⭐ कृपया हमारे काम को Google पर 5-स्टार रेटिंग देकर अपना अनुभव साझा करें:\nhttps://maps.app.goo.gl/9XvybN9yggjytDTb7\n\nपुनः पधारें! 🙏`;
    dispatchAutomatedWhatsApp(deliveredBill.mobile, delivMsg, deliveredBill.invNo);
-  async function sendPendingDueWhatsAppReminder(invNo) {
+  }
+ }
+
+ async function sendPendingDueWhatsAppReminder(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
   if (!b) return;
   const digitalBillLink = window.location.origin + window.location.pathname + "?inv=" + encodeURIComponent(b.invNo);
@@ -1224,7 +1240,7 @@ function lockAppNow() {
 
   dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
   alert("✓ " + b.name + " को ₹" + b.due + " बकाया और UPI लिंक का रिमाइंडर भेज दिया गया!");
-  }
+ }
 
  function openQuickPaymentModal(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
@@ -1747,7 +1763,7 @@ function lockAppNow() {
     <div><strong style="font-size:12px; color:#1e40af;">✍️ [${type}] रॉ स्केच पैड:</strong></div>
     <div style="display:flex; gap:6px;">
      <button type="button" class="btn-pad-activate" onclick="setActiveDrawingPad(${id}); event.stopPropagation();">🎯 ड्रॉ करें</button>
-     <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑️ साफ़ करें</button>
+     <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑️️ साफ़ करें</button>
     </div>
    </div>
    <canvas id="draw-canvas-${id}" class="draw-canvas-elem"></canvas>
@@ -2676,4 +2692,4 @@ function lockAppNow() {
  });
 </script>
 </body>
-</html>
+ </html>
