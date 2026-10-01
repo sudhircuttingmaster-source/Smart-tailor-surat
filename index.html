@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Shiv Shakti Smart Tailor - Pro Billing & Management</title>
+<title>Shiv Shakti Smart Tailor - Pro Billing & Automation</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -13,13 +13,13 @@
  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
  const firebaseConfig = {
-   apiKey: "AIzaSyBK6vLqbBcImFV_Uh51L-eU_hLDyw9KN3Y",
-   authDomain: "smart-tailor-dindoli.firebaseapp.com",
-   projectId: "smart-tailor-dindoli",
-   storageBucket: "smart-tailor-dindoli.firebasestorage.app",
-   messagingSenderId: "344126090577",
-   appId: "1:344126090577:web:d9871588c2ffe99e6bb770",
-   measurementId: "G-16ZVF2LFJ6"
+  apiKey: "AIzaSyBK6vLqbBcImFV_Uh51L-eU_hLDyw9KN3Y",
+  authDomain: "smart-tailor-dindoli.firebaseapp.com",
+  projectId: "smart-tailor-dindoli",
+  storageBucket: "smart-tailor-dindoli.firebasestorage.app",
+  messagingSenderId: "344126090577",
+  appId: "1:344126090577:web:d9871588c2ffe99e6bb770",
+  measurementId: "G-16ZVF2LFJ6"
  };
 
  const app = initializeApp(firebaseConfig);
@@ -40,29 +40,32 @@
  window.signOut = signOut;
 
  onAuthStateChanged(auth, (user) => {
-   const urlParams = new URLSearchParams(window.location.search);
-   const overlay = document.getElementById('app-lock-overlay');
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('inv')) return;
 
-   if (urlParams.get('inv')) {
-     if (overlay) overlay.style.display = 'none';
-     return;
+  const overlay = document.getElementById('app-lock-overlay');
+  if (user) {
+   if (overlay) overlay.style.display = 'none';
+   if (typeof window.refreshCustomerDirectory === "function") {
+    window.refreshCustomerDirectory();
+    window.setNextConsecutiveInvoice();
    }
-
-   if (user) {
-     if (overlay) overlay.style.display = 'none';
-     if (typeof window.refreshCustomerDirectory === "function") {
-       window.refreshCustomerDirectory();
-       window.setNextConsecutiveInvoice();
-     }
-   } else {
-     if (overlay) overlay.style.display = 'flex';
-   }
+  } else {
+   if (overlay) overlay.style.display = 'flex';
+  }
  });
 </script>
+
 <style>
  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
  body { background: #f0f4f8; color: #1e293b; padding: 12px; }
- .app-container { max-width: 890px; margin: 0 auto; background: #ffffff; border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); padding: 20px; border: 1px solid #cbd5e1; }
+ 
+ /* PC / Desktop Full Display Support */
+ .app-container { width: 100%; max-width: 890px; margin: 0 auto; background: #ffffff; border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); padding: 20px; border: 1px solid #cbd5e1; }
+ 
+ @media screen and (min-width: 1024px) {
+  .app-container { max-width: 96% !important; padding: 26px; }
+ }
  
  .shop-banner { text-align: center; background: #18181b; color: white; padding: 20px 14px; border-radius: 10px; margin-bottom: 14px; border: 2px solid #27272a; position: relative; }
  .shop-badge { display: inline-block; background: #dc2626; color: white; font-size: 11.5px; font-weight: 800; padding: 4px 16px; border-radius: 20px; text-transform: uppercase; margin-bottom: 6px; }
@@ -73,21 +76,20 @@
  
  .banner-btns { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
  .btn-top-rate { background: #2563eb; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
+ .btn-top-wa { background: #16a34a; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
  .btn-top-lock { background: #dc2626; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
 
  .delivery-alerts-panel { background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
- .alerts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(125px, 1fr)); gap: 10px; }
+ .alerts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
  .alert-card { padding: 10px 12px; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; justify-content: center; transition: transform 0.15s ease; border-width: 1.5px; border-style: solid; }
  .alert-card:hover { transform: translateY(-2px); }
  .card-delivered-due { background: #fff1f2; border-color: #f43f5e; color: #9f1239; }
- .card-due60 { background: #fff7ed; border-color: #f97316; color: #c2410c; }
  .card-overdue { background: #fef2f2; border-color: #f87171; color: #991b1b; }
  .card-today { background: #fefce8; border-color: #facc15; color: #854d0e; }
  .card-tomorrow { background: #f0f9ff; border-color: #7dd3fc; color: #075985; }
  .card-ready { background: #fef9c3; border-color: #eab308; color: #a16207; }
- .card-unclaimed { background: #f1f5f9; border-color: #64748b; color: #334155; }
- .alert-card .count { font-size: 20px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
- .alert-card .label { font-size: 10px; font-weight: 800; text-transform: uppercase; }
+ .alert-card .count { font-size: 22px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+ .alert-card .label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; }
 
  .form-section { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
  .section-heading { font-size: 15px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #cbd5e1; padding-bottom: 6px; }
@@ -165,7 +167,7 @@
 
  .btn-action-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
  .btn-act { border: none; padding: 12px; border-radius: 8px; font-size: 12.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; }
- .btn-save { background: #16a34a; }
+ .btn-save { background: #4f46e5; }
  .btn-print-merged { background: #0284c7; }
  .btn-slip { background: #d97706; }
  .btn-toggle-list { background: #2563eb; }
@@ -179,7 +181,7 @@
  .modal-close { background: none; border: none; color: white; font-size: 24px; cursor: pointer; font-weight: bold; }
  .modal-body { padding: 14px; overflow-y: auto; flex: 1; }
 
- #delivery-modal, #payment-modal, #disposal-modal, #broadcast-modal, #rate-modal, #image-zoom-modal {
+ #delivery-modal, #payment-modal, #disposal-modal, #broadcast-modal, #wa-config-modal, #rate-modal, #image-zoom-modal {
   z-index: 2500 !important;
  }
 
@@ -209,7 +211,6 @@
  .st-stitching { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
  .st-ready { background: #fef9c3; color: #854d0e; border: 1px solid #facc15; }
  .st-delivered { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
- .st-due60 { background: #ffedd5; color: #c2410c; border: 1px solid #fb923c; }
  .st-unclaimed { background: #e2e8f0; color: #475569; border: 1px solid #94a3b8; }
  .st-disposed { background: #f43f5e; color: #fff; }
 
@@ -362,11 +363,11 @@
  .color-table th { 
   background: #fffbeb !important; 
   color: #78350f; 
-  border-bottom: 1.5px solid #d97706;
-  border-top: 1px solid #fef3c7;
+  border-bottom: 1.5px solid #d97706; 
+  border-top: 1px solid #fef3c7; 
   padding: 10px 8px; 
   font-weight: 800; 
-  text-transform: uppercase;
+  text-transform: uppercase; 
   font-size: 11.5px;
  }
  .color-table td { 
@@ -390,8 +391,8 @@
   padding: 9px 12px; 
   border-radius: 6px; 
   line-height: 1.45; 
-  color: #451a03;
-  background: #fffdf5;
+  color: #451a03; 
+  background: #fffdf5; 
  }
  
  .color-totals-table { 
@@ -399,10 +400,10 @@
   border-collapse: collapse; 
   font-size: 13px; 
   margin-left: auto; 
-  border: 1px solid #d97706;
-  background: #ffffff;
-  border-radius: 6px;
-  overflow: hidden;
+  border: 1px solid #d97706; 
+  background: #ffffff; 
+  border-radius: 6px; 
+  overflow: hidden; 
  }
  .color-totals-table td { padding: 7px 10px; border-bottom: 1px solid #fef3c7; }
 
@@ -421,25 +422,25 @@
 
 <!-- LOGIN SCREEN OVERLAY -->
 <div id="app-lock-overlay" style="display:flex; position:fixed; top:0; left:0; width:100%; height:100%; background:#0f172a; z-index:99999; justify-content:center; align-items:center; padding:16px;">
-  <div class="lock-card" style="background:#ffffff; width:100%; max-width:360px; padding:26px 20px; border-radius:14px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.4);">
-    <div style="font-size:34px; margin-bottom:8px;">🔐</div>
-    <h2 style="font-size:18px; font-weight:800; color:#1e3a8a; margin-bottom:4px;">Shiv Shakti Smart Tailor</h2>
-    <p style="font-size:12px; color:#64748b; margin-bottom:18px;">एडमिन लॉगिन करें</p>
-    
-    <div style="text-align:left; margin-bottom:10px;">
-      <label style="font-size:12px; font-weight:bold; color:#475569;">Email ID</label>
-      <input type="email" id="admin-email-input" placeholder="अपनी ईमेल आईडी डालें" autocomplete="off" style="width:100%; padding:9px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:14px; outline:none; background:#ffffff;">
-    </div>
-
-    <div style="text-align:left; margin-bottom:14px;">
-      <label style="font-size:12px; font-weight:bold; color:#475569;">Password</label>
-      <input type="password" id="admin-pass-input" placeholder="••••••••" style="width:100%; padding:9px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:14px; outline:none;">
-    </div>
-
-    <div id="login-error-msg" style="color:#dc2626; font-size:12px; font-weight:bold; margin-bottom:12px; min-height:16px;"></div>
-    
-    <button type="button" id="btn-login-submit" onclick="handleManualAdminLogin()" style="width:100%; background:#2563eb; color:#fff; padding:11px; border:none; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">🔓 Login Software</button>
+ <div class="lock-card" style="background:#ffffff; width:100%; max-width:360px; padding:26px 20px; border-radius:14px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.4);">
+  <div style="font-size:34px; margin-bottom:8px;">🔒</div>
+  <h2 style="font-size:18px; font-weight:800; color:#1e3a8a; margin-bottom:4px;">Shiv Shakti Smart Tailor</h2>
+  <p style="font-size:12px; color:#64748b; margin-bottom:18px;">एडमिन लॉगिन करें</p>
+  
+  <div style="text-align:left; margin-bottom:10px;">
+   <label style="font-size:12px; font-weight:bold; color:#475569;">Email ID</label>
+   <input type="email" id="admin-email-input" placeholder="admin@smarttailor.com" style="width:100%; padding:9px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:14px; outline:none;">
   </div>
+
+  <div style="text-align:left; margin-bottom:14px;">
+   <label style="font-size:12px; font-weight:bold; color:#475569;">Password</label>
+   <input type="password" id="admin-pass-input" placeholder="••••••••" style="width:100%; padding:9px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:14px; outline:none;">
+  </div>
+
+  <div id="login-error-msg" style="color:#dc2626; font-size:12px; font-weight:bold; margin-bottom:12px; min-height:16px;"></div>
+  
+  <button type="button" id="btn-login-submit" onclick="handleManualAdminLogin()" style="width:100%; background:#2563eb; color:#fff; padding:11px; border:none; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">🔓 Login Software</button>
+ </div>
 </div>
 
 <!-- DIRECT CUSTOMER VIEW BAR -->
@@ -460,6 +461,7 @@
 <div class="app-container">
  <div class="shop-banner">
   <div class="banner-btns">
+   <button type="button" class="btn-top-wa" onclick="openWhatsAppConfigModal()">⚙️ WA API</button>
    <button type="button" class="btn-top-rate" onclick="openRateSettingsModal()">⚙️ Rates</button>
    <button type="button" class="btn-top-lock" onclick="lockAppNow()">🚪 Lock</button>
   </div>
@@ -470,7 +472,7 @@
   <div class="contact-info">📞 Mo: 9662232193 / 6351325425</div>
  </div>
 
- <!-- Delivery & Delivered Due Alerts Tracker -->
+ <!-- Delivery & Alerts Tracker -->
  <div class="delivery-alerts-panel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
    <strong style="font-size:12.5px; color:#1e3a8a;">🔔 डिलीवरी व बकाया पेमेंट ट्रैकर (Live Tracker)</strong>
@@ -479,15 +481,11 @@
   <div class="alerts-grid">
    <div class="alert-card card-delivered-due" onclick="openAllCustomersModal('delivered_due')">
     <span class="count" id="count-delivered-due">₹0</span>
-    <span class="label">🔴 कपड़े ले गए (Due)</span>
-   </div>
-   <div class="alert-card card-due60" onclick="openAllCustomersModal('due60')">
-    <span class="count" id="count-due60">0</span>
-    <span class="label">⚠️ 60+ दिन ड्यू अलर्ट</span>
+    <span class="label">🔴 कपड़े ले गए (Delivered Due)</span>
    </div>
    <div class="alert-card card-overdue" onclick="openAllCustomersModal('overdue')">
     <span class="count" id="count-overdue">0</span>
-    <span class="label">🚨 लेट ऑर्डर्स</span>
+    <span class="label">🚨 लेट ऑर्डर्स (Overdue)</span>
    </div>
    <div class="alert-card card-today" onclick="openAllCustomersModal('today')">
     <span class="count" id="count-today">0</span>
@@ -503,7 +501,7 @@
    </div>
    <div class="alert-card card-unclaimed" onclick="openAllCustomersModal('unclaimed')">
     <span class="count" id="count-unclaimed">0</span>
-    <span class="label">📦 90+ दिन डिफ़ॉल्टर</span>
+    <span class="label">📦 90+ दिन डिफ़ॉल्ट</span>
    </div>
   </div>
  </div>
@@ -531,7 +529,7 @@
     <div id="mobile-search-dropdown" class="search-results-dropdown"></div>
     <div class="quick-contact-btns">
      <a href="#" id="quick-call-btn" class="q-btn q-call">📞 Call</a>
-     <a href="#" id="quick-sms-btn" class="q-btn q-sms">✉️ SMS</a>
+     <a href="#" id="quick-sms-btn" class="q-btn q-sms">✉️️ SMS</a>
     </div>
    </div>
    <div class="form-group">
@@ -574,7 +572,7 @@
   <span>2. Clothes & Measurements</span>
  </div>
  <div id="items-list-container"></div>
- <button type="button" class="btn-add-item" onclick="addItemCard()">➕ Add Garment</button>
+ <button type="button" class="btn-add-item" onclick="addItemCardSmart()">➕ Add Garment</button>
 
  <div class="calc-container">
   <div class="form-group">
@@ -589,7 +587,7 @@
    <label>Cloth Amount (₹)</label>
    <input type="number" id="calc-cloth" value="0" oninput="calculateTotals()" placeholder="0">
   </div>
-  <div class="form-group" style="color:#7c3aed;">
+  <div class="form-group">
    <label style="color:#7c3aed;">Extra (₹)</label>
    <input type="number" id="calc-extra" value="0" oninput="calculateTotals()" placeholder="0" style="background:#faf5ff; color:#7c3aed; font-weight:bold;">
   </div>
@@ -722,22 +720,39 @@
  </div>
 </div>
 
-<!-- MODAL: BROADCAST (1-CLICK & COPY) -->
+<!-- MODAL: BROADCAST -->
 <div class="modal-overlay" id="broadcast-modal" onclick="if(event.target===this) closeBroadcastModal();">
  <div class="modal-box" style="max-width: 500px;">
   <div class="modal-header">
-   <span>📢 Bulk WhatsApp Marketing (1-Click)</span>
+   <span>📢 Bulk WhatsApp Marketing</span>
    <button type="button" class="modal-close" onclick="closeBroadcastModal()">✕</button>
   </div>
   <div class="modal-body" style="padding: 16px;">
    <p style="font-size: 12px; color: #64748b; margin-bottom: 8px;">सभी सेव ग्राहकों (<span id="broadcast-cust-count">0</span> लोग) को त्यौहार या ऑफर का संदेश भेजें:</p>
-   <textarea id="broadcast-text" rows="4" style="width:100%; padding:8px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px;" placeholder="संदेश यहाँ टाइप करें..."></textarea>
-   
-   <div style="display:flex; gap:8px; margin-top:10px;">
-    <button type="button" onclick="startBulkBroadcastQueue()" style="flex:1; background:#059669; color:#fff; padding:10px; border:none; border-radius:6px; font-weight:800; font-size:12.5px; cursor:pointer;">🚀 1-by-1 WhatsApp Fast Send</button>
-    <button type="button" onclick="copyAllCustomerNumbers()" style="background:#2563eb; color:#fff; padding:10px 12px; border:none; border-radius:6px; font-weight:800; font-size:12.5px; cursor:pointer;">📋 Copy All Numbers</button>
+   <textarea id="broadcast-text" rows="5" style="width:100%; padding:8px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px;" placeholder="संदेश यहाँ टाइप करें..."></textarea>
+   <button type="button" onclick="startBulkBroadcast()" style="margin-top:12px; width:100%; background:#059669; color:#fff; padding:10px; border:none; border-radius:6px; font-weight:800; cursor:pointer;">🚀 Send Bulk Broadcast</button>
+  </div>
+ </div>
+</div>
+
+<!-- MODAL: WA CONFIG -->
+<div class="modal-overlay" id="wa-config-modal" onclick="if(event.target===this) closeWhatsAppConfigModal();">
+ <div class="modal-box" style="max-width: 500px;">
+  <div class="modal-header">
+   <span>⚙️ Meta WhatsApp Cloud API Setup</span>
+   <button type="button" class="modal-close" onclick="closeWhatsAppConfigModal()">✕</button>
+  </div>
+  <div class="modal-body" style="padding: 16px;">
+   <p style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Meta Developers अकाउंट से मिलने वाले Phone Number ID और Access Token यहाँ पेस्ट करें:</p>
+   <div class="form-group" style="margin-bottom: 10px;">
+    <label>Phone Number ID</label>
+    <input type="text" id="wa-phone-id" placeholder="उदा: 1058291823912">
    </div>
-   <p style="font-size:11px; color:#64748b; margin-top:8px;">* Fast Send दबाने पर क्रमवार WhatsApp चैट खुलती जाएगी और आप बस सेंड दबाते जाएँगे।</p>
+   <div class="form-group" style="margin-bottom: 14px;">
+    <label>Permanent Access Token</label>
+    <textarea id="wa-token" rows="3" placeholder="EAAB..."></textarea>
+   </div>
+   <button type="button" onclick="saveWhatsAppCloudConfig()" style="width: 100%; background: #16a34a; color: #fff; padding: 10px; border: none; border-radius: 6px; font-weight: 800; cursor: pointer;">💾 Save API Credentials</button>
   </div>
  </div>
 </div>
@@ -756,7 +771,7 @@
  </div>
 </div>
 
-<!-- MAIN MODAL: CUSTOMERS & DUE QUEUE -->
+<!-- MAIN MODAL: CUSTOMERS & QUEUE -->
 <div class="modal-overlay" id="cust-modal" onclick="if(event.target===this) closeAllCustomersModal();">
  <div class="modal-box">
   <div class="modal-header">
@@ -766,15 +781,14 @@
   <div class="modal-body">
    <div class="modal-tabs">
     <button type="button" class="tab-btn active-tab" id="tab-all-pending" onclick="switchCustomerTab('all_pending')">⚡ All Active</button>
-    <button type="button" class="tab-btn" id="tab-due60" onclick="switchCustomerTab('due60')" style="background:#ffedd5; color:#c2410c; font-weight:900;">⚠️️ 60+ दिन ड्यू</button>
-    <button type="button" class="tab-btn" id="tab-delivered-due" onclick="switchCustomerTab('delivered_due')" style="background:#fee2e2; color:#9f1239; font-weight:900;">🔴 Delivered Due</button>
+    <button type="button" class="tab-btn" id="tab-delivered-due" onclick="switchCustomerTab('delivered_due')" style="background:#fee2e2; color:#9f1239; font-weight:900;">🔴 Delivered Due (बाकी)</button>
     <button type="button" class="tab-btn" id="tab-overdue" onclick="switchCustomerTab('overdue')">🚨 Overdue</button>
     <button type="button" class="tab-btn" id="tab-today" onclick="switchCustomerTab('today')">⚠️ Today</button>
     <button type="button" class="tab-btn" id="tab-tomorrow" onclick="switchCustomerTab('tomorrow')">📅 Tomorrow</button>
     <button type="button" class="tab-btn" id="tab-stitching" onclick="switchCustomerTab('stitching')">✂️ Stitching</button>
     <button type="button" class="tab-btn" id="tab-ready" onclick="switchCustomerTab('ready')">🟡 Ready</button>
     <button type="button" class="tab-btn" id="tab-delivered" onclick="switchCustomerTab('delivered')">🟢 Delivered</button>
-    <button type="button" class="tab-btn" id="tab-unclaimed" onclick="switchCustomerTab('unclaimed')" style="background:#e2e8f0; color:#334155;">📦 90+ डिफ़ॉल्टर</button>
+    <button type="button" class="tab-btn" id="tab-unclaimed" onclick="switchCustomerTab('unclaimed')" style="background:#e2e8f0; color:#334155;">📦 90+ Unclaimed</button>
    </div>
    <input type="text" id="modal-search-box" class="modal-search" placeholder="🔍 Search name, mobile, invoice..." oninput="renderCustomerTableModal()">
    <div style="overflow-x: auto;">
@@ -783,10 +797,9 @@
       <tr>
        <th>Delivery / Status</th>
        <th>Inv No.</th>
-       <th>Photo</th>
        <th>Customer Name</th>
        <th>Mobile</th>
-       <th>Status & Due</th>
+       <th>Status & WA</th>
        <th>Total / Due</th>
        <th>Actions</th>
       </tr>
@@ -874,7 +887,7 @@
     <table class="color-totals-table">
      <tr><td style="color:#334155; font-weight:700;">Subtotal:</td><td style="text-align:right; font-weight:800; color:#0f172a;" id="pr-subtotal">₹0</td></tr>
      <tr id="pr-disc-row" style="display:none; color:#b45309; font-weight:800;"><td>Combo Discount:</td><td style="text-align:right;" id="pr-discount">-₹0</td></tr>
-     <tr><td style="color:#334155; font-weight:700;">Fabric Amount:</td><td style="text-align:right; font-weight:800; color:#0f172a;" id="pr-cloth">₹0</td></tr>
+     <tr><td style="color:#334155; font-weight:700;">Cloth Amount:</td><td style="text-align:right; font-weight:800; color:#0f172a;" id="pr-cloth">₹0</td></tr>
      <tr id="pr-extra-row" style="display:none; color:#7c3aed; font-weight:700;"><td id="pr-extra-label">Extra Charges:</td><td style="text-align:right;" id="pr-extra">₹0</td></tr>
      <tr style="font-weight:900; font-size:14px; color:#78350f; background:#fffdf5; border-top:1px solid #d97706; border-bottom:1px solid #d97706;">
       <td>Grand Total:</td>
@@ -895,44 +908,34 @@
 
 <script>
 async function handleManualAdminLogin() {
-  const emailInput = document.getElementById('admin-email-input');
-  const passInput = document.getElementById('admin-pass-input');
-  const errDiv = document.getElementById('login-error-msg');
-  const btn = document.getElementById('btn-login-submit');
+ const email = document.getElementById('admin-email-input').value.trim();
+ const pass = document.getElementById('admin-pass-input').value.trim();
+ const errDiv = document.getElementById('login-error-msg');
+ const btn = document.getElementById('btn-login-submit');
 
-  const email = emailInput ? emailInput.value.trim() : '';
-  const pass = passInput ? passInput.value.trim() : '';
+ if (!email || !pass) {
+  errDiv.innerText = "कृपया ईमेल और पासवर्ड दर्ज करें!";
+  return;
+ }
 
-  if (!email || !pass) {
-    if (errDiv) errDiv.innerText = "कृपया ईमेल और पासवर्ड दर्ज करें!";
-    return;
-  }
+ btn.disabled = true;
+ btn.innerText = "लॉगिन हो रहा है...";
+ errDiv.innerText = "";
 
-  btn.disabled = true;
-  btn.innerText = "लॉगिन हो रहा है...";
-  if (errDiv) errDiv.innerText = "";
-
-  try {
-    await window.signInWithEmailAndPassword(window.auth, email, pass);
-    btn.innerText = "✓ सफल!";
-    const overlay = document.getElementById('app-lock-overlay');
-    if (overlay) overlay.style.display = 'none';
-    if (typeof refreshCustomerDirectory === 'function') {
-      refreshCustomerDirectory();
-      setNextConsecutiveInvoice();
-    }
-  } catch (error) {
-    btn.disabled = false;
-    btn.innerText = "🔓 Login Software";
-    if (errDiv) errDiv.innerText = "❌ गलत ईमेल या पासवर्ड!";
-    console.error("Login Error:", error);
-  }
+ try {
+  await window.signInWithEmailAndPassword(window.auth, email, pass);
+  btn.innerText = "✓ सफल!";
+ } catch (error) {
+  btn.disabled = false;
+  btn.innerText = "🔓 Login Software";
+  errDiv.innerText = "❌ गलत ईमेल या पासवर्ड!";
+ }
 }
 
 function lockAppNow() {
-  window.signOut(window.auth).then(() => {
-    document.getElementById('app-lock-overlay').style.display = 'flex';
-  });
+ window.signOut(window.auth).then(() => {
+  document.getElementById('app-lock-overlay').style.display = 'flex';
+ });
 }
 
  let itemCounter = 0;
@@ -992,10 +995,10 @@ function lockAppNow() {
   for (const [item, rate] of Object.entries(currentPriceMaster)) {
    if (item === 'Other') continue;
    listDiv.innerHTML += `
-   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-    <span style="font-size:13px; font-weight:700;">${item}</span>
-    <input type="number" id="rate-set-${item}" value="${rate}" style="width:90px; padding:4px 8px; border:1px solid #cbd5e1; border-radius:4px; text-align:right; font-weight:bold;">
-   </div>`;
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+     <span style="font-size:13px; font-weight:700;">${item}</span>
+     <input type="number" id="rate-set-${item}" value="${rate}" style="width:90px; padding:4px 8px; border:1px solid #cbd5e1; border-radius:4px; text-align:right; font-weight:bold;">
+    </div>`;
   }
   document.getElementById('rate-modal').style.display = 'flex';
  }
@@ -1016,15 +1019,61 @@ function lockAppNow() {
   calculateTotals();
  }
 
- /* --- 1-CLICK MANUAL WHATSAPP DISPATCH --- */
- function dispatchAutomatedWhatsApp(mobile, messageText, billInvNo) {
+ /* --- WHATSAPP CLOUD API SETUP & AUTO DISPATCH --- */
+ function getWhatsAppCloudCredentials() {
+  return {
+   phoneId: localStorage.getItem('wa_cloud_phone_id') || '',
+   token: localStorage.getItem('wa_cloud_token') || ''
+  };
+ }
+ function openWhatsAppConfigModal() {
+  const creds = getWhatsAppCloudCredentials();
+  document.getElementById('wa-phone-id').value = creds.phoneId;
+  document.getElementById('wa-token').value = creds.token;
+  document.getElementById('wa-config-modal').style.display = 'flex';
+ }
+ function closeWhatsAppConfigModal() { document.getElementById('wa-config-modal').style.display = 'none'; }
+ function saveWhatsAppCloudConfig() {
+  localStorage.setItem('wa_cloud_phone_id', document.getElementById('wa-phone-id').value.trim());
+  localStorage.setItem('wa_cloud_token', document.getElementById('wa-token').value.trim());
+  alert("✓ WhatsApp Cloud API सेटिंग्स सुरक्षित हो गईं!");
+  closeWhatsAppConfigModal();
+ }
+
+ async function dispatchAutomatedWhatsApp(mobile, messageText, billInvNo) {
   if (!mobile) return false;
   const cleanMob = mobile.replace(/\D/g, '').slice(-10);
+  const creds = getWhatsAppCloudCredentials();
+
+  if (creds.phoneId && creds.token) {
+   try {
+    const url = `https://graph.facebook.com/v19.0/${creds.phoneId}/messages`;
+    const res = await fetch(url, {
+     method: 'POST',
+     headers: { 'Authorization': `Bearer ${creds.token}`, 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: "91" + cleanMob,
+      type: "text",
+      text: { body: messageText }
+     })
+    });
+    if (res.ok) {
+     if (billInvNo) updateBillMessageStatus(billInvNo, 'Delivered / Sent');
+     return true;
+    }
+   } catch (e) {
+    console.warn("Cloud WA API Error:", e);
+   }
+  }
+
   if (billInvNo) updateBillMessageStatus(billInvNo, 'Sent');
-  
   const encodedMsg = encodeURIComponent(messageText);
-  const waUrl = `https://wa.me/91${cleanMob}?text=${encodedMsg}`;
-  window.open(waUrl, '_blank');
+  const appUrl = `whatsapp://send?phone=91${cleanMob}&text=${encodedMsg}`;
+  const link = document.createElement('a');
+  link.href = appUrl;
+  link.click();
   return true;
  }
 
@@ -1044,32 +1093,34 @@ function lockAppNow() {
   setSavedBills(saved);
  }
 
- /* --- DUE ALERT ENGINE (60 DAYS & 90 DAYS UNCLAIMED / DEFAULTER) --- */
+ /* --- AUTO FOLLOWUPS (60 DAYS & 90 DAYS UNCLAIMED) --- */
  async function runAutomaticFollowUpEngine() {
   const saved = await getSavedBills();
   const today = new Date();
   let updatedAny = false;
 
   for (let b of saved) {
-   if (!b || b.status === 'disposed') continue;
-   
-   // यदि स्नूज़ किया हुआ है तो तब तक कुछ न करें
+   if (!b || b.status === 'delivered' || b.status === 'unclaimed') continue;
    if (b.snoozeUntil && new Date(b.snoozeUntil) > today) continue;
 
-   const baseDateStr = b.delivery || b.date || '';
-   if (!baseDateStr) continue;
-   const baseDate = new Date(baseDateStr);
-   const diffDays = Math.floor((today - baseDate) / (1000 * 60 * 60 * 24));
-   const dueAmt = parseFloat(b.due) || 0;
+   const delDate = b.delivery ? new Date(b.delivery) : (b.date ? new Date(b.date) : today);
+   const diffDays = Math.floor((today - delDate) / (1000 * 60 * 60 * 24));
 
-   // 90 दिन से अधिक और बकाया या लावारिस होने पर डिफ़ॉल्टर
-   if (diffDays >= 90 && b.status !== 'unclaimed' && (b.status !== 'delivered' || dueAmt > 0)) {
+   if (diffDays >= 90) {
     b.status = 'unclaimed';
     b.unclaimedSince = getLocalTodayDate();
     updatedAny = true;
     if (b.firebaseDocId) {
      try { window.updateDoc(window.doc(window.db, "shiv_shakti_bills", b.firebaseDocId), { status: 'unclaimed', unclaimedSince: b.unclaimedSince }); } catch(e){}
     }
+    continue;
+   }
+
+   if (diffDays >= 60 && !b.warned60) {
+    b.warned60 = true;
+    const msg = `⚠️ *अंतिम चेतावनी (Final Notice)*\nनमस्ते *${b.name}* जी, Shiv Shakti Smart Tailor से आपका कपड़ा सिलकर तैयार है और डिलीवरी तारीख से 60 दिन पूरे हो चुके हैं। कृपया 3 दिन में आकर ले जाएँ। बिल नं: *${b.invNo}*, बकाया: ₹${b.due}।\n📞 9662232193`;
+    dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
+    updatedAny = true;
    }
   }
 
@@ -1109,6 +1160,7 @@ function lockAppNow() {
   if (!b) return;
   const msg = `🔔 *रिमाइंडर (Shiv Shakti Smart Tailor)*\nनमस्ते *${b.name}* जी, आपका कपड़ा दुकान पर तैयार रखा है। कृपया समय निकालकर आकर ले जाएँ। बिल नं: *${b.invNo}*, बकाया: ₹${b.due}। धन्यवाद! 📞 9662232193`;
   dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
+  alert("✓ री-अलर्ट संदेश भेज दिया गया!");
  }
 
  function openSmartDeliveryModal(invNo) {
@@ -1129,15 +1181,13 @@ function lockAppNow() {
   for (let b of saved) {
    if (b.invNo === activeDeliveryInv) {
     b.status = 'delivered';
-    const totalAmt = parseFloat(b.total) || 0;
-    const prevAdvance = parseFloat(b.advance) || 0;
     if (type === 'full') {
-     b.advance = totalAmt;
+     b.advance = b.total;
      b.due = 0;
     } else {
      const part = parseFloat(document.getElementById('deliv-partial-input').value) || 0;
-     b.advance = prevAdvance + part;
-     b.due = Math.max(0, totalAmt - b.advance);
+     b.advance = (parseFloat(b.advance) || 0) + part;
+     b.due = Math.max(0, (parseFloat(b.total) || 0) - b.advance);
     }
     deliveredBill = b;
     if (b.firebaseDocId) {
@@ -1150,11 +1200,7 @@ function lockAppNow() {
   customerDirectory = saved;
   closeDeliveryModal();
   updateDeliveryAlertsCounts();
-  if (deliveredBill && deliveredBill.due > 0) {
-    switchCustomerTab('delivered_due');
-  } else {
-    switchCustomerTab('delivered');
-  }
+  renderCustomerTableModal();
 
   if (deliveredBill) {
    let delivMsg = `🟢 *ऑर्डर डिलीवर हो गया (Delivery Done)*\n──────────────────────\nनमस्ते *${deliveredBill.name}* जी,\nShiv Shakti Smart Tailor से आपका ऑर्डर प्राप्त करने के लिए धन्यवाद!`;
@@ -1166,26 +1212,16 @@ function lockAppNow() {
    delivMsg += `\n\n⭐ कृपया हमारे काम को Google पर 5-स्टार रेटिंग देकर अपना अनुभव साझा करें:\nhttps://maps.app.goo.gl/9XvybN9yggjytDTb7\n\nपुनः पधारें! 🙏`;
    dispatchAutomatedWhatsApp(deliveredBill.mobile, delivMsg, deliveredBill.invNo);
   }
+  alert("✓ ऑर्डर डिलीवर हो गया और ग्राहक को रेटिंग लिंक के साथ मैसेज भेज दिया गया!");
  }
 
  async function sendPendingDueWhatsAppReminder(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
   if (!b) return;
-  const digitalBillLink = window.location.origin + window.location.pathname + "?inv=" + encodeURIComponent(b.invNo);
-
-  const msg = "📢 *बकाया पेमेंट रिमाइंडर*\n*Shiv Shakti Smart Tailor*\n──────────────────────\nनमस्ते *" + b.name + "* जी,\nआप अपना कपड़ा ले जा चुके हैं।\nबिल नं: *" + b.invNo + "*\nबाकी रकम: *₹" + b.due + "*\n\n📄 डिजिटल बिल देखें:\n" + digitalBillLink + "\n\n💳 *UPI ID:* Smarttailor@sib\n\n📲 *QR कोड से भुगतान करने के लिए यहाँ देखें:*\nhttps://i.ibb.co/Rph92XRX/smarttailor-sib.jpg\n\nधन्यवाद! 🙏";
-
+  const digitalBillLink = window.location.origin + window.location.pathname + `?inv=${b.invNo}`;
+  const msg = `📢 *बकाया पेमेंट रिमाइंडर (Shiv Shakti Smart Tailor)*\n──────────────────────\nनमस्ते *${b.name}* जी,\nआप अपना कपड़ा ले जा चुके हैं। आपके बिल नं *${b.invNo}* का बकाया पेमेंट *₹${b.due}* अभी पेंडिंग है।\n\n📄 डिजिटल बिल यहाँ देखें:\n${digitalBillLink}\n\nकृपया Google Pay / PhonePe (9662232193) या दुकान पर आकर जमा करवाएं। धन्यवाद! 🙏`;
   dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
- }
-
- async function send60DayNoticeWhatsApp(invNo) {
-  const b = customerDirectory.find(x => x.invNo === invNo);
-  if (!b) return;
-  const digitalBillLink = window.location.origin + window.location.pathname + "?inv=" + encodeURIComponent(b.invNo);
-
-  const msg = `⚠️ *अंतिम सूचना (60 Days Payment Alert)*\n*Shiv Shakti Smart Tailor*\n──────────────────────\nनमस्ते *${b.name}* जी,\nआपके बिल नं *${b.invNo}* की देय तारीख को 60 दिन पूरे हो चुके हैं।\n💰 आपकी बकाया राशि: *₹${b.due}*\n\nकृपया 3 दिन के भीतर भुगतान करें।\n📄 बिल लिंक: ${digitalBillLink}\n💳 UPI: Smarttailor@sib\n📞 संपर्क: 9662232193\n\nधन्यवाद!`;
-
-  dispatchAutomatedWhatsApp(b.mobile, msg, b.invNo);
+  alert(`✓ ${b.name} को ₹${b.due} बकाया का रिमाइंडर भेज दिया गया!`);
  }
 
  function openQuickPaymentModal(invNo) {
@@ -1230,10 +1266,11 @@ function lockAppNow() {
    const msg = `💵 *पेमेंट रसीद (Payment Received)*\n──────────────────────\nनमस्ते *${updatedBill.name}* जी,\nShiv Shakti Smart Tailor में आपके बिल नं *${updatedBill.invNo}* के लिए *₹${amt}* [${pMode}] सफलतापूर्वक जमा हो गए हैं।\n\n💰 कुल बिल: ₹${updatedBill.total}\n🟢 कुल जमा (Total Paid): ₹${updatedBill.advance}\n🔴 बाकी रकम (Current Due): *₹${updatedBill.due}*\n\n📄 अपडेटेड बिल लिंक:\n${digitalBillLink}\n\nधन्यवाद! 🙏`;
    dispatchAutomatedWhatsApp(updatedBill.mobile, msg, updatedBill.invNo);
   }
+  alert("✓ पार्ट-पेमेंट जमा हो गया और ग्राहक को WhatsApp रसीद भेज दी गई!");
  }
 
  async function promptSnoozeOrder(invNo) {
-  const days = prompt("ग्राहक कितने दिन बाद भुगतान/कपड़ा लेने आएगा? (दिन लिखें, उदा: 7 या 15):", "7");
+  const days = prompt("ग्राहक कितने दिन बाद आएगा? (दिन लिखें, उदा: 10 या 15):", "15");
   if (!days || isNaN(days)) return;
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() + parseInt(days));
@@ -1250,8 +1287,7 @@ function lockAppNow() {
   }
   setSavedBills(saved);
   customerDirectory = saved;
-  alert(`✓ यह ऑर्डर ${days} दिनों के लिए स्नूज़ (अलर्ट बंद) कर दिया गया है।`);
-  updateDeliveryAlertsCounts();
+  alert(`✓ यह ऑर्डर ${days} दिनों के लिए आगे बढ़ा दिया गया है।`);
   renderCustomerTableModal();
  }
 
@@ -1308,52 +1344,37 @@ function lockAppNow() {
  function openBroadcastModal() {
   const uniqueList = getUniqueBroadcastCustomers();
   document.getElementById('broadcast-cust-count').innerText = uniqueList.length;
-  document.getElementById('broadcast-text').value = "🧵 Shiv Shakti Smart Tailor: त्यौहारों के नए सीज़न के कपड़े सिलवाने के लिए पधारें! बेहतरीन फिटिंग और आकर्षक डिज़ाइन्स। संपर्क: 9662232193";
+  document.getElementById('broadcast-text').value = "🧵 Shiv Shakti Smart Tailor: नए सीज़न के कपड़े सिलवाने के लिए पधारें! बेहतरीन फिटिंग और नए डिज़ाइन उपलब्ध हैं। संपर्क: 9662232193";
   document.getElementById('broadcast-modal').style.display = 'flex';
  }
  function closeBroadcastModal() { document.getElementById('broadcast-modal').style.display = 'none'; }
 
- function startBulkBroadcastQueue() {
+ async function startBulkBroadcast() {
   const text = document.getElementById('broadcast-text').value.trim();
   if (!text) return alert("कृपया संदेश टाइप करें!");
 
   const uniqueCustomers = getUniqueBroadcastCustomers();
-  if (uniqueCustomers.length === 0) return alert("कोई मान्य ग्राहक नंबर नहीं मिला!");
+  if (uniqueCustomers.length === 0) return alert("कोई मान्य मोबाइल नंबर नहीं मिला!");
 
-  if (!confirm(`कुल ${uniqueCustomers.length} ग्राहकों को क्रम से 1-क्लिक मैसेज भेजना शुरू करें?`)) return;
+  const creds = getWhatsAppCloudCredentials();
+  const hasCloudApi = !!(creds.phoneId && creds.token);
 
-  let index = 0;
-  function openNext() {
-   if (index >= uniqueCustomers.length) {
-    alert("✓ सभी ग्राहकों की सूची पूरी हो गई!");
-    return;
-   }
-   const cust = uniqueCustomers[index];
-   index++;
-   const url = `https://wa.me/91${cust.mobile}?text=${encodeURIComponent(text)}`;
-   window.open(url, '_blank');
-   
-   if (index < uniqueCustomers.length) {
-    setTimeout(() => {
-     if (confirm(`अगले ग्राहक (${uniqueCustomers[index].name} - ${uniqueCustomers[index].mobile}) को भेजें? (${index + 1}/${uniqueCustomers.length})`)) {
-      openNext();
-     }
-    }, 1000);
-   }
+  if (!confirm(`कुल ${uniqueCustomers.length} यूनिक ग्राहकों को यह मैसेज भेजा जाएगा (किसी को डबल मैसेज नहीं जाएगा)।\n\nक्या आप भेजना चाहते हैं?`)) return;
+
+  if (!hasCloudApi) {
+   alert("ध्यान दें: आपने अभी WhatsApp Cloud API सेटअप नहीं किया है। कृपया पहले ⚙️ WA API में जाकर क्रेडेंशियल्स सेव करें।");
+   return;
   }
-  openNext();
-  closeBroadcastModal();
- }
 
- function copyAllCustomerNumbers() {
-  const uniqueCustomers = getUniqueBroadcastCustomers();
-  if (uniqueCustomers.length === 0) return alert("कोई नंबर नहीं मिला!");
-  const numberList = uniqueCustomers.map(c => "+91" + c.mobile).join(",\n");
-  navigator.clipboard.writeText(numberList).then(() => {
-   alert(`✓ ${uniqueCustomers.length} ग्राहकों के नंबर कॉपी हो गए! आप WhatsApp Business Broadcast में पेस्ट कर सकते हैं।`);
-  }).catch(() => {
-   prompt("ये रहे सभी नंबर, कॉपी कर लें:", numberList);
-  });
+  let sentCount = 0;
+  for (let cust of uniqueCustomers) {
+   await dispatchAutomatedWhatsApp(cust.mobile, text, null);
+   sentCount++;
+   await new Promise(resolve => setTimeout(resolve, 800));
+  }
+
+  alert(`✓ ब्रॉडकास्ट पूरा हुआ! कुल ${sentCount} ग्राहकों को सफलतापूर्वक संदेश भेज दिया गया।`);
+  closeBroadcastModal();
  }
 
  /* --- AUTO SEARCH & LATEST MEASUREMENTS LOAD --- */
@@ -1463,6 +1484,56 @@ function lockAppNow() {
   histPanel.style.display = foundAny ? 'block' : 'none';
  }
 
+ /* --- AUTO-DRAFT PERSISTENCE (CALL / RELOAD PROTECTION) --- */
+ function autoSaveCurrentDraft() {
+  try {
+   const draft = {
+    name: document.getElementById('cust-name')?.value || '',
+    mobile: document.getElementById('cust-mobile')?.value || '',
+    delivery: document.getElementById('cust-delivery')?.value || '',
+    cloth: document.getElementById('calc-cloth')?.value || '',
+    extra: document.getElementById('calc-extra')?.value || '',
+    extraReason: document.getElementById('calc-extra-reason')?.value || '',
+    advance: document.getElementById('calc-advance')?.value || '',
+    paymode: document.getElementById('calc-paymode')?.value || 'Cash',
+    items: typeof collectAllData === 'function' ? collectAllData() : []
+   };
+
+   if (draft.name || draft.mobile || (draft.items && draft.items.length > 0)) {
+    localStorage.setItem('sst_active_tailor_draft', JSON.stringify(draft));
+   }
+  } catch (e) {}
+ }
+
+ function restoreActiveDraft() {
+  try {
+   const saved = localStorage.getItem('sst_active_tailor_draft');
+   if (!saved) return;
+   const d = JSON.parse(saved);
+
+   if (d.name) document.getElementById('cust-name').value = d.name;
+   if (d.mobile) document.getElementById('cust-mobile').value = d.mobile;
+   if (d.delivery) document.getElementById('cust-delivery').value = d.delivery;
+   if (d.cloth) document.getElementById('calc-cloth').value = d.cloth;
+   if (d.extra) document.getElementById('calc-extra').value = d.extra;
+   if (d.extraReason) document.getElementById('calc-extra-reason').value = d.extraReason;
+   if (d.advance) document.getElementById('calc-advance').value = d.advance;
+   if (d.paymode) document.getElementById('calc-paymode').value = d.paymode;
+
+   if (d.items && d.items.length > 0) {
+    document.getElementById('items-list-container').innerHTML = '';
+    itemCounter = 0;
+    d.items.forEach(it => addItemCard(it));
+   }
+   calculateTotals();
+   setupQuickContacts();
+  } catch (e) {}
+ }
+
+ function clearActiveDraft() {
+  localStorage.removeItem('sst_active_tailor_draft');
+ }
+
  /* --- GARMENT MEASUREMENTS & DRAWING CANVASES --- */
  function formatTailorFraction(val) {
   if (!val) return '';
@@ -1475,6 +1546,19 @@ function lockAppNow() {
   return str;
  }
  function autoFormatMeasureInput(inp) { inp.value = formatTailorFraction(inp.value); }
+
+ /* SMART ADD GARMENT: Agar pehla Pant hai to agla Shirt aayega */
+ function addItemCardSmart() {
+  const cards = document.querySelectorAll('.item-card');
+  if (cards.length > 0) {
+   const firstType = cards[0].querySelector("select[id^='item-type-']").value;
+   if (firstType === 'Pant') {
+    addItemCard({ itemType: 'Shirt', quantity: 1, silaiRate: getPriceMaster()['Shirt'] });
+    return;
+   }
+  }
+  addItemCard();
+ }
 
  function addItemCard(existingData) {
   itemCounter++;
@@ -1489,16 +1573,16 @@ function lockAppNow() {
   standardItems.forEach(it => { options += `<option value="${it}">${it} - ₹${currentPriceMaster[it]}</option>`; });
 
   card.innerHTML = `
-  <div class="item-card-head">
-   <span>Garment #${id}</span>
-   <button type="button" class="btn-delete" onclick="document.getElementById('item-row-${id}').remove(); calculateTotals();">Delete</button>
-  </div>
-  <div class="form-grid">
-   <div class="form-group"><label>Garment Name</label><select id="item-type-${id}" onchange="onItemTypeSelected(${id})">${options}</select></div>
-   <div class="form-group"><label>Quantity</label><input type="number" id="item-qty-${id}" value="${existingData ? existingData.quantity : 1}" min="1" oninput="calculateTotals()"></div>
-   <div class="form-group"><label>Rate (₹)</label><input type="number" id="item-rate-${id}" value="${existingData ? existingData.silaiRate : currentPriceMaster['Pant']}" oninput="calculateTotals()"></div>
-  </div>
-  <div id="measure-section-${id}" style="margin-top:8px;"></div>
+   <div class="item-card-head">
+    <span>Garment #${id}</span>
+    <button type="button" class="btn-delete" onclick="document.getElementById('item-row-${id}').remove(); calculateTotals(); autoSaveCurrentDraft();">Delete</button>
+   </div>
+   <div class="form-grid">
+    <div class="form-group"><label>Garment Name</label><select id="item-type-${id}" onchange="onItemTypeSelected(${id})">${options}</select></div>
+    <div class="form-group"><label>Quantity</label><input type="number" id="item-qty-${id}" value="${existingData ? existingData.quantity : 1}" min="1" oninput="calculateTotals()"></div>
+    <div class="form-group"><label>Rate (₹)</label><input type="number" id="item-rate-${id}" value="${existingData ? existingData.silaiRate : currentPriceMaster['Pant']}" oninput="calculateTotals()"></div>
+   </div>
+   <div id="measure-section-${id}" style="margin-top:8px;"></div>
   `;
   container.appendChild(card);
   if (existingData) {
@@ -1518,10 +1602,12 @@ function lockAppNow() {
   document.getElementById('item-rate-' + id).value = getPriceMaster()[type] || 0;
   renderItemMeasurements(id);
   calculateTotals();
+  autoSaveCurrentDraft();
  }
 
  function onOtherWearTypeChanged(id) {
   renderItemMeasurements(id);
+  autoSaveCurrentDraft();
  }
 
  function addCustomMeasureField(id, cName='', cVal='') {
@@ -1529,9 +1615,9 @@ function lockAppNow() {
   const row = document.createElement('div');
   row.className = 'custom-measure-row';
   row.innerHTML = `
-  <input type="text" class="custom-m-name" placeholder="नाप का नाम (जैसे: थाई, कफ)" value="${cName}">
-  <input type="text" inputmode="decimal" pattern="[0-9.]*" class="custom-m-val" placeholder="साइज" value="${formatTailorFraction(cVal)}" onblur="autoFormatMeasureInput(this)">
-  <button type="button" style="background:#fee2e2; color:red; border:none; border-radius:4px; height:28px;" onclick="this.parentElement.remove()">✕</button>
+   <input type="text" class="custom-m-name" placeholder="नाप का नाम (जैसे: थाई, कफ)" value="${cName}">
+   <input type="text" inputmode="decimal" pattern="[0-9.]*" class="custom-m-val" placeholder="साइज" value="${formatTailorFraction(cVal)}" onblur="autoFormatMeasureInput(this)">
+   <button type="button" style="background:#fee2e2; color:red; border:none; border-radius:4px; height:28px;" onclick="this.parentElement.remove(); autoSaveCurrentDraft();">✕</button>
   `;
   c.appendChild(row);
  }
@@ -1576,7 +1662,7 @@ function lockAppNow() {
     <label style="font-size:12px; font-weight:800; color:#1e40af;">नाप का प्रकार चुनें (Wear Type):</label>
     <div class="other-radio-group">
      <label class="other-radio-label">
-      <input type="radio" name="other-wear-${id}" value="top" ${otherWear === 'top' ? 'checked' : ''} onchange="onOtherWearTypeChanged(${id})"> 👔 Top Wear (कुर्ता / शर्ट टाइप)
+      <input type="radio" name="other-wear-${id}" value="top" ${otherWear === 'top' ? 'checked' : ''} onchange="onOtherWearTypeChanged(${id})"> 👕 Top Wear (कुर्ता / शर्ट टाइप)
      </label>
      <label class="other-radio-label">
       <input type="radio" name="other-wear-${id}" value="bottom" ${otherWear === 'bottom' ? 'checked' : ''} onchange="onOtherWearTypeChanged(${id})"> 👖 Bottom Wear (पैंट / पैजामा टाइप)
@@ -1603,7 +1689,7 @@ function lockAppNow() {
   } else {
    html += `
    <div style="background:#f8fafc; padding:8px; border-radius:6px; margin-bottom:6px;">
-    <strong style="font-size:11.5px; color:#1e3a8a;">👔 टॉप नाप (${type === 'Other' ? 'Top Wear' : type}):</strong>
+    <strong style="font-size:11.5px; color:#1e3a8a;">👕 टॉप नाप (${type === 'Other' ? 'Top Wear' : type}):</strong>
     <div class="measure-grid">
      <div class="form-group"><label>लंबाई</label><input type="text" inputmode="decimal" pattern="[0-9.]*" class="m-fld" data-label="लंबाई" onblur="autoFormatMeasureInput(this)"></div>
      <div class="form-group"><label>छाती</label><input type="text" inputmode="decimal" pattern="[0-9.]*" class="m-fld" data-label="छाती" onblur="autoFormatMeasureInput(this)"></div>
@@ -1614,6 +1700,16 @@ function lockAppNow() {
      <div class="form-group"><label>कॉलर</label><input type="text" inputmode="decimal" pattern="[0-9.]*" class="m-fld" data-label="कॉलर" onblur="autoFormatMeasureInput(this)"></div>
      <div class="form-group"><label>कफ</label><input type="text" inputmode="decimal" pattern="[0-9.]*" class="m-fld" data-label="कफ" onblur="autoFormatMeasureInput(this)"></div>
     </div>
+    
+    <!-- हाफ़ शर्ट नाप (सिर्फ हाफ शर्ट सिलने पर) -->
+    <div style="background:#fff7ed; border:1px solid #fdba74; border-radius:6px; padding:6px; margin-top:6px;">
+     <div style="font-size:11px; font-weight:800; color:#c2410c; margin-bottom:4px;">✂️ हाफ़ शर्ट विशेष नाप (Half Shirt Measurements):</div>
+     <div class="measure-grid" style="margin:4px 0; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));">
+      <div class="form-group"><label style="color:#c2410c;">H. लंबाई</label><input type="text" inputmode="decimal" pattern="[0-9.]*" class="m-fld" data-label="हाफ लंबाई" placeholder="हाफ लंबाई" onblur="autoFormatMeasureInput(this)"></div>
+      <div class="form-group"><label style="color:#c2410c;">H. गोलाई (बांह)</label><input type="text" inputmode="decimal" pattern="[0-9.]*" class="m-fld" data-label="हाफ बांह गोलाई" placeholder="हाफ गोलाई" onblur="autoFormatMeasureInput(this)"></div>
+     </div>
+    </div>
+
     <div style="background:#e0f2fe; border:1px solid #7dd3fc; border-radius:6px; padding:6px; margin-top:6px;">
      <div style="font-size:11px; font-weight:800; color:#0369a1; margin-bottom:4px;">✨ लूज फिटिंग व रेडीमेड शर्ट कॉपी नाप:</div>
      <div class="measure-grid" style="margin:4px 0;">
@@ -1629,122 +1725,122 @@ function lockAppNow() {
   let optHTML = '';
   if (type === 'Kruta' || type === 'Pathani') {
    optHTML = `
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="गोल गला"> गोल गला</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="कॉलर वाला"> कॉलर वाला</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="कफ वाला"> कफ वाला</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="दामन गोल"> दामन गोल</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="दामन चौकोर"> दामन चौकोर</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे पॉकेट"> आगे पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड पॉकेट"> साइड पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="शोल्डर पट्टी"> शोल्डर पट्टी</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="गोल गला"> गोल गला</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="कॉलर वाला"> कॉलर वाला</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="कफ वाला"> कफ वाला</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="दामन गोल"> दामन गोल</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="दामन चौकोर"> दामन चौकोर</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे पॉकेट"> आगे पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड पॉकेट"> साइड पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="शोल्डर पट्टी"> शोल्डर पट्टी</label>
    `;
   } else if (type === 'Shirt') {
    optHTML = `
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="एप्पल कट"> एप्पल कट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="दामन सादा"> दामन सादा</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="बॉक्स पट्टी"> बॉक्स पट्टी</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="सादा पट्टी"> सादा पट्टी</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="अंदर पॉकेट"> अंदर पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड कट"> साइड कट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="डबल पॉकेट"> डबल पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="एप्पल कट"> एप्पल कट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="दामन सादा"> दामन सादा</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="बॉक्स पट्टी"> बॉक्स पट्टी</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="सादा पट्टी"> सादा पट्टी</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="अंदर पॉकेट"> अंदर पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड कट"> साइड कट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="डबल पॉकेट"> डबल पॉकेट</label>
    `;
   } else if (type === 'Pant' || type === 'Jeans') {
    optHTML = `
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="सीधा प्रेस"> सीधा प्रेस</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड 1 सिलाई"> साइड 1 सिलाई</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड 2 सिलाई"> साइड 2 सिलाई</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="मोरी हाथ सिलाई"> मोरी हाथ सिलाई</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड चिरुआ"> साइड चिरुआ</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="ग्रिप"> ग्रिप</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="क्रॉस पॉकेट"> क्रॉस पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="सीधी पॉकेट"> सीधी पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="पीछे 1 पॉकेट"> पीछे 1 पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="पीछे 2 पॉकेट"> पीछे 2 पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="कट बेल्ट"> कट बेल्ट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="लंबा बेल्ट"> लंबा बेल्ट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="सीधा प्रेस"> सीधा प्रेस</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड 1 सिलाई"> साइड 1 सिलाई</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड 2 सिलाई"> साइड 2 सिलाई</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="मोरी हाथ सिलाई"> मोरी हाथ सिलाई</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड चिरुआ"> साइड चिरुआ</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="ग्रिप"> ग्रिप</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="क्रॉस पॉकेट"> क्रॉस पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="सीधी पॉकेट"> सीधी पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="पीछे 1 पॉकेट"> पीछे 1 पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="पीछे 2 पॉकेट"> पीछे 2 पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="कट बेल्ट"> कट बेल्ट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="लंबा बेल्ट"> लंबा बेल्ट</label>
    `;
   } else if (type.includes('Suit') || type.includes('Blazer') || type.includes('Jodhpuri') || type.includes('Serwani')) {
    optHTML = `
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 1 बटन"> आगे 1 बटन</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 2 बटन"> आगे 2 बटन</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड कट"> साइड कट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="सेंटर कट"> सेंटर कट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="बिना कट"> बिना कट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="अंदर पॉकेट"> अंदर पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="टिकट पॉकेट"> टिकट पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="गोल दामन"> गोल दामन</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="चौकोर दामन"> चौकोर दामन</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 1 बटन"> आगे 1 बटन</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 2 बटन"> आगे 2 बटन</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड कट"> साइड कट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="सेंटर कट"> सेंटर कट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="बिना कट"> बिना कट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="अंदर पॉकेट"> अंदर पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="टिकट पॉकेट"> टिकट पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="गोल दामन"> गोल दामन</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="चौकोर दामन"> चौकोर दामन</label>
    `;
   } else if (type.includes('Coti') || type.includes('Modi Coti')) {
    optHTML = `
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 5 बटन"> 5 बटन</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 6 बटन"> 6 बटन</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="गोल दामन"> गोल दामन</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="चौकोर दामन"> चौकोर दामन</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 3 पॉकेट"> 3 पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड कट"> साइड कट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 5 बटन"> 5 बटन</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 6 बटन"> 6 बटन</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="गोल दामन"> गोल दामन</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="चौकोर दामन"> चौकोर दामन</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="आगे 3 पॉकेट"> 3 पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड कट"> साइड कट</label>
    `;
   } else if (type === 'Safari') {
    optHTML = `
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="सामने 2 पॉकेट"> 2 पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="सामने 4 पॉकेट"> 4 पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="शोल्डर पट्टी"> शोल्डर पट्टी</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="दामन चौकोर"> दामन चौकोर</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड कट"> साइड कट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="सामने 2 पॉकेट"> 2 पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="सामने 4 पॉकेट"> 4 पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="शोल्डर पट्टी"> शोल्डर पट्टी</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="दामन चौकोर"> दामन चौकोर</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="साइड कट"> साइड कट</label>
    `;
   } else if (type === 'Pejama (नाड़ा बला)') {
    optHTML = `
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="नाड़ा वाला"> नाड़ा वाला</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="इलास्टिक वाला"> इलास्टिक वाला</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="1 साइड पॉकेट"> 1 साइड पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="2 साइड पॉकेट"> 2 साइड पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="चैन पॉकेट"> चैन पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="नाड़ा वाला"> नाड़ा वाला</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="इलास्टिक वाला"> इलास्टिक वाला</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="1 साइड पॉकेट"> 1 साइड पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="2 साइड पॉकेट"> 2 साइड पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="चैन पॉकेट"> चैन पॉकेट</label>
    `;
   } else {
    optHTML = `
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="सादा कटिंग"> सादा कटिंग</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="पॉकेट"> पॉकेट</label>
-   <label class="opt-label"><input type="checkbox" class="opt-cb" value="इलास्टिक / नाड़ा"> इलास्टिक / नाड़ा</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="सादा कटिंग"> सादा कटिंग</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="पॉकेट"> पॉकेट</label>
+    <label class="opt-label"><input type="checkbox" class="opt-cb" value="इलास्टिक / नाड़ा"> इलास्टिक / नाड़ा</label>
    `;
   }
 
   html += `
-  <div class="options-wrapper"><span class="opt-title">डिज़ाइन विकल्प:</span><div class="options-grid">${optHTML}</div></div>
+   <div class="options-wrapper"><span class="opt-title">डिज़ाइन विकल्प:</span><div class="options-grid">${optHTML}</div></div>
 
-  <div style="background:#fdf4ff; padding:8px; border-radius:6px; border:1px dashed #c084fc; margin-top:8px;">
-   <div style="display:flex; justify-content:space-between; align-items:center;">
-    <span style="font-size:11.5px; font-weight:bold; color:#7c3aed;">अतिरिक्त नाप (Optional Extra Size):</span>
-    <button type="button" style="background:#f3e8ff; border:1px solid #c084fc; border-radius:4px; padding:2px 8px; font-size:11px; color:#7c3aed; font-weight:bold;" onclick="addCustomMeasureField(${id})">➕ Add Field</button>
+   <div style="background:#fdf4ff; padding:8px; border-radius:6px; border:1px dashed #c084fc; margin-top:8px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+     <span style="font-size:11.5px; font-weight:bold; color:#7c3aed;">अतिरिक्त नाप (Optional Extra Size):</span>
+     <button type="button" style="background:#f3e8ff; border:1px solid #c084fc; border-radius:4px; padding:2px 8px; font-size:11px; color:#7c3aed; font-weight:bold;" onclick="addCustomMeasureField(${id})">➕ Add Field</button>
+    </div>
+    <div id="custom-measure-list-${id}"></div>
    </div>
-   <div id="custom-measure-list-${id}"></div>
-  </div>
 
-  <div class="draw-box-wrapper" id="draw-wrapper-${id}" onclick="setActiveDrawingPad(${id})">
-   <div class="draw-box-header">
-    <div><strong style="font-size:12px; color:#1e40af;">✍️ [${type}] रॉ स्केच पैड:</strong></div>
-    <div style="display:flex; gap:6px;">
-     <button type="button" class="btn-pad-activate" onclick="setActiveDrawingPad(${id}); event.stopPropagation();">🎯 ड्रॉ करें</button>
-     <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑 साफ़ करें</button>
+   <div class="draw-box-wrapper" id="draw-wrapper-${id}" onclick="setActiveDrawingPad(${id})">
+    <div class="draw-box-header">
+     <div><strong style="font-size:12px; color:#1e40af;">✍️ [${type}] रॉ स्केच पैड:</strong></div>
+     <div style="display:flex; gap:6px;">
+      <button type="button" class="btn-pad-activate" onclick="setActiveDrawingPad(${id}); event.stopPropagation();">🎯 ड्रॉ करें</button>
+      <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑️️ साफ़ करें</button>
+     </div>
     </div>
+    <canvas id="draw-canvas-${id}" class="draw-canvas-elem"></canvas>
    </div>
-   <canvas id="draw-canvas-${id}" class="draw-canvas-elem"></canvas>
-  </div>
-  <div class="item-notes-box">
-   <label>📝 कारीगर के लिए विशेष नोट:</label>
-   <textarea class="item-notes-text">${existingData && existingData.notes ? existingData.notes : ''}</textarea>
-  </div>
-  <div class="photo-upload-box">
-   <div class="photo-upload-header">
-    <span style="font-size:11.5px; font-weight:800; color:#15803d;">✂️ कारीगर पर्ची के लिए डिज़ाइन फ़ोटो:</span>
-    <div style="display:flex; gap:6px;">
-     <button type="button" class="btn-cam-action btn-cam-direct" onclick="document.getElementById('photo-cam-${id}').click()">📸 Camera</button>
-     <button type="button" class="btn-cam-action btn-gallery" onclick="document.getElementById('photo-gal-${id}').click()">🖼️ Gallery</button>
+   <div class="item-notes-box">
+    <label>📝 कारीगर के लिए विशेष नोट:</label>
+    <textarea class="item-notes-text">${existingData && existingData.notes ? existingData.notes : ''}</textarea>
+   </div>
+   <div class="photo-upload-box">
+    <div class="photo-upload-header">
+     <span style="font-size:11.5px; font-weight:800; color:#15803d;">✂️ कारीगर पर्ची के लिए डिज़ाइन फ़ोटो:</span>
+     <div style="display:flex; gap:6px;">
+      <button type="button" class="btn-cam-action btn-cam-direct" onclick="document.getElementById('photo-cam-${id}').click()">📸 Camera</button>
+      <button type="button" class="btn-cam-action btn-gallery" onclick="document.getElementById('photo-gal-${id}').click()">🖼️ Gallery</button>
+     </div>
     </div>
+    <input type="file" id="photo-cam-${id}" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoFilesAdded(${id}, this)">
+    <input type="file" id="photo-gal-${id}" accept="image/*" multiple style="display:none;" onchange="handlePhotoFilesAdded(${id}, this)">
+    <div class="photo-previews-grid" id="photo-previews-${id}"></div>
    </div>
-   <input type="file" id="photo-cam-${id}" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoFilesAdded(${id}, this)">
-   <input type="file" id="photo-gal-${id}" accept="image/*" multiple style="display:none;" onchange="handlePhotoFilesAdded(${id}, this)">
-   <div class="photo-previews-grid" id="photo-previews-${id}"></div>
-  </div>
   `;
   sec.innerHTML = html;
   setupDrawingCanvas(id, existingData ? existingData.sketchImage : null);
@@ -1792,8 +1888,8 @@ function lockAppNow() {
     ctx.strokeStyle = '#1e3a8a';
     if (initialDataUrl) {
      const img = new Image();
-     img.src = initialDataUrl;
      img.onload = () => ctx.drawImage(img, 0, 0);
+     img.src = initialDataUrl;
     }
    }
   }
@@ -1874,11 +1970,13 @@ function lockAppNow() {
    container.appendChild(thumb);
   }
   inputElem.value = "";
+  autoSaveCurrentDraft();
  }
 
  function confirmDeletePhoto(btn) {
   if (confirm("क्या आप सच में यह फ़ोटो हटाना चाहते हैं?")) {
    btn.parentElement.remove();
+   autoSaveCurrentDraft();
   }
  }
 
@@ -1973,7 +2071,7 @@ function lockAppNow() {
   return list;
  }
 
- /* --- FAST ASYNC BILL SAVE & 1-CLICK WHATSAPP --- */
+ /* --- SAFE SAVE BILL (RACE CONDITION & OVERWRITE LOCK FIXED) --- */
  async function saveCurrentBill(silent = false) {
   calculateTotals();
   const custName = document.getElementById('cust-name').value.trim();
@@ -1986,6 +2084,8 @@ function lockAppNow() {
    saveBtn.innerText = "⏳ Saving...";
   }
 
+  // Double Check Max Invoice Number
+  setNextConsecutiveInvoice();
   const invNo = document.getElementById('cust-inv').value;
   const saved = await getSavedBills();
   let existingStatus = 'pending';
@@ -2023,6 +2123,7 @@ function lockAppNow() {
    items: collectAllData()
   };
 
+  // Safe Push into Local Database
   let updated = false;
   for (let i = 0; i < saved.length; i++) {
    if (saved[i] && saved[i].invNo === invNo) { saved[i] = billObj; updated = true; break; }
@@ -2032,14 +2133,21 @@ function lockAppNow() {
   customerDirectory = saved;
   updateDeliveryAlertsCounts();
 
-  const cloudSyncPromise = firebaseDocId
-   ? window.updateDoc(window.doc(window.db, "shiv_shakti_bills", firebaseDocId), billObj)
-   : window.addDoc(window.collection(window.db, "shiv_shakti_bills"), billObj).then(docRef => {
-       billObj.firebaseDocId = docRef.id;
-       setSavedBills(saved);
-     });
+  // Cloud Sync
+  try {
+   if (firebaseDocId) {
+    await window.updateDoc(window.doc(window.db, "shiv_shakti_bills", firebaseDocId), billObj);
+   } else {
+    const docRef = await window.addDoc(window.collection(window.db, "shiv_shakti_bills"), billObj);
+    billObj.firebaseDocId = docRef.id;
+    setSavedBills(saved);
+   }
+  } catch(e) {
+   console.warn("Background cloud sync warning:", e);
+  }
 
-  cloudSyncPromise.catch(e => console.warn("Background cloud sync warning:", e));
+  // Clear Draft memory upon success
+  clearActiveDraft();
 
   prepareInvoiceView();
 
@@ -2070,7 +2178,7 @@ function lockAppNow() {
    saveBtn.innerText = "💾 Save Bill & Send WhatsApp";
   }
 
-  if (!silent) alert(`✓ बिल तुरंत सुरक्षित हो गया और WhatsApp खुल गया!`);
+  if (!silent) alert(`✓ बिल तुरंत सुरक्षित हो गया!`);
  }
 
  function prepareInvoiceView() {
@@ -2088,12 +2196,12 @@ function lockAppNow() {
   let tbody = '';
   items.forEach((it, idx) => {
    tbody += `
-   <tr>
-    <td style="text-align:center; font-weight:800; color:#78350f;">${idx + 1}</td>
-    <td><strong style="font-size:13.5px; color:#0f172a;">${it.itemType}</strong></td>
-    <td style="text-align:center; font-weight:700; color:#334155;">${it.quantity}</td>
-    <td style="text-align:right; font-weight:900; color:#0f172a;">₹${(it.quantity * it.silaiRate).toFixed(2)}</td>
-   </tr>`;
+    <tr>
+     <td style="text-align:center; font-weight:800; color:#78350f;">${idx + 1}</td>
+     <td><strong style="font-size:13.5px; color:#0f172a;">${it.itemType}</strong></td>
+     <td style="text-align:center; font-weight:700; color:#334155;">${it.quantity}</td>
+     <td style="text-align:right; font-weight:900; color:#0f172a;">₹${(it.quantity * it.silaiRate).toFixed(2)}</td>
+    </tr>`;
   });
   document.getElementById('pr-items-tbody').innerHTML = tbody;
 
@@ -2220,11 +2328,12 @@ function lockAppNow() {
  async function getSavedBills() {
   if (customerDirectory && customerDirectory.length > 0) return customerDirectory;
   try {
-   const q = await window.getDocs(window.collection(window.db, "shiv_shakti_bills"));
-   let l = []; q.forEach(d => { let x = d.data(); x.firebaseDocId = d.id; l.push(x); });
-   if (l.length > 0) { customerDirectory = l; return l; }
-  } catch (e) {}
-  try { const s = localStorage.getItem('shiv_shakti_bills'); if (s) return JSON.parse(s); } catch(e) {}
+   const s = localStorage.getItem('shiv_shakti_bills');
+   if (s) {
+    customerDirectory = JSON.parse(s);
+    return customerDirectory;
+   }
+  } catch(e) {}
   return [];
  }
  function setSavedBills(data) { try { localStorage.setItem('shiv_shakti_bills', JSON.stringify(data)); } catch(e) {} }
@@ -2233,7 +2342,11 @@ function lockAppNow() {
   try {
    const q = await window.getDocs(window.collection(window.db, "shiv_shakti_bills"));
    let l = []; q.forEach(d => { let x = d.data(); x.firebaseDocId = d.id; l.push(x); });
-   if (l.length > 0) { customerDirectory = l; setSavedBills(l); }
+   if (l.length > 0) { 
+    customerDirectory = l; 
+    setSavedBills(l); 
+    setNextConsecutiveInvoice();
+   }
   } catch(e) {
    customerDirectory = await getSavedBills();
   }
@@ -2243,26 +2356,17 @@ function lockAppNow() {
  function updateDeliveryAlertsCounts() {
   const saved = customerDirectory || [];
   const todayStr = getLocalTodayDate();
-  const today = new Date();
   const tm = new Date(); tm.setDate(tm.getDate()+1);
   const tomorrowStr = tm.toISOString().split('T')[0];
 
-  let od = 0, td = 0, tmCount = 0, rd = 0, deliveredDueSum = 0, unc = 0, d60Count = 0;
+  let od = 0, td = 0, tmCount = 0, rd = 0, deliveredDueSum = 0, unc = 0;
   saved.forEach(b => {
-   if (!b || b.status === 'disposed') return;
+   if (!b) return;
    const d = parseFloat(b.due) || 0;
    
    if (b.status === 'unclaimed') { unc++; return; }
    if (b.status === 'delivered' && d > 0) {
     deliveredDueSum += d;
-   }
-
-   // 60-दिन अलर्ट ट्रैकिंग
-   const baseDateStr = b.delivery || b.date || '';
-   if (baseDateStr && d > 0) {
-    const diff = Math.floor((today - new Date(baseDateStr)) / (1000 * 60 * 60 * 24));
-    const isSnoozed = b.snoozeUntil && new Date(b.snoozeUntil) > today;
-    if (diff >= 60 && !isSnoozed) d60Count++;
    }
 
    if (b.status === 'delivered') return;
@@ -2273,7 +2377,6 @@ function lockAppNow() {
   });
 
   document.getElementById('count-delivered-due').innerText = '₹' + deliveredDueSum;
-  document.getElementById('count-due60').innerText = d60Count;
   document.getElementById('count-overdue').innerText = od;
   document.getElementById('count-today').innerText = td;
   document.getElementById('count-tomorrow').innerText = tmCount;
@@ -2281,20 +2384,28 @@ function lockAppNow() {
   document.getElementById('count-unclaimed').innerText = unc;
  }
 
+ /* SAFE INVOICE COUNTER (Check local & database max number) */
  function setNextConsecutiveInvoice() {
   const saved = customerDirectory || [];
   let max = 100;
   saved.forEach(b => {
-   if (b.invNo) {
+   if (b && b.invNo) {
     const n = parseInt(b.invNo.replace(/\D/g, ''), 10);
-    if (n > max) max = n;
+    if (n && n > max) max = n;
    }
   });
-  document.getElementById('cust-inv').value = "INV-" + (max + 1);
+
+  const lastSavedCounter = parseInt(localStorage.getItem('sst_last_local_inv_no') || '100', 10);
+  if (lastSavedCounter > max) max = lastSavedCounter;
+
+  const nextNum = max + 1;
+  document.getElementById('cust-inv').value = "INV-" + nextNum;
+  localStorage.setItem('sst_last_local_inv_no', max);
  }
 
  function startNewBill() {
   if (confirm("नया बिल शुरू करें?")) {
+   clearActiveDraft();
    setNextConsecutiveInvoice();
    document.getElementById('cust-name').value = '';
    document.getElementById('cust-mobile').value = '';
@@ -2329,6 +2440,7 @@ function lockAppNow() {
   }
   renderMainBillPhotos();
   inputElem.value = "";
+  autoSaveCurrentDraft();
  }
  
  function renderMainBillPhotos(initialPhotos) {
@@ -2349,6 +2461,7 @@ function lockAppNow() {
   if (confirm("क्या आप सच में यह सैंपल फ़ोटो हटाना चाहते हैं?")) {
    mainBillSamplePhotos.splice(index, 1);
    renderMainBillPhotos();
+   autoSaveCurrentDraft();
   }
  }
 
@@ -2370,12 +2483,12 @@ function lockAppNow() {
   const items = bill.items || [];
   items.forEach((it, idx) => {
    tbody += `
-   <tr>
-    <td style="text-align:center; font-weight:800; color:#78350f;">${idx + 1}</td>
-    <td><strong style="font-size:13.5px; color:#0f172a;">${it.itemType}</strong></td>
-    <td style="text-align:center; font-weight:700; color:#334155;">${it.quantity}</td>
-    <td style="text-align:right; font-weight:900; color:#0f172a;">₹${(it.quantity * it.silaiRate).toFixed(2)}</td>
-   </tr>
+    <tr>
+     <td style="text-align:center; font-weight:800; color:#78350f;">${idx + 1}</td>
+     <td><strong style="font-size:13.5px; color:#0f172a;">${it.itemType}</strong></td>
+     <td style="text-align:center; font-weight:700; color:#334155;">${it.quantity}</td>
+     <td style="text-align:right; font-weight:900; color:#0f172a;">₹${(it.quantity * it.silaiRate).toFixed(2)}</td>
+    </tr>
    `;
   });
   document.getElementById('pr-items-tbody').innerHTML = tbody;
@@ -2407,31 +2520,26 @@ function lockAppNow() {
   document.getElementById('pr-due').innerText = '₹' + (bill.due || 0);
  }
 
- /* --- FAST CUSTOMER TABLE MODAL --- */
+ /* --- FAST 0-SECOND CUSTOMER TABLE MODAL --- */
  async function renderCustomerTableModal() {
   const tbody = document.getElementById('modal-cust-tbody');
   let saved = customerDirectory;
   
   if (!saved || saved.length === 0) {
-   tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:15px;">Loading Queue...</td></tr>`;
+   tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:15px;">Loading Queue...</td></tr>`;
    saved = await getSavedBills();
    customerDirectory = saved;
   }
 
   const searchTxt = document.getElementById('modal-search-box').value.trim().toLowerCase();
   const todayStr = getLocalTodayDate();
-  const today = new Date();
 
   let filtered = saved.filter(b => {
    if (!b) return false;
    const st = b.status || 'pending';
    const del = b.delivery || '';
    const due = parseFloat(b.due) || 0;
-   const baseDateStr = b.delivery || b.date || '';
-   const diffDays = baseDateStr ? Math.floor((today - new Date(baseDateStr)) / (1000 * 60 * 60 * 24)) : 0;
-   const isSnoozed = b.snoozeUntil && new Date(b.snoozeUntil) > today;
 
-   if (currentModalTab === 'due60') return due > 0 && diffDays >= 60 && !isSnoozed && st !== 'disposed';
    if (currentModalTab === 'delivered_due') return st === 'delivered' && due > 0;
    if (currentModalTab === 'all_pending') return st !== 'delivered' && st !== 'unclaimed' && st !== 'disposed';
    if (currentModalTab === 'overdue') return st !== 'delivered' && st !== 'ready' && del && del < todayStr;
@@ -2452,43 +2560,21 @@ function lockAppNow() {
   }
 
   if (filtered.length === 0) {
-   tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:15px; color:#94a3b8;">कोई रिकॉर्ड नहीं मिला।</td></tr>`;
+   tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:15px; color:#94a3b8;">कोई रिकॉर्ड नहीं मिला।</td></tr>`;
    return;
   }
 
   let html = '';
   filtered.forEach(b => {
-   let sampleImgSrc = "";
-   if (b.mainBillPhotos && b.mainBillPhotos.length > 0) {
-    sampleImgSrc = b.mainBillPhotos[0];
-   } else if (b.mainBillPhoto) {
-    sampleImgSrc = b.mainBillPhoto;
-   }
-
-   const baseDateStr = b.delivery || b.date || '';
-   const diffDays = baseDateStr ? Math.floor((today - new Date(baseDateStr)) / (1000 * 60 * 60 * 24)) : 0;
-   const isSnoozed = b.snoozeUntil && new Date(b.snoozeUntil) > today;
-
-   let photoTd = sampleImgSrc 
-    ? `<img src="${sampleImgSrc}" onclick="openImageZoomModal('${sampleImgSrc}')" style="width:38px; height:38px; object-fit:cover; border-radius:6px; border:1.5px solid #cbd5e1; cursor:pointer;" title="बड़ा देखने के लिए क्लिक करें">`
-    : `<span style="font-size:10px; color:#94a3b8;">No Pic</span>`;
-   
    let badge = `<span class="status-badge st-pending">🔴 Pending</span>`;
    if (b.status === 'stitching') badge = `<span class="status-badge st-stitching">✂️ Stitching</span>`;
    if (b.status === 'ready') badge = `<span class="status-badge st-ready">🟡 Ready</span>`;
    if (b.status === 'delivered') badge = `<span class="status-badge st-delivered">🟢 Delivered</span>`;
-   if (b.status === 'unclaimed') badge = `<span class="status-badge st-unclaimed">📦 Defaulter (90+)</span>`;
-   if (b.status === 'disposed') badge = `<span class="status-badge st-disposed">🏷️ Disposed</span>`;
-
-   if (parseFloat(b.due) > 0 && diffDays >= 60 && b.status !== 'unclaimed' && b.status !== 'disposed') {
-    badge += `<br><span class="status-badge st-due60" style="margin-top:2px;">⚠️ 60+ Days Due</span>`;
-   }
-   if (isSnoozed) {
-    badge += `<br><span style="font-size:9.5px; color:#6366f1; font-weight:bold;">⏰ Snoozed: ${formatDateToDMY(b.snoozeUntil)}</span>`;
-   }
+   if (b.status === 'unclaimed') badge = `<span class="status-badge st-unclaimed">📦 Unclaimed</span>`;
+   if (b.status === 'disposed') badge = `<span class="status-badge st-disposed">🏷️️ Disposed</span>`;
 
    let actions = `<button class="btn-sm-act btn-tbl-open" onclick="loadBillFromModal('${b.invNo}')">Open</button>`;
-   actions += `<button class="btn-sm-act btn-tbl-reuse" onclick="reuseCustomerData('${b.invNo}')" title="इसी नाप पर नया बिल बनाएं">🔁 Reuse</button>`;
+   actions += `<button class="btn-sm-act btn-tbl-reuse" onclick="reuseCustomerData('${b.invNo}')" title="इसी नाप पर नया बिल बनाएं">🔄 Reuse</button>`;
    
    if (!(b.status === 'delivered' && parseFloat(b.due) <= 0)) {
     actions += `<button class="btn-sm-act btn-tbl-pay" onclick="openQuickPaymentModal('${b.invNo}')">+ Pay</button>`;
@@ -2499,40 +2585,29 @@ function lockAppNow() {
    }
    if (b.status === 'ready') {
     actions += `<button class="btn-sm-act btn-tbl-realert" onclick="sendReAlertMessage('${b.invNo}')">🔔 Re-Alert</button>`;
-   }
-   
-   // Snooze Button (60+ दिन या पेंडिंग/रेडी के लिए)
-   if (b.status !== 'delivered' || parseFloat(b.due) > 0) {
     actions += `<button class="btn-sm-act btn-tbl-snooze" onclick="promptSnoozeOrder('${b.invNo}')">⏰ Snooze</button>`;
    }
-
    if (b.status !== 'delivered') {
     actions += `<button class="btn-sm-act btn-tbl-deliver" onclick="openSmartDeliveryModal('${b.invNo}')">🟢 Deliver</button>`;
    }
-
-   // 60-दिन विशेष तकादा बटन
-   if (parseFloat(b.due) > 0 && diffDays >= 60) {
-    actions += `<button class="btn-sm-act btn-tbl-due-remind" onclick="send60DayNoticeWhatsApp('${b.invNo}')" title="60 दिन अंतिम तकादा">⚠️ 60D Alert</button>`;
-   } else if (b.status === 'delivered' && parseFloat(b.due) > 0) {
+   if (b.status === 'delivered' && parseFloat(b.due) > 0) {
     actions += `<button class="btn-sm-act btn-tbl-due-remind" onclick="sendPendingDueWhatsAppReminder('${b.invNo}')">💬 Due Remind</button>`;
    }
-
    if (b.status === 'unclaimed') {
     actions += `<button class="btn-sm-act btn-tbl-dispose" onclick="openDisposalModal('${b.invNo}')">📦 Dispose</button>`;
    }
    actions += `<button class="btn-sm-act btn-tbl-del" onclick="deleteBillFromModal('${b.invNo}')">✕</button>`;
 
    html += `
-   <tr>
-    <td><strong>${formatDateToDMY(b.delivery)}</strong></td>
-    <td><strong>${b.invNo}</strong></td>
-    <td style="text-align:center;">${photoTd}</td>
-    <td><strong>${b.name}</strong></td>
-    <td>${b.mobile || '-'}</td>
-    <td>${badge}</td>
-    <td>₹${b.total}<br><span style="color:${b.due > 0 ? '#dc2626':'#16a34a'}; font-weight:bold;">Due: ₹${b.due}</span></td>
-    <td style="white-space:nowrap;">${actions}</td>
-   </tr>
+    <tr>
+     <td><strong>${formatDateToDMY(b.delivery)}</strong></td>
+     <td><strong>${b.invNo}</strong></td>
+     <td><strong>${b.name}</strong></td>
+     <td>${b.mobile || '-'}</td>
+     <td>${badge}</td>
+     <td>₹${b.total}<br><span style="color:${b.due > 0 ? '#dc2626':'#16a34a'}; font-weight:bold;">Due: ₹${b.due}</span></td>
+     <td style="white-space:nowrap;">${actions}</td>
+    </tr>
    `;
   });
   tbody.innerHTML = html;
@@ -2642,6 +2717,26 @@ function lockAppNow() {
   });
  }
 
+ /* KEYBOARD NAVIGATION (ENTER -> NEXT, SHIFT+ENTER -> PREV) */
+ document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+   const active = document.activeElement;
+   if (active && (active.tagName === 'INPUT' || active.tagName === 'SELECT')) {
+    e.preventDefault();
+    const focusables = Array.from(document.querySelectorAll('input:not([type="hidden"]):not([readonly]), select, textarea'));
+    const idx = focusables.indexOf(active);
+    if (e.shiftKey) {
+     if (idx > 0) focusables[idx - 1].focus();
+    } else {
+     if (idx >= 0 && idx < focusables.length - 1) focusables[idx + 1].focus();
+    }
+   }
+  }
+ });
+
+ // Real-time Draft Listener
+ document.addEventListener('input', autoSaveCurrentDraft);
+
  window.addEventListener('DOMContentLoaded', async () => {
   fetchCloudSettings();
   currentPriceMaster = getPriceMaster();
@@ -2671,20 +2766,29 @@ function lockAppNow() {
      renderDirectCustomerInvoice(foundBill);
      return;
     } else {
-     alert("यह बिल (Invoice No: " + targetInv + ") डेटाबेस में नहीं मिला!");
+     alert("यह बिल (Invoice No: " + targetInv + ") नहीं मिला!");
     }
-   } catch (err) {
-    console.error("Fetch error:", err);
+   } catch (e) {
+    alert("क्लाउड से बिल लोड करने में समस्या: " + e.message);
    }
    return;
   }
 
-  await refreshCustomerDirectory();
+  // Normal App Load (0-Second Local First)
+  customerDirectory = await getSavedBills();
   setNextConsecutiveInvoice();
+  updateDeliveryAlertsCounts();
+  
+  // Default first garment
   addItemCard();
-  setupQuickContacts();
+  
+  // Restore unfinished work if browser closed
+  restoreActiveDraft();
+
+  // Background cloud sync
+  refreshCustomerDirectory();
   runAutomaticFollowUpEngine();
  });
 </script>
 </body>
-       </html>
+ </html>
