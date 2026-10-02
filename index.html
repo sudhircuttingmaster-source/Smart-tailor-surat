@@ -232,12 +232,14 @@
    print-color-adjust: exact !important;
   }
 
-  /* लोगो को 72px पर कंट्रोल रखने के लिए */
+  /* लोगो को 72px पर सख्ती से लॉक रखने के लिए */
   .inv-header-logo-badge {
    width: 72px !important;
    height: 72px !important;
    max-width: 72px !important;
    max-height: 72px !important;
+   min-width: 72px !important;
+   min-height: 72px !important;
    border-radius: 50% !important;
    object-fit: cover !important;
    display: block !important;
@@ -264,7 +266,7 @@
    width: 380px !important;
    height: 380px !important;
    opacity: 0.22 !important;
-   }
+  }
 
   body.mode-slips #slips-print-view {
    display: block !important;
@@ -344,11 +346,16 @@
  }
 
  .inv-header-logo-badge {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 72px !important;
+  height: 72px !important;
+  max-width: 72px !important;
+  max-height: 72px !important;
+  min-width: 72px !important;
+  min-height: 72px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
   border: 1.5px solid #d97706;
+  flex-shrink: 0 !important;
  }
 
  .staple-target-box {
@@ -617,7 +624,7 @@
    <label>Cloth Amount (₹)</label>
    <input type="number" id="calc-cloth" value="0" oninput="calculateTotals()" placeholder="0">
   </div>
-  <div class="form-group">
+  <div class="form-group" style="grid-column: span 1.5;">
    <label style="color:#7c3aed;">Extra (₹)</label>
    <input type="number" id="calc-extra" value="0" oninput="calculateTotals()" placeholder="0" style="background:#faf5ff; color:#7c3aed; font-weight:bold;">
   </div>
@@ -822,11 +829,11 @@
 <!-- Main Bill Print View -->
 <div id="invoice-print-view">
  <div class="color-inv-wrapper">
-  <img class="inv-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Shiv Shakti Watermark[span_0](start_span)"[span_0](end_span)>
+  <img class="inv-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Shiv Shakti Watermark[span_7](start_span)"[span_7](end_span)>
 
   <div class="color-inv-header">
    <div style="display:flex; align-items:center; gap:14px;">
-    <img src="https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png" alt="Logo" class="inv-header-logo-badge[span_1](start_span)"[span_1](end_span)>
+    <img src="https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png" alt="Logo" class="inv-header-logo-badge" style="width:72px !important; height:72px !important; max-width:72px !important; max-height:72px !important; min-width:72px !important; min-height:72px !important; border-radius:50% !important; object-fit:cover !important; border:1.5px solid #d97706; display:block !important; flex-shrink:0 !important;[span_8](start_span)"[span_8](end_span)>
     <div>
      <div style="font-size:12px; font-weight:800; color:#b45309; margin-bottom:2px;">॥ श्री गणेशाय नमः ॥</div>
      <h2 style="font-size:22px; font-weight:900; color:#78350f; letter-spacing:0.5px;">SHIV SHAKTI SMART TAILOR</h2>
@@ -954,7 +961,7 @@ function lockAppNow() {
  let activePaymentInv = null;
  let activeDeliveryInv = null;
  let activeDisposalInv = null;
- let isEditingExistingBill = false; // EDIT MODE FLAG
+ let isEditingExistingBill = false;
 
  const defaultPriceMaster = {
   "Pant": 450, "Shirt": 350, "Suit / Blazer": 1800, "Coti": 900, "Modi Coti": 1000,
@@ -964,7 +971,6 @@ function lockAppNow() {
  let currentPriceMaster = defaultPriceMaster;
  const standardItems = Object.keys(defaultPriceMaster);
 
- /* --- FIREBASE / CLOUD SETTINGS --- */
  async function fetchCloudSettings() {
   try {
    const docRef = window.doc(window.db, "shiv_shakti_settings", "app_config");
@@ -1028,7 +1034,6 @@ function lockAppNow() {
   calculateTotals();
  }
 
- /* Direct WhatsApp Dispatch */
  async function dispatchAutomatedWhatsApp(mobile, messageText, billInvNo) {
   if (!mobile) return false;
   const cleanMob = mobile.replace(/\D/g, '').slice(-10);
@@ -1167,7 +1172,7 @@ function lockAppNow() {
   if (deliveredBill) {
    let delivMsg = `🟢 *ऑर्डर डिलीवर हो गया (Delivery Done)*\n──────────────────────\nनमस्ते *${deliveredBill.name}* जी,\nShiv Shakti Smart Tailor से आपका ऑर्डर प्राप्त करने के लिए धन्यवाद!`;
    if (deliveredBill.due > 0) {
-    delivMsg += `\n⚠️️ आपकी बाकी रकम (Due Balance): *₹${deliveredBill.due}* बची हुई है।`;
+    delivMsg += `\n⚠ आपकी बाकी रकम (Due Balance): *₹${deliveredBill.due}* बची हुई है।`;
    } else {
     delivMsg += `\n✓ आपका पूरा पेमेंट सफलतापूर्वक क्लियर हो चुका है।`;
    }
@@ -1331,7 +1336,6 @@ function lockAppNow() {
   closeBroadcastModal();
  }
 
- /* --- AUTO SEARCH & LATEST MEASUREMENTS LOAD --- */
  function handleLiveCustomerSearch(query) {
   const dropdown = document.getElementById('name-search-dropdown');
   const text = query.trim().toLowerCase();
@@ -1438,9 +1442,8 @@ function lockAppNow() {
   histPanel.style.display = foundAny ? 'block' : 'none';
  }
 
- /* --- AUTO-DRAFT PERSISTENCE --- */
  function autoSaveCurrentDraft() {
-  if (isEditingExistingBill) return; // Edit mode me draft save na karein
+  if (isEditingExistingBill) return;
   try {
    const draft = {
     name: document.getElementById('cust-name')?.value || '',
@@ -1490,7 +1493,6 @@ function lockAppNow() {
   localStorage.removeItem('sst_active_tailor_draft');
  }
 
- /* --- MEASUREMENTS FORMATTER --- */
  function formatTailorFraction(val) {
   if (!val) return '';
   let str = String(val).trim();
@@ -1503,7 +1505,6 @@ function lockAppNow() {
  }
  function autoFormatMeasureInput(inp) { inp.value = formatTailorFraction(inp.value); }
 
- /* SMART ADD GARMENT */
  function addItemCardSmart() {
   const cards = document.querySelectorAll('.item-card');
   if (cards.length > 0) {
@@ -1772,7 +1773,7 @@ function lockAppNow() {
 
    <div class="draw-box-wrapper" id="draw-wrapper-${id}" onclick="setActiveDrawingPad(${id})">
     <div class="draw-box-header">
-     <div><strong style="font-size:12px; color:#1e40af;">✍️ [${type}] रॉ स्केच पैड:</strong></div>
+     <div><strong style="font-size:12px; color:#1e40af;">✍️️ [${type}] रॉ स्केच पैड:</strong></div>
      <div style="display:flex; gap:6px;">
       <button type="button" class="btn-pad-activate" onclick="setActiveDrawingPad(${id}); event.stopPropagation();">🎯 ड्रॉ करें</button>
       <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑 साफ़ करें</button>
@@ -1884,7 +1885,6 @@ function lockAppNow() {
   return canvas.toDataURL() === blank.toDataURL();
  }
 
- /* SMART COMPRESSION */
  function compressImageFile(file, maxWidth = 650, quality = 0.5) {
   return new Promise((resolve) => {
    const reader = new FileReader();
@@ -2026,7 +2026,6 @@ function lockAppNow() {
   return list;
  }
 
- /* --- SAFE SAVE / UPDATE BILL --- */
  async function saveCurrentBill(silent = false) {
   calculateTotals();
   const custName = document.getElementById('cust-name').value.trim();
@@ -2039,7 +2038,6 @@ function lockAppNow() {
    saveBtn.innerText = "⏳ Saving...";
   }
 
-  // AGAR NAYA BILL HAI TO HI NAYA INVOICE GENERATE HOGA
   if (!isEditingExistingBill) {
    setNextConsecutiveInvoice();
   }
@@ -2081,7 +2079,6 @@ function lockAppNow() {
    items: collectAllData()
   };
 
-  // Safe Push into Local Database
   let updated = false;
   for (let i = 0; i < saved.length; i++) {
    if (saved[i] && saved[i].invNo === invNo) { saved[i] = billObj; updated = true; break; }
@@ -2091,7 +2088,6 @@ function lockAppNow() {
   customerDirectory = saved;
   updateDeliveryAlertsCounts();
 
-  // Cloud Sync
   try {
    if (firebaseDocId) {
     await window.updateDoc(window.doc(window.db, "shiv_shakti_bills", firebaseDocId), billObj);
@@ -2129,7 +2125,6 @@ function lockAppNow() {
 
   dispatchAutomatedWhatsApp(mobile, msg, invNo);
 
-  // Edit mode khatam karein
   isEditingExistingBill = false;
   document.getElementById('form-mode-title').innerText = "1. Customer & Bill Details";
 
@@ -2236,7 +2231,7 @@ function lockAppNow() {
    const slipDiv = document.createElement('div');
    slipDiv.className = 'slip-a6-page';
    slipDiv.innerHTML = `
-    <img class="slip-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Slip Watermark[span_2](start_span)"[span_2](end_span)>
+    <img class="slip-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Slip Watermark[span_9](start_span)"[span_9](end_span)>
     <div style="position:relative; z-index:1;">
      <div style="display:flex; justify-content:space-between; border-bottom:1.5px solid #d97706; padding-bottom:4px;">
       <div><strong style="color:#78350f; font-size:14px;">SHIV SHAKTI SMART TAILOR</strong><br><small>📞 9662232193</small></div>
@@ -2280,7 +2275,6 @@ function lockAppNow() {
   renderCustomerTableModal();
  }
 
- /* --- HELPERS & QUEUE LEDGER --- */
  function getLocalTodayDate() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
  function getCurrentTimeString() { const d = new Date(); let h = d.getHours(); const m = String(d.getMinutes()).padStart(2,'0'); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return `${String(h).padStart(2,'0')}:${m} ${ap}`; }
  function formatDateToDMY(s) { if (!s) return '-'; const p = s.split('-'); return p.length === 3 ? `${p[2]}-${p[1]}-${p[0]}` : s; }
@@ -2427,7 +2421,6 @@ function lockAppNow() {
   }
  }
 
- /* --- CUSTOMER TABLE MODAL ME SAMPLE PHOTO DEKHNA --- */
  async function renderCustomerTableModal() {
   const tbody = document.getElementById('modal-cust-tbody');
   let saved = customerDirectory;
@@ -2480,7 +2473,6 @@ function lockAppNow() {
    if (b.status === 'unclaimed') badge = `<span class="status-badge st-unclaimed">📦 Unclaimed</span>`;
    if (b.status === 'disposed') badge = `<span class="status-badge st-disposed">🏷 Disposed</span>`;
 
-   // Sample photo thumbnail in customer list
    let photoThumbHtml = '';
    let sampleImg = null;
    if (b.mainBillPhotos && b.mainBillPhotos.length > 0) sampleImg = b.mainBillPhotos[0];
@@ -2533,12 +2525,11 @@ function lockAppNow() {
   tbody.innerHTML = html;
  }
 
- /* OPEN BUTTON (EDIT ORIGINAL BILL) */
  function loadBillFromModal(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
   if (!b) return;
 
-  isEditingExistingBill = true; // EDIT MODE ON: Purana invoice lock rahega
+  isEditingExistingBill = true;
   document.getElementById('form-mode-title').innerHTML = `<span style="color:#dc2626;">✏️ Editing: ${b.invNo}</span>`;
   document.getElementById('btn-save-main').innerText = `💾 Update ${b.invNo} & WhatsApp (F4)`;
 
@@ -2572,16 +2563,15 @@ function lockAppNow() {
   alert(`✓ बिल ${b.invNo} एडिट मोड में खुला है। सुधार करने के बाद Save दबाने पर इसी बिल में सेव होगा, नया बिल नहीं बनेगा!`);
  }
 
- /* REUSE BUTTON (NAYA BILL NUMBER BANEGA) */
  async function reuseCustomerData(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
   if (!b) return;
 
-  isEditingExistingBill = false; // REUSE ME NAYA NUMBER BANEGA
+  isEditingExistingBill = false;
   document.getElementById('form-mode-title').innerText = "1. Customer & Bill Details";
   document.getElementById('btn-save-main').innerText = "💾 Save Bill & Send WhatsApp (F4)";
 
-  setNextConsecutiveInvoice(); // Agla naya number
+  setNextConsecutiveInvoice();
   document.getElementById('cust-name').value = b.name || '';
   document.getElementById('cust-mobile').value = b.mobile || '';
   document.getElementById('cust-date').value = getLocalTodayDate();
@@ -2651,36 +2641,26 @@ function lockAppNow() {
   });
  }
 
- /* --- COMPLETE KEYBOARD WORKFLOW (PC BINA MOUSE KE) --- */
  document.addEventListener('keydown', (e) => {
-  // ESCAPE -> Close All Modals
   if (e.key === 'Escape') {
    document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
    return;
   }
-
-  // F2 -> Add Garment
   if (e.key === 'F2') {
    e.preventDefault();
    addItemCardSmart();
    return;
   }
-
-  // F4 ya Ctrl+S -> Save Bill
   if (e.key === 'F4' || (e.ctrlKey && e.key.toLowerCase() === 's')) {
    e.preventDefault();
    saveCurrentBill(false);
    return;
   }
-
-  // F8 -> Open Customers Queue
   if (e.key === 'F8') {
    e.preventDefault();
    openAllCustomersModal();
    return;
   }
-
-  // ENTER / SHIFT+ENTER Navigation
   if (e.key === 'Enter') {
    const active = document.activeElement;
    if (active && (active.tagName === 'INPUT' || active.tagName === 'SELECT')) {
@@ -2714,29 +2694,26 @@ function lockAppNow() {
   refreshCustomerDirectory();
   runAutomaticFollowUpEngine();
  });
- // मोबाइल बैक बटन प्रोटेक्शन (Pop-up Close & Prevent App Exit)
-window.addEventListener('load', () => {
-  // ब्राउज़र हिस्ट्री में एक डमी स्टेट पुश करें
+
+ window.addEventListener('load', () => {
   window.history.pushState({ page: 'home' }, '');
 
   window.addEventListener('popstate', (e) => {
-    // 1. अगर कोई भी पॉप-अप खुला है, तो पहले सिर्फ़ उसे बंद करें
     const openModals = document.querySelectorAll('.modal-overlay[style*="display: flex"], .modal-overlay[style*="display: block"]');
     if (openModals.length > 0) {
       openModals.forEach(m => m.style.display = 'none');
-      window.history.pushState({ page: 'home' }, ''); // ऐप में बने रहने के लिए
+      window.history.pushState({ page: 'home' }, '');
       return;
     }
 
-    // 2. अगर मुख्य स्क्रीन पर हैं और गलती से बैक दब गया
     const leave = confirm("क्या आप सॉफ़्टवेयर से बाहर जाना चाहते हैं?");
     if (!leave) {
-      window.history.pushState({ page: 'home' }, ''); // बाहर जाने से रोकें
+      window.history.pushState({ page: 'home' }, '');
     } else {
-      window.history.back(); // यूज़र चाहे तभी बाहर जाए
+      window.history.back();
     }
   });
-});
+ });
 </script>
 </body>
- </html>
+   </html>
