@@ -220,18 +220,51 @@
  @media print {
   body { background: white !important; padding: 0 !important; margin: 0 !important; }
   .app-container, .modal-overlay, #app-lock-overlay, #customer-direct-view-bar { display: none !important; }
-  @page { size: A4 portrait; margin: 8mm 10mm; }
+  @page { size: A4 portrait; margin: 6mm 8mm; }
 
   body.mode-invoice-color #invoice-print-view {
    display: block !important;
-   width: 100%;
-   min-height: 275mm;
-   box-sizing: border-box;
-   font-size: 12.5px;
-   color: #0f172a;
+   width: 100% !important;
+   box-sizing: border-box !important;
+   font-size: 12px !important;
+   color: #0f172a !important;
    -webkit-print-color-adjust: exact !important;
    print-color-adjust: exact !important;
   }
+
+  /* लोगो को 72px पर कंट्रोल रखने के लिए */
+  .inv-header-logo-badge {
+   width: 72px !important;
+   height: 72px !important;
+   max-width: 72px !important;
+   max-height: 72px !important;
+   border-radius: 50% !important;
+   object-fit: cover !important;
+   display: block !important;
+   flex-shrink: 0 !important;
+  }
+
+  .color-inv-header {
+   padding: 10px 14px !important;
+   display: flex !important;
+   justify-content: space-between !important;
+   align-items: center !important;
+   border-bottom: 2px solid #d97706 !important;
+   background: #fffdf5 !important;
+  }
+
+  .staple-target-box {
+   width: 75px !important;
+   height: 55px !important;
+   border: 1px dashed #d97706 !important;
+   font-size: 8.5px !important;
+  }
+
+  .inv-watermark-img {
+   width: 380px !important;
+   height: 380px !important;
+   opacity: 0.22 !important;
+   }
 
   body.mode-slips #slips-print-view {
    display: block !important;
