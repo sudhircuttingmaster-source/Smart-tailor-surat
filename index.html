@@ -2681,6 +2681,29 @@ function lockAppNow() {
   refreshCustomerDirectory();
   runAutomaticFollowUpEngine();
  });
+ // मोबाइल बैक बटन प्रोटेक्शन (Pop-up Close & Prevent App Exit)
+window.addEventListener('load', () => {
+  // ब्राउज़र हिस्ट्री में एक डमी स्टेट पुश करें
+  window.history.pushState({ page: 'home' }, '');
+
+  window.addEventListener('popstate', (e) => {
+    // 1. अगर कोई भी पॉप-अप खुला है, तो पहले सिर्फ़ उसे बंद करें
+    const openModals = document.querySelectorAll('.modal-overlay[style*="display: flex"], .modal-overlay[style*="display: block"]');
+    if (openModals.length > 0) {
+      openModals.forEach(m => m.style.display = 'none');
+      window.history.pushState({ page: 'home' }, ''); // ऐप में बने रहने के लिए
+      return;
+    }
+
+    // 2. अगर मुख्य स्क्रीन पर हैं और गलती से बैक दब गया
+    const leave = confirm("क्या आप सॉफ़्टवेयर से बाहर जाना चाहते हैं?");
+    if (!leave) {
+      window.history.pushState({ page: 'home' }, ''); // बाहर जाने से रोकें
+    } else {
+      window.history.back(); // यूज़र चाहे तभी बाहर जाए
+    }
+  });
+});
 </script>
 </body>
  </html>
