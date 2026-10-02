@@ -60,7 +60,6 @@
  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
  body { background: #f0f4f8; color: #1e293b; padding: 12px; }
  
- /* PC / Desktop Full Display Support */
  .app-container { width: 100%; max-width: 890px; margin: 0 auto; background: #ffffff; border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); padding: 20px; border: 1px solid #cbd5e1; }
  
  @media screen and (min-width: 1024px) {
@@ -76,7 +75,6 @@
  
  .banner-btns { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
  .btn-top-rate { background: #2563eb; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
- .btn-top-wa { background: #16a34a; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
  .btn-top-lock { background: #dc2626; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
 
  .delivery-alerts-panel { background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
@@ -181,7 +179,7 @@
  .modal-close { background: none; border: none; color: white; font-size: 24px; cursor: pointer; font-weight: bold; }
  .modal-body { padding: 14px; overflow-y: auto; flex: 1; }
 
- #delivery-modal, #payment-modal, #disposal-modal, #broadcast-modal, #wa-config-modal, #rate-modal, #image-zoom-modal {
+ #delivery-modal, #payment-modal, #disposal-modal, #broadcast-modal, #rate-modal, #image-zoom-modal {
   z-index: 2500 !important;
  }
 
@@ -461,7 +459,6 @@
 <div class="app-container">
  <div class="shop-banner">
   <div class="banner-btns">
-   <button type="button" class="btn-top-wa" onclick="openWhatsAppConfigModal()">⚙️ WA API</button>
    <button type="button" class="btn-top-rate" onclick="openRateSettingsModal()">⚙️ Rates</button>
    <button type="button" class="btn-top-lock" onclick="lockAppNow()">🚪 Lock</button>
   </div>
@@ -508,7 +505,7 @@
 
  <div class="form-section">
   <div class="section-heading">
-   <span>1. Customer & Bill Details</span>
+   <span id="form-mode-title">1. Customer & Bill Details</span>
    <span style="font-size: 11.5px; font-weight: bold; color: #16a34a;" id="status-indicator"></span>
   </div>
   <div class="form-grid">
@@ -529,7 +526,7 @@
     <div id="mobile-search-dropdown" class="search-results-dropdown"></div>
     <div class="quick-contact-btns">
      <a href="#" id="quick-call-btn" class="q-btn q-call">📞 Call</a>
-     <a href="#" id="quick-sms-btn" class="q-btn q-sms">✉️️ SMS</a>
+     <a href="#" id="quick-sms-btn" class="q-btn q-sms">✉ SMS</a>
     </div>
    </div>
    <div class="form-group">
@@ -572,7 +569,7 @@
   <span>2. Clothes & Measurements</span>
  </div>
  <div id="items-list-container"></div>
- <button type="button" class="btn-add-item" onclick="addItemCardSmart()">➕ Add Garment</button>
+ <button type="button" class="btn-add-item" onclick="addItemCardSmart()">➕ Add Garment (F2)</button>
 
  <div class="calc-container">
   <div class="form-group">
@@ -618,10 +615,10 @@
  </div>
 
  <div class="btn-action-panel">
-  <button type="button" class="btn-act btn-save" id="btn-save-main" onclick="saveCurrentBill(false)">💾 Save Bill & Send WhatsApp</button>
+  <button type="button" class="btn-act btn-save" id="btn-save-main" onclick="saveCurrentBill(false)">💾 Save Bill & Send WhatsApp (F4)</button>
   <button type="button" class="btn-act btn-print-merged" onclick="generateAndPrintMergedBill()">🖨️ Print / PDF Bill</button>
   <button type="button" class="btn-act btn-slip" onclick="generateAndPrintSlips()">✂️ Print Slips</button>
-  <button type="button" class="btn-toggle-list btn-act" onclick="openAllCustomersModal()">👥 Customers Queue</button>
+  <button type="button" class="btn-toggle-list btn-act" onclick="openAllCustomersModal()">👥 Customers Queue (F8)</button>
   <button type="button" class="btn-act btn-broadcast" onclick="openBroadcastModal()">📢 Bulk Marketing</button>
   <button type="button" class="btn-backup" onclick="exportDataBackup()">📥 Backup File</button>
   <button type="button" class="btn-act btn-new" onclick="startNewBill()">📄 New Bill</button>
@@ -735,28 +732,6 @@
  </div>
 </div>
 
-<!-- MODAL: WA CONFIG -->
-<div class="modal-overlay" id="wa-config-modal" onclick="if(event.target===this) closeWhatsAppConfigModal();">
- <div class="modal-box" style="max-width: 500px;">
-  <div class="modal-header">
-   <span>⚙️ Meta WhatsApp Cloud API Setup</span>
-   <button type="button" class="modal-close" onclick="closeWhatsAppConfigModal()">✕</button>
-  </div>
-  <div class="modal-body" style="padding: 16px;">
-   <p style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Meta Developers अकाउंट से मिलने वाले Phone Number ID और Access Token यहाँ पेस्ट करें:</p>
-   <div class="form-group" style="margin-bottom: 10px;">
-    <label>Phone Number ID</label>
-    <input type="text" id="wa-phone-id" placeholder="उदा: 1058291823912">
-   </div>
-   <div class="form-group" style="margin-bottom: 14px;">
-    <label>Permanent Access Token</label>
-    <textarea id="wa-token" rows="3" placeholder="EAAB..."></textarea>
-   </div>
-   <button type="button" onclick="saveWhatsAppCloudConfig()" style="width: 100%; background: #16a34a; color: #fff; padding: 10px; border: none; border-radius: 6px; font-weight: 800; cursor: pointer;">💾 Save API Credentials</button>
-  </div>
- </div>
-</div>
-
 <!-- MODAL: RATES -->
 <div class="modal-overlay" id="rate-modal" onclick="if(event.target===this) closeRateSettingsModal();">
  <div class="modal-box" style="max-width: 500px;">
@@ -797,9 +772,9 @@
       <tr>
        <th>Delivery / Status</th>
        <th>Inv No.</th>
-       <th>Customer Name</th>
+       <th>Customer Name & Photo</th>
        <th>Mobile</th>
-       <th>Status & WA</th>
+       <th>Status</th>
        <th>Total / Due</th>
        <th>Actions</th>
       </tr>
@@ -814,11 +789,11 @@
 <!-- Main Bill Print View -->
 <div id="invoice-print-view">
  <div class="color-inv-wrapper">
-  <img class="inv-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Shiv Shakti Watermark">
+  <img class="inv-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Shiv Shakti Watermark[span_0](start_span)"[span_0](end_span)>
 
   <div class="color-inv-header">
    <div style="display:flex; align-items:center; gap:14px;">
-    <img src="https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png" alt="Logo" class="inv-header-logo-badge">
+    <img src="https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png" alt="Logo" class="inv-header-logo-badge[span_1](start_span)"[span_1](end_span)>
     <div>
      <div style="font-size:12px; font-weight:800; color:#b45309; margin-bottom:2px;">॥ श्री गणेशाय नमः ॥</div>
      <h2 style="font-size:22px; font-weight:900; color:#78350f; letter-spacing:0.5px;">SHIV SHAKTI SMART TAILOR</h2>
@@ -946,6 +921,7 @@ function lockAppNow() {
  let activePaymentInv = null;
  let activeDeliveryInv = null;
  let activeDisposalInv = null;
+ let isEditingExistingBill = false; // EDIT MODE FLAG
 
  const defaultPriceMaster = {
   "Pant": 450, "Shirt": 350, "Suit / Blazer": 1800, "Coti": 900, "Modi Coti": 1000,
@@ -1019,55 +995,10 @@ function lockAppNow() {
   calculateTotals();
  }
 
- /* --- WHATSAPP CLOUD API SETUP & AUTO DISPATCH --- */
- function getWhatsAppCloudCredentials() {
-  return {
-   phoneId: localStorage.getItem('wa_cloud_phone_id') || '',
-   token: localStorage.getItem('wa_cloud_token') || ''
-  };
- }
- function openWhatsAppConfigModal() {
-  const creds = getWhatsAppCloudCredentials();
-  document.getElementById('wa-phone-id').value = creds.phoneId;
-  document.getElementById('wa-token').value = creds.token;
-  document.getElementById('wa-config-modal').style.display = 'flex';
- }
- function closeWhatsAppConfigModal() { document.getElementById('wa-config-modal').style.display = 'none'; }
- function saveWhatsAppCloudConfig() {
-  localStorage.setItem('wa_cloud_phone_id', document.getElementById('wa-phone-id').value.trim());
-  localStorage.setItem('wa_cloud_token', document.getElementById('wa-token').value.trim());
-  alert("✓ WhatsApp Cloud API सेटिंग्स सुरक्षित हो गईं!");
-  closeWhatsAppConfigModal();
- }
-
+ /* Direct WhatsApp Dispatch */
  async function dispatchAutomatedWhatsApp(mobile, messageText, billInvNo) {
   if (!mobile) return false;
   const cleanMob = mobile.replace(/\D/g, '').slice(-10);
-  const creds = getWhatsAppCloudCredentials();
-
-  if (creds.phoneId && creds.token) {
-   try {
-    const url = `https://graph.facebook.com/v19.0/${creds.phoneId}/messages`;
-    const res = await fetch(url, {
-     method: 'POST',
-     headers: { 'Authorization': `Bearer ${creds.token}`, 'Content-Type': 'application/json' },
-     body: JSON.stringify({
-      messaging_product: "whatsapp",
-      recipient_type: "individual",
-      to: "91" + cleanMob,
-      type: "text",
-      text: { body: messageText }
-     })
-    });
-    if (res.ok) {
-     if (billInvNo) updateBillMessageStatus(billInvNo, 'Delivered / Sent');
-     return true;
-    }
-   } catch (e) {
-    console.warn("Cloud WA API Error:", e);
-   }
-  }
-
   if (billInvNo) updateBillMessageStatus(billInvNo, 'Sent');
   const encodedMsg = encodeURIComponent(messageText);
   const appUrl = `whatsapp://send?phone=91${cleanMob}&text=${encodedMsg}`;
@@ -1093,7 +1024,6 @@ function lockAppNow() {
   setSavedBills(saved);
  }
 
- /* --- AUTO FOLLOWUPS (60 DAYS & 90 DAYS UNCLAIMED) --- */
  async function runAutomaticFollowUpEngine() {
   const saved = await getSavedBills();
   const today = new Date();
@@ -1130,7 +1060,6 @@ function lockAppNow() {
   }
  }
 
- /* --- AUTO READY, RE-ALERT & SMART DELIVERY --- */
  async function markOrderReadyAndAutoAlert(invNo) {
   const saved = await getSavedBills();
   let target = null;
@@ -1205,7 +1134,7 @@ function lockAppNow() {
   if (deliveredBill) {
    let delivMsg = `🟢 *ऑर्डर डिलीवर हो गया (Delivery Done)*\n──────────────────────\nनमस्ते *${deliveredBill.name}* जी,\nShiv Shakti Smart Tailor से आपका ऑर्डर प्राप्त करने के लिए धन्यवाद!`;
    if (deliveredBill.due > 0) {
-    delivMsg += `\n⚠️ आपकी बाकी रकम (Due Balance): *₹${deliveredBill.due}* बची हुई है।`;
+    delivMsg += `\n⚠️️ आपकी बाकी रकम (Due Balance): *₹${deliveredBill.due}* बची हुई है।`;
    } else {
     delivMsg += `\n✓ आपका पूरा पेमेंट सफलतापूर्वक क्लियर हो चुका है।`;
    }
@@ -1356,15 +1285,7 @@ function lockAppNow() {
   const uniqueCustomers = getUniqueBroadcastCustomers();
   if (uniqueCustomers.length === 0) return alert("कोई मान्य मोबाइल नंबर नहीं मिला!");
 
-  const creds = getWhatsAppCloudCredentials();
-  const hasCloudApi = !!(creds.phoneId && creds.token);
-
-  if (!confirm(`कुल ${uniqueCustomers.length} यूनिक ग्राहकों को यह मैसेज भेजा जाएगा (किसी को डबल मैसेज नहीं जाएगा)।\n\nक्या आप भेजना चाहते हैं?`)) return;
-
-  if (!hasCloudApi) {
-   alert("ध्यान दें: आपने अभी WhatsApp Cloud API सेटअप नहीं किया है। कृपया पहले ⚙️ WA API में जाकर क्रेडेंशियल्स सेव करें।");
-   return;
-  }
+  if (!confirm(`कुल ${uniqueCustomers.length} यूनिक ग्राहकों को यह मैसेज भेजा जाएगा। क्या आप शुरू करना चाहते हैं?`)) return;
 
   let sentCount = 0;
   for (let cust of uniqueCustomers) {
@@ -1373,7 +1294,7 @@ function lockAppNow() {
    await new Promise(resolve => setTimeout(resolve, 800));
   }
 
-  alert(`✓ ब्रॉडकास्ट पूरा हुआ! कुल ${sentCount} ग्राहकों को सफलतापूर्वक संदेश भेज दिया गया।`);
+  alert(`✓ ब्रॉडकास्ट पूरा हुआ! कुल ${sentCount} ग्राहकों के लिए संदेश तैयार हुआ।`);
   closeBroadcastModal();
  }
 
@@ -1484,8 +1405,9 @@ function lockAppNow() {
   histPanel.style.display = foundAny ? 'block' : 'none';
  }
 
- /* --- AUTO-DRAFT PERSISTENCE (CALL / RELOAD PROTECTION) --- */
+ /* --- AUTO-DRAFT PERSISTENCE --- */
  function autoSaveCurrentDraft() {
+  if (isEditingExistingBill) return; // Edit mode me draft save na karein
   try {
    const draft = {
     name: document.getElementById('cust-name')?.value || '',
@@ -1506,6 +1428,7 @@ function lockAppNow() {
  }
 
  function restoreActiveDraft() {
+  if (isEditingExistingBill) return;
   try {
    const saved = localStorage.getItem('sst_active_tailor_draft');
    if (!saved) return;
@@ -1534,7 +1457,7 @@ function lockAppNow() {
   localStorage.removeItem('sst_active_tailor_draft');
  }
 
- /* --- GARMENT MEASUREMENTS & DRAWING CANVASES --- */
+ /* --- MEASUREMENTS FORMATTER --- */
  function formatTailorFraction(val) {
   if (!val) return '';
   let str = String(val).trim();
@@ -1547,7 +1470,7 @@ function lockAppNow() {
  }
  function autoFormatMeasureInput(inp) { inp.value = formatTailorFraction(inp.value); }
 
- /* SMART ADD GARMENT: Agar pehla Pant hai to agla Shirt aayega */
+ /* SMART ADD GARMENT */
  function addItemCardSmart() {
   const cards = document.querySelectorAll('.item-card');
   if (cards.length > 0) {
@@ -1701,7 +1624,6 @@ function lockAppNow() {
      <div class="form-group"><label>कफ</label><input type="text" inputmode="decimal" pattern="[0-9.]*" class="m-fld" data-label="कफ" onblur="autoFormatMeasureInput(this)"></div>
     </div>
     
-    <!-- हाफ़ शर्ट नाप (सिर्फ हाफ शर्ट सिलने पर) -->
     <div style="background:#fff7ed; border:1px solid #fdba74; border-radius:6px; padding:6px; margin-top:6px;">
      <div style="font-size:11px; font-weight:800; color:#c2410c; margin-bottom:4px;">✂️ हाफ़ शर्ट विशेष नाप (Half Shirt Measurements):</div>
      <div class="measure-grid" style="margin:4px 0; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));">
@@ -1820,7 +1742,7 @@ function lockAppNow() {
      <div><strong style="font-size:12px; color:#1e40af;">✍️ [${type}] रॉ स्केच पैड:</strong></div>
      <div style="display:flex; gap:6px;">
       <button type="button" class="btn-pad-activate" onclick="setActiveDrawingPad(${id}); event.stopPropagation();">🎯 ड्रॉ करें</button>
-      <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑️️ साफ़ करें</button>
+      <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑 साफ़ करें</button>
      </div>
     </div>
     <canvas id="draw-canvas-${id}" class="draw-canvas-elem"></canvas>
@@ -1929,7 +1851,7 @@ function lockAppNow() {
   return canvas.toDataURL() === blank.toDataURL();
  }
 
- /* --- SMART LIGHTWEIGHT AUTO-IMAGE COMPRESSION --- */
+ /* SMART COMPRESSION */
  function compressImageFile(file, maxWidth = 650, quality = 0.5) {
   return new Promise((resolve) => {
    const reader = new FileReader();
@@ -2071,7 +1993,7 @@ function lockAppNow() {
   return list;
  }
 
- /* --- SAFE SAVE BILL (RACE CONDITION & OVERWRITE LOCK FIXED) --- */
+ /* --- SAFE SAVE / UPDATE BILL --- */
  async function saveCurrentBill(silent = false) {
   calculateTotals();
   const custName = document.getElementById('cust-name').value.trim();
@@ -2084,8 +2006,11 @@ function lockAppNow() {
    saveBtn.innerText = "⏳ Saving...";
   }
 
-  // Double Check Max Invoice Number
-  setNextConsecutiveInvoice();
+  // AGAR NAYA BILL HAI TO HI NAYA INVOICE GENERATE HOGA
+  if (!isEditingExistingBill) {
+   setNextConsecutiveInvoice();
+  }
+
   const invNo = document.getElementById('cust-inv').value;
   const saved = await getSavedBills();
   let existingStatus = 'pending';
@@ -2146,9 +2071,7 @@ function lockAppNow() {
    console.warn("Background cloud sync warning:", e);
   }
 
-  // Clear Draft memory upon success
   clearActiveDraft();
-
   prepareInvoiceView();
 
   const onlineInvoiceLink = window.location.origin + window.location.pathname + `?inv=${invNo}`;
@@ -2158,7 +2081,7 @@ function lockAppNow() {
   msg += `📍 Plot no-40 mahalaxmi soc Gurudutt point side road dindoli surat Pin-394210\n`;
   msg += `📞 Mo: 9662232193 / 6351325425\n`;
   msg += `──────────────────────\n`;
-  msg += `नमस्ते *${custName}* जी,\nआपका ऑर्डर सफलतापूर्वक बुक कर लिया गया है।\n\n`;
+  msg += `नमस्ते *${custName}* जी,\nआपका ऑर्डर सफलतापूर्वक ${isEditingExistingBill ? 'अपडेट' : 'बुक'} कर लिया गया है।\n\n`;
   msg += `📄 *Invoice No:* ${invNo}\n`;
   msg += `📅 *Delivery Date:* ${formatDateToDMY(billObj.delivery)}\n`;
   msg += `💰 *Grand Total:* ₹${billObj.total}\n`;
@@ -2173,12 +2096,16 @@ function lockAppNow() {
 
   dispatchAutomatedWhatsApp(mobile, msg, invNo);
 
+  // Edit mode khatam karein
+  isEditingExistingBill = false;
+  document.getElementById('form-mode-title').innerText = "1. Customer & Bill Details";
+
   if (saveBtn) {
    saveBtn.disabled = false;
-   saveBtn.innerText = "💾 Save Bill & Send WhatsApp";
+   saveBtn.innerText = "💾 Save Bill & Send WhatsApp (F4)";
   }
 
-  if (!silent) alert(`✓ बिल तुरंत सुरक्षित हो गया!`);
+  if (!silent) alert(`✓ बिल सफलतापूर्वक ${billObj.invNo} में सुरक्षित हो गया!`);
  }
 
  function prepareInvoiceView() {
@@ -2276,7 +2203,7 @@ function lockAppNow() {
    const slipDiv = document.createElement('div');
    slipDiv.className = 'slip-a6-page';
    slipDiv.innerHTML = `
-    <img class="slip-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Slip Watermark">
+    <img class="slip-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Slip Watermark[span_2](start_span)"[span_2](end_span)>
     <div style="position:relative; z-index:1;">
      <div style="display:flex; justify-content:space-between; border-bottom:1.5px solid #d97706; padding-bottom:4px;">
       <div><strong style="color:#78350f; font-size:14px;">SHIV SHAKTI SMART TAILOR</strong><br><small>📞 9662232193</small></div>
@@ -2345,7 +2272,7 @@ function lockAppNow() {
    if (l.length > 0) { 
     customerDirectory = l; 
     setSavedBills(l); 
-    setNextConsecutiveInvoice();
+    if (!isEditingExistingBill) setNextConsecutiveInvoice();
    }
   } catch(e) {
    customerDirectory = await getSavedBills();
@@ -2384,7 +2311,6 @@ function lockAppNow() {
   document.getElementById('count-unclaimed').innerText = unc;
  }
 
- /* SAFE INVOICE COUNTER (Check local & database max number) */
  function setNextConsecutiveInvoice() {
   const saved = customerDirectory || [];
   let max = 100;
@@ -2405,6 +2331,9 @@ function lockAppNow() {
 
  function startNewBill() {
   if (confirm("नया बिल शुरू करें?")) {
+   isEditingExistingBill = false;
+   document.getElementById('form-mode-title').innerText = "1. Customer & Bill Details";
+   document.getElementById('btn-save-main').innerText = "💾 Save Bill & Send WhatsApp (F4)";
    clearActiveDraft();
    setNextConsecutiveInvoice();
    document.getElementById('cust-name').value = '';
@@ -2465,62 +2394,7 @@ function lockAppNow() {
   }
  }
 
- /* --- DIRECT CUSTOMER VIEW INVOICE RENDERER --- */
- function renderDirectCustomerInvoice(bill) {
-  document.body.classList.add('customer-view-active');
-  const directBar = document.getElementById('customer-direct-view-bar');
-  if (directBar) directBar.style.display = 'flex';
-
-  document.getElementById('pr-name').innerText = bill.name || '-';
-  document.getElementById('pr-mobile').innerText = bill.mobile || '-';
-  document.getElementById('pr-inv').innerText = bill.invNo || '-';
-  document.getElementById('pr-inv-top').innerText = bill.invNo || '-';
-  document.getElementById('pr-date').innerText = formatDateToDMY(bill.date) || '-';
-  document.getElementById('pr-time').innerText = bill.orderTime ? `(${bill.orderTime})` : '';
-  document.getElementById('pr-delivery').innerText = formatDateToDMY(bill.delivery) || '-';
-
-  let tbody = '';
-  const items = bill.items || [];
-  items.forEach((it, idx) => {
-   tbody += `
-    <tr>
-     <td style="text-align:center; font-weight:800; color:#78350f;">${idx + 1}</td>
-     <td><strong style="font-size:13.5px; color:#0f172a;">${it.itemType}</strong></td>
-     <td style="text-align:center; font-weight:700; color:#334155;">${it.quantity}</td>
-     <td style="text-align:right; font-weight:900; color:#0f172a;">₹${(it.quantity * it.silaiRate).toFixed(2)}</td>
-    </tr>
-   `;
-  });
-  document.getElementById('pr-items-tbody').innerHTML = tbody;
-
-  const disc = parseFloat(bill.discount) || 0;
-  document.getElementById('pr-disc-row').style.display = disc > 0 ? 'table-row' : 'none';
-  document.getElementById('pr-discount').innerText = "-₹" + disc;
-
-  const extra = parseFloat(bill.extraCharges) || 0;
-  document.getElementById('pr-extra-row').style.display = extra > 0 ? 'table-row' : 'none';
-  document.getElementById('pr-extra-label').innerText = bill.extraReason ? `Extra Charges (${bill.extraReason}):` : "Extra Charges:";
-  document.getElementById('pr-extra').innerText = "₹" + extra;
-
-  const adv = parseFloat(bill.advance) || 0;
-  const pMode = bill.paymentMode || 'Cash';
-  document.getElementById('pr-subtotal').innerText = '₹' + (bill.subtotal || 0);
-  document.getElementById('pr-cloth').innerText = '₹' + (bill.clothTotal || 0);
-  document.getElementById('pr-total').innerText = '₹' + (bill.total || 0);
-  
-  if (adv > 0) {
-   document.getElementById('pr-paymode-tag').innerText = `[${pMode}]`;
-   document.getElementById('pr-paymode-tag').style.display = 'inline';
-  } else {
-   document.getElementById('pr-paymode-tag').innerText = '';
-   document.getElementById('pr-paymode-tag').style.display = 'none';
-  }
-
-  document.getElementById('pr-advance').innerText = '₹' + adv;
-  document.getElementById('pr-due').innerText = '₹' + (bill.due || 0);
- }
-
- /* --- FAST 0-SECOND CUSTOMER TABLE MODAL --- */
+ /* --- CUSTOMER TABLE MODAL ME SAMPLE PHOTO DEKHNA --- */
  async function renderCustomerTableModal() {
   const tbody = document.getElementById('modal-cust-tbody');
   let saved = customerDirectory;
@@ -2571,9 +2445,19 @@ function lockAppNow() {
    if (b.status === 'ready') badge = `<span class="status-badge st-ready">🟡 Ready</span>`;
    if (b.status === 'delivered') badge = `<span class="status-badge st-delivered">🟢 Delivered</span>`;
    if (b.status === 'unclaimed') badge = `<span class="status-badge st-unclaimed">📦 Unclaimed</span>`;
-   if (b.status === 'disposed') badge = `<span class="status-badge st-disposed">🏷️️ Disposed</span>`;
+   if (b.status === 'disposed') badge = `<span class="status-badge st-disposed">🏷 Disposed</span>`;
 
-   let actions = `<button class="btn-sm-act btn-tbl-open" onclick="loadBillFromModal('${b.invNo}')">Open</button>`;
+   // Sample photo thumbnail in customer list
+   let photoThumbHtml = '';
+   let sampleImg = null;
+   if (b.mainBillPhotos && b.mainBillPhotos.length > 0) sampleImg = b.mainBillPhotos[0];
+   else if (b.mainBillPhoto) sampleImg = b.mainBillPhoto;
+
+   if (sampleImg) {
+    photoThumbHtml = `<img src="${sampleImg}" onclick="openImageZoomModal('${sampleImg}')" style="width:34px; height:34px; object-fit:cover; border-radius:4px; border:1px solid #d97706; cursor:pointer; margin-top:3px;" title="कपड़ा सैंपल देखें">`;
+   }
+
+   let actions = `<button class="btn-sm-act btn-tbl-open" onclick="loadBillFromModal('${b.invNo}')" title="इसी बिल को बदलें/सुधारें">✏️ Edit</button>`;
    actions += `<button class="btn-sm-act btn-tbl-reuse" onclick="reuseCustomerData('${b.invNo}')" title="इसी नाप पर नया बिल बनाएं">🔄 Reuse</button>`;
    
    if (!(b.status === 'delivered' && parseFloat(b.due) <= 0)) {
@@ -2602,7 +2486,10 @@ function lockAppNow() {
     <tr>
      <td><strong>${formatDateToDMY(b.delivery)}</strong></td>
      <td><strong>${b.invNo}</strong></td>
-     <td><strong>${b.name}</strong></td>
+     <td>
+      <strong>${b.name}</strong>
+      ${photoThumbHtml}
+     </td>
      <td>${b.mobile || '-'}</td>
      <td>${badge}</td>
      <td>₹${b.total}<br><span style="color:${b.due > 0 ? '#dc2626':'#16a34a'}; font-weight:bold;">Due: ₹${b.due}</span></td>
@@ -2613,11 +2500,55 @@ function lockAppNow() {
   tbody.innerHTML = html;
  }
 
+ /* OPEN BUTTON (EDIT ORIGINAL BILL) */
+ function loadBillFromModal(invNo) {
+  const b = customerDirectory.find(x => x.invNo === invNo);
+  if (!b) return;
+
+  isEditingExistingBill = true; // EDIT MODE ON: Purana invoice lock rahega
+  document.getElementById('form-mode-title').innerHTML = `<span style="color:#dc2626;">✏️ Editing: ${b.invNo}</span>`;
+  document.getElementById('btn-save-main').innerText = `💾 Update ${b.invNo} & WhatsApp (F4)`;
+
+  document.getElementById('cust-inv').value = b.invNo;
+  document.getElementById('cust-name').value = b.name;
+  document.getElementById('cust-mobile').value = b.mobile;
+  document.getElementById('cust-date').value = b.date;
+  document.getElementById('cust-time').value = b.orderTime || getCurrentTimeString();
+  document.getElementById('cust-delivery').value = b.delivery;
+  document.getElementById('calc-cloth').value = b.clothTotal || 0;
+  document.getElementById('calc-extra').value = b.extraCharges || 0;
+  document.getElementById('calc-extra-reason').value = b.extraReason || '';
+  document.getElementById('calc-advance').value = b.advance || 0;
+  document.getElementById('calc-paymode').value = b.paymentMode || 'Cash';
+
+  if (b.mainBillPhotos && Array.isArray(b.mainBillPhotos)) {
+   renderMainBillPhotos(b.mainBillPhotos);
+  } else if (b.mainBillPhoto) {
+   renderMainBillPhotos([b.mainBillPhoto]);
+  } else {
+   renderMainBillPhotos([]);
+  }
+
+  document.getElementById('items-list-container').innerHTML = '';
+  itemCounter = 0;
+  if (b.items) b.items.forEach(it => addItemCard(it));
+  calculateTotals();
+  setupQuickContacts();
+  closeAllCustomersModal();
+
+  alert(`✓ बिल ${b.invNo} एडिट मोड में खुला है। सुधार करने के बाद Save दबाने पर इसी बिल में सेव होगा, नया बिल नहीं बनेगा!`);
+ }
+
+ /* REUSE BUTTON (NAYA BILL NUMBER BANEGA) */
  async function reuseCustomerData(invNo) {
   const b = customerDirectory.find(x => x.invNo === invNo);
   if (!b) return;
 
-  setNextConsecutiveInvoice();
+  isEditingExistingBill = false; // REUSE ME NAYA NUMBER BANEGA
+  document.getElementById('form-mode-title').innerText = "1. Customer & Bill Details";
+  document.getElementById('btn-save-main').innerText = "💾 Save Bill & Send WhatsApp (F4)";
+
+  setNextConsecutiveInvoice(); // Agla naya number
   document.getElementById('cust-name').value = b.name || '';
   document.getElementById('cust-mobile').value = b.mobile || '';
   document.getElementById('cust-date').value = getLocalTodayDate();
@@ -2643,7 +2574,7 @@ function lockAppNow() {
   setupQuickContacts();
   closeAllCustomersModal();
 
-  alert(`✓ ${b.name} का नाप लोड हो गया है और नया इनवॉइस तैयार है!`);
+  alert(`✓ ${b.name} का नाप लोड हो गया है और नया इनवॉइस (${document.getElementById('cust-inv').value}) तैयार है!`);
  }
 
  function switchCustomerTab(t) {
@@ -2660,36 +2591,6 @@ function lockAppNow() {
   document.getElementById('cust-modal').style.display = 'flex';
  }
  function closeAllCustomersModal() { document.getElementById('cust-modal').style.display = 'none'; }
-
- function loadBillFromModal(invNo) {
-  const b = customerDirectory.find(x => x.invNo === invNo);
-  if (!b) return;
-  document.getElementById('cust-inv').value = b.invNo;
-  document.getElementById('cust-name').value = b.name;
-  document.getElementById('cust-mobile').value = b.mobile;
-  document.getElementById('cust-date').value = b.date;
-  document.getElementById('cust-time').value = b.orderTime || getCurrentTimeString();
-  document.getElementById('cust-delivery').value = b.delivery;
-  document.getElementById('calc-cloth').value = b.clothTotal || 0;
-  document.getElementById('calc-extra').value = b.extraCharges || 0;
-  document.getElementById('calc-extra-reason').value = b.extraReason || '';
-  document.getElementById('calc-advance').value = b.advance || 0;
-  document.getElementById('calc-paymode').value = b.paymentMode || 'Cash';
-
-  if (b.mainBillPhotos && Array.isArray(b.mainBillPhotos)) {
-   renderMainBillPhotos(b.mainBillPhotos);
-  } else if (b.mainBillPhoto) {
-   renderMainBillPhotos([b.mainBillPhoto]);
-  } else {
-   renderMainBillPhotos([]);
-  }
-
-  document.getElementById('items-list-container').innerHTML = '';
-  itemCounter = 0;
-  if (b.items) b.items.forEach(it => addItemCard(it));
-  calculateTotals();
-  closeAllCustomersModal();
- }
 
  async function deleteBillFromModal(invNo) {
   if (!confirm(`क्या आप सच में बिल ${invNo} हटाना चाहते हैं?`)) return;
@@ -2717,8 +2618,36 @@ function lockAppNow() {
   });
  }
 
- /* KEYBOARD NAVIGATION (ENTER -> NEXT, SHIFT+ENTER -> PREV) */
+ /* --- COMPLETE KEYBOARD WORKFLOW (PC BINA MOUSE KE) --- */
  document.addEventListener('keydown', (e) => {
+  // ESCAPE -> Close All Modals
+  if (e.key === 'Escape') {
+   document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+   return;
+  }
+
+  // F2 -> Add Garment
+  if (e.key === 'F2') {
+   e.preventDefault();
+   addItemCardSmart();
+   return;
+  }
+
+  // F4 ya Ctrl+S -> Save Bill
+  if (e.key === 'F4' || (e.ctrlKey && e.key.toLowerCase() === 's')) {
+   e.preventDefault();
+   saveCurrentBill(false);
+   return;
+  }
+
+  // F8 -> Open Customers Queue
+  if (e.key === 'F8') {
+   e.preventDefault();
+   openAllCustomersModal();
+   return;
+  }
+
+  // ENTER / SHIFT+ENTER Navigation
   if (e.key === 'Enter') {
    const active = document.activeElement;
    if (active && (active.tagName === 'INPUT' || active.tagName === 'SELECT')) {
@@ -2734,7 +2663,6 @@ function lockAppNow() {
   }
  });
 
- // Real-time Draft Listener
  document.addEventListener('input', autoSaveCurrentDraft);
 
  window.addEventListener('DOMContentLoaded', async () => {
@@ -2743,49 +2671,13 @@ function lockAppNow() {
   document.getElementById('cust-date').value = getLocalTodayDate();
   document.getElementById('cust-time').value = getCurrentTimeString();
   
-  const urlParams = new URLSearchParams(window.location.search);
-  const targetInv = urlParams.get('inv');
-
-  if (targetInv) {
-   document.body.classList.add('customer-view-active');
-   document.getElementById('customer-direct-view-bar').style.display = 'flex';
-   document.getElementById('invoice-print-view').style.display = 'block';
-   document.getElementById('pr-name').innerText = "लोड हो रहा है...";
-
-   try {
-    const querySnapshot = await window.getDocs(window.collection(window.db, "shiv_shakti_bills"));
-    let foundBill = null;
-    querySnapshot.forEach((docSnap) => {
-     const data = docSnap.data();
-     if (data.invNo === targetInv) {
-      foundBill = data;
-     }
-    });
-
-    if (foundBill) {
-     renderDirectCustomerInvoice(foundBill);
-     return;
-    } else {
-     alert("यह बिल (Invoice No: " + targetInv + ") नहीं मिला!");
-    }
-   } catch (e) {
-    alert("क्लाउड से बिल लोड करने में समस्या: " + e.message);
-   }
-   return;
-  }
-
-  // Normal App Load (0-Second Local First)
   customerDirectory = await getSavedBills();
   setNextConsecutiveInvoice();
   updateDeliveryAlertsCounts();
   
-  // Default first garment
   addItemCard();
-  
-  // Restore unfinished work if browser closed
   restoreActiveDraft();
 
-  // Background cloud sync
   refreshCustomerDirectory();
   runAutomaticFollowUpEngine();
  });
