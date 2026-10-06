@@ -2252,6 +2252,7 @@ function lockAppNow() {
   setTimeout(() => window.print(), 120);
  }
 
+ /* --- NAAP PARCHI: SERIAL-WISE BADA GRID AUR CLEAR WATERMARK --- */
  async function generateAndPrintSlips() {
   const invNo = document.getElementById('cust-inv').value;
   if (invNo) {
@@ -2265,46 +2266,78 @@ function lockAppNow() {
   container.innerHTML = '';
 
   items.forEach((it) => {
-   let measuresHtml = '<div style="flex:1; display:flex; flex-direction:column; gap:3px;">';
+   // 1. नाप को 3 कॉलम की चौड़ी ग्रिड में बड़े अक्षरों के साथ सेट करना
+   let measuresHtml = '<div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px 12px; margin:10px 0; width:100%;">';
    it.measures.forEach(m => {
-    measuresHtml += `<div style="font-size:13px; font-weight:800;">${m.name}: <span style="color:#b45309;">${m.val}</span></div>`;
+    measuresHtml += `
+      <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:6px; padding:6px 10px; font-size:15px; font-weight:800; display:flex; justify-content:space-between; align-items:center;">
+        <span>${m.name}:</span>
+        <span style="color:#b45309; font-size:18px; font-weight:900;">${m.val}</span>
+      </div>`;
    });
    it.customMeasures.forEach(cm => {
-    measuresHtml += `<div style="font-size:13px; font-weight:800; color:#7c3aed;">${cm.name}: <span>${cm.val}</span></div>`;
+    measuresHtml += `
+      <div style="background:#f8fafc; border:1.5px solid #c084fc; border-radius:6px; padding:6px 10px; font-size:15px; font-weight:800; display:flex; justify-content:space-between; align-items:center;">
+        <span>${cm.name}:</span>
+        <span style="color:#7c3aed; font-size:18px; font-weight:900;">${cm.val}</span>
+      </div>`;
    });
    measuresHtml += '</div>';
 
+   // 2. स्केच या फ़ोटो में से सिर्फ एक ही दिखेगा (जगह बचाने के लिए)
    let visualHtml = '';
    if (it.sketchImage) {
-    visualHtml += `<img src="${it.sketchImage}" class="slip-raw-sketch-img" style="max-height:180px;">`;
-   }
-   if (it.images && it.images.length > 0) {
-    visualHtml += `<div class="slip-photos-grid">`;
-    it.images.forEach(b64 => { visualHtml += `<div class="slip-photo-box"><img src="${b64}"></div>`; });
+    visualHtml = `<div style="text-align:center; margin-top:6px;"><img src="${it.sketchImage}" style="max-height:110px; max-width:100%; object-fit:contain; border:1.5px solid #cbd5e1; border-radius:6px;"></div>`;
+   } else if (it.images && it.images.length > 0) {
+    visualHtml = `<div style="display:flex; gap:8px; margin-top:6px; justify-content:center;">`;
+    it.images.forEach(b64 => { 
+      visualHtml += `<img src="${b64}" style="width:75px; height:75px; object-fit:cover; border-radius:6px; border:1.5px solid #cbd5e1;">`; 
+    });
     visualHtml += `</div>`;
    }
 
-   const optsText = it.options && it.options.length ? `<div style="font-size:11.5px; font-weight:bold; color:#1e3a8a; margin-top:4px;"><strong>डिज़ाइन:</strong> ${it.options.join(', ')}</div>` : '';
+   const optsText = it.options && it.options.length ? `<div style="font-size:13px; font-weight:800; color:#1e3a8a; margin-top:4px;"><strong>डिज़ाइन:</strong> ${it.options.join(', ')}</div>` : '';
 
    const slipDiv = document.createElement('div');
    slipDiv.className = 'slip-a6-page';
+   slipDiv.style.cssText = "position:relative; overflow:hidden; border:2px dashed #d97706; border-radius:8px; padding:10px 14px; margin-bottom:12px; background:#fff; min-height:125mm; display:flex; flex-direction:column; justify-content:space-between;";
+
    slipDiv.innerHTML = `
-    <img class="slip-watermark-img" src="https://i.ibb.co/B5rFfmFp/1790442552939.png" alt="Slip Watermark[span_9](start_span)"[span_9](end_span)>
-    <div style="position:relative; z-index:1;">
-     <div style="display:flex; justify-content:space-between; border-bottom:1.5px solid #d97706; padding-bottom:4px;">
-      <div><strong style="color:#78350f; font-size:14px;">SHIV SHAKTI SMART TAILOR</strong><br><small>📞 9662232193</small></div>
-      <div style="text-align:right;"><strong style="font-size:16px; color:#b45309;">${invNo}</strong><br><small>डिलिवरी: <strong>${deliveryDate}</strong></small></div>
+    <!-- साफ़ दिखने वाला वॉटरमार्क (Opacity 0.28) -->
+    <img src="https://i.ibb.co/B5rFfmFp/1790442552939.png" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:280px; height:280px; opacity:0.28; pointer-events:none; z-index:0;" alt="Watermark">
+    
+    <div style="position:relative; z-index:1; height:100%; display:flex; flex-direction:column; justify-content:space-between;">
+     
+     <!-- हेडर: दुकान का नाम, इनवॉइस और डिलीवरी डेट -->
+     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2.5px solid #d97706; padding-bottom:6px;">
+      <div>
+        <strong style="color:#78350f; font-size:16px; letter-spacing:0.5px;">SHIV SHAKTI SMART TAILOR</strong>
+        <span style="font-size:12px; color:#64748b; font-weight:bold; margin-left:6px;">(Mo: 9662232193)</span>
+      </div>
+      <div>
+        <strong style="font-size:16px; color:#b45309;">${invNo}</strong> | 
+        डिलिवरी: <strong style="color:#dc2626; font-size:15px;">${deliveryDate}</strong>
+      </div>
      </div>
-     <div style="display:flex; justify-content:space-between; background:#fffdf5; border:1px solid #fef3c7; padding:4px 8px; margin:6px 0; font-size:13px;">
-      <span>ग्राहक: <strong style="color:#0f172a;">${name}</strong></span>
-      <span style="color:#78350f; font-weight:900;">${it.itemType} (Qty: ${it.quantity})</span>
+
+     <!-- ग्राहक का नाम और आइटम (बड़ा फॉन्ट) -->
+     <div style="display:flex; justify-content:space-between; align-items:center; background:#fffdf5; border:1.5px solid #fef3c7; border-radius:6px; padding:6px 10px; margin:6px 0; font-size:16px;">
+      <span>ग्राहक: <strong style="color:#0f172a; font-size:17px;">${name}</strong></span>
+      <span style="color:#78350f; font-weight:900; font-size:16px;">${it.itemType} (Qty: ${it.quantity})</span>
      </div>
-     <div style="display:flex; gap:12px;">
+
+     <!-- 3 कॉलम में फैले हुए नाप -->
+     <div style="flex:1;">
       ${measuresHtml}
-      ${visualHtml ? `<div style="flex:1;">${visualHtml}</div>` : ''}
+      ${visualHtml}
      </div>
-     ${optsText}
-     ${it.notes ? `<div style="margin-top:6px; background:#fffbeb; padding:4px; font-size:11.5px; border-left:3px solid #b45309;"><strong>नोट:</strong> ${it.notes}</div>` : ''}
+
+     <!-- डिज़ाइन और नोट -->
+     <div style="border-top:1.5px solid #e2e8f0; padding-top:4px; margin-top:4px;">
+      ${optsText}
+      ${it.notes ? `<div style="font-size:12px; font-weight:bold; background:#fffbeb; padding:4px 8px; border-left:4px solid #b45309; margin-top:4px;"><strong>कारीगर नोट:</strong> ${it.notes}</div>` : ''}
+     </div>
+
     </div>
    `;
    container.appendChild(slipDiv);
