@@ -465,55 +465,110 @@
   font-weight: 800; 
   text-transform: uppercase; 
   font-size: 11.5px;
- }
- .color-table td { 
-  padding: 10px 8px; 
-  border-bottom: 1px solid rgba(217, 119, 6, 0.15); 
-  color: #0f172a; 
- }
+/* 1. MAIN BILL: A5 PORTRAIT WITH LARGE BOLD LETTERS */
+  body.mode-invoice-color {
+    @page { size: A5 portrait; margin: 4mm 6mm; }
+  }
 
- .inv-summary-layout { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: flex-end; 
-  margin-top: 14px; 
-  border-top: 1.5px solid #d97706; 
-  padding-top: 12px; 
- }
- .terms-note { 
-  width: 52%; 
-  font-size: 10.5px; 
-  border: 1px dashed #d97706; 
-  padding: 9px 12px; 
-  border-radius: 6px; 
-  line-height: 1.45; 
-  color: #451a03; 
-  background: #fffdf5; 
- }
- 
- .color-totals-table { 
-  width: 44%; 
-  border-collapse: collapse; 
-  font-size: 13px; 
-  margin-left: auto; 
-  border: 1px solid #d97706; 
-  background: #ffffff; 
-  border-radius: 6px; 
-  overflow: hidden; 
- }
- .color-totals-table td { padding: 7px 10px; border-bottom: 1px solid #fef3c7; }
+  body.mode-invoice-color #invoice-print-view {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    font-size: 16px !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 
- body.customer-view-active .app-container,
- body.customer-view-active .modal-overlay { display: none !important; }
- body.customer-view-active #invoice-print-view {
-  display: block !important;
-  max-width: 800px;
-  margin: 0 auto;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  border-radius: 8px;
- }
-</style>
-</head>
+  .color-inv-wrapper {
+    border: 2px solid #d97706 !important;
+    border-radius: 8px !important;
+    min-height: 195mm !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 10px 14px !important;
+    position: relative !important;
+    background: #ffffff !important;
+  }
+
+  .inv-watermark-img {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 320px !important;
+    height: 320px !important;
+    opacity: 0.22 !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+  }
+
+  .color-inv-header {
+    border-bottom: 2.5px solid #d97706 !important;
+    padding-bottom: 8px !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  .color-inv-header h2 {
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: #78350f !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .inv-meta-grid {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    padding: 10px 14px !important;
+    margin: 10px 0 !important;
+    border-left: 6px solid #d97706 !important;
+    background: #fffdf7 !important;
+    line-height: 1.6 !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  .inv-meta-grid strong {
+    font-size: 18px !important;
+    color: #0f172a !important;
+  }
+
+  .color-table th {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    padding: 10px 12px !important;
+    background: #fffbeb !important;
+    color: #78350f !important;
+  }
+
+  .color-table td {
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    padding: 12px !important;
+    color: #0f172a !important;
+  }
+
+  .color-totals-table {
+    font-size: 16.5px !important;
+    font-weight: 800 !important;
+  }
+
+  .color-totals-table td {
+    padding: 8px 12px !important;
+  }
+
+  .color-totals-table tr:last-child td {
+    font-size: 18.5px !important;
+    font-weight: 900 !important;
+    color: #dc2626 !important;
+  }
+
+  .terms-note {
+    font-size: 11.5px !important;
+    line-height: 1.45 !important;
+  }
 <body>
 
 <!-- LOGIN SCREEN OVERLAY -->
