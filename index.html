@@ -278,47 +278,95 @@
    opacity: 0.22 !important;
   }
 
+  /* 2. NAAP PARCHI: A5 PAPER ME 2 PARCHIYAN (A6 LANDSCAPE EACH) */
+  body.mode-slips {
+    @page { size: A5 portrait; margin: 5mm; }
+  }
+
   body.mode-slips #slips-print-view {
-   display: block !important;
-   width: 100%;
-   box-sizing: border-box;
-   -webkit-print-color-adjust: exact !important;
-   print-color-adjust: exact !important;
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .slip-a6-page {
-   width: 100%;
-   min-height: 135mm;
-   padding: 6mm 10mm;
-   box-sizing: border-box;
-   border-bottom: 1.5px dashed #d97706;
-   page-break-inside: avoid;
-   display: flex;
-   flex-direction: column;
-   justify-content: space-between;
-   position: relative;
-   background: #ffffff;
+    width: 100% !important;
+    height: 130mm !important;
+    max-height: 130mm !important;
+    padding: 6mm 8mm !important;
+    box-sizing: border-box !important;
+    border: 2px dashed #d97706 !important;
+    border-radius: 8px !important;
+    margin-bottom: 5mm !important;
+    page-break-inside: avoid !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    position: relative !important;
+    background: #ffffff !important;
+    overflow: hidden !important;
+  }
+
+  .slip-header-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 3px solid #d97706 !important;
+    padding-bottom: 6px !important;
+  }
+
+  .slip-cust-bar {
+    display: flex !important;
+    justify-content: space-between !important;
+    background: #fffdf5 !important;
+    border: 1.5px solid #fef3c7 !important;
+    padding: 6px 10px !important;
+    margin: 6px 0 !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+  }
+
+  .slip-measures-spread {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px 12px !important;
+    margin: 8px 0 !important;
+    flex: 1 !important;
+  }
+
+  .slip-measure-pill {
+    background: #f8fafc !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+  .slip-measure-pill span {
+    color: #b45309 !important;
+    font-size: 17px !important;
   }
 
   .slip-watermark-img {
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   width: 270px;
-   height: 270px;
-   opacity: 0.28 !important;
-   pointer-events: none;
-   z-index: 0;
-   object-fit: contain;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 300px !important;
+    height: 300px !important;
+    opacity: 0.15 !important;
+    pointer-events: none !important;
   }
 
-  .slip-raw-sketch-img { width: 100% !important; max-height: 280px !important; object-fit: contain !important; margin: 4px 0 !important; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; }
-  .slip-photos-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-  .slip-photo-box { width: 100px; height: 100px; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; }
-  .slip-photo-box img { width: 100%; height: 100%; object-fit: cover; }
+  .slip-raw-sketch-img {
+    max-height: 120px !important;
+    object-fit: contain !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 6px !important;
  }
-
  .color-inv-wrapper { 
   border: 1.5px solid #d97706; 
   border-radius: 10px; 
