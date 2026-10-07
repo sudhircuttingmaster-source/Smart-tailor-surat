@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Shiv Shakti Smart Tailor - Pro Billing & Automation</title>
 <!-- Real Mobile App Icon & PWA Manifest -->
-<link rel="icon" type="image/png" href="https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png">
-<link rel="apple-touch-icon" href="https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png">
+<link rel="icon" type="image/png" href="https://i.ibb.co/XZXxTVSW/1791269054414.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/XZXxTVSW/1791269054414.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#18181b">
 
 <!-- PWA Manifest Data for Android Home Screen -->
-<link rel="manifest" href='data:application/manifest+json,{"name":"Smart Tailor","short_name":"Smart Tailor","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#18181b","icons":[{"src":"https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png","sizes":"192x192","type":"image/png"},{"src":"https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png","sizes":"512x512","type":"image/png"}]}'>
+<link rel="manifest" href='data:application/manifest+json,{"name":"Smart Tailor","short_name":"Smart Tailor","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#18181b","icons":[{"src":"https://i.ibb.co/XZXxTVSW/1791269054414.png","sizes":"192x192","type":"image/png"},{"src":"https://i.ibb.co/XZXxTVSW/1791269054414.png","sizes":"512x512","type":"image/png"}]}'>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -76,12 +76,37 @@
   .app-container { max-width: 96% !important; padding: 26px; }
  }
  
- .shop-banner { text-align: center; background: #18181b; color: white; padding: 20px 14px; border-radius: 10px; margin-bottom: 14px; border: 2px solid #27272a; position: relative; }
- .shop-badge { display: inline-block; background: #dc2626; color: white; font-size: 11.5px; font-weight: 800; padding: 4px 16px; border-radius: 20px; text-transform: uppercase; margin-bottom: 6px; }
- .shop-banner h1 { font-size: 26px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; }
- .shop-banner .tagline { font-size: 11.5px; font-weight: 700; color: #facc15; text-transform: uppercase; margin-bottom: 8px; }
+ .shop-banner { text-align: center; background: #18181b; color: white; padding: 22px 14px; border-radius: 10px; margin-bottom: 14px; border: 2px solid #27272a; position: relative; }
+ .banner-brand-box { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; }
+ .shop-badge { display: inline-block; background: #dc2626; color: white; font-size: 11px; font-weight: 900; padding: 3px 18px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; box-shadow: 0 2px 6px rgba(220,38,38,0.4); }
+ 
+ /* विजिटिंग कार्ड की तरह अतिरिक्त बोल्ड और एम्बॉस्ड स्टाइल */
+ .brand-title-heavy {
+  font-family: "Impact", "Arial Black", sans-serif;
+  font-size: 38px;
+  font-weight: 950;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.05;
+  text-shadow: 2px 2px 0px #000, 3px 3px 4px rgba(0,0,0,0.6);
+ }
+ 
+ .brand-tagline-contained {
+  font-size: 11px;
+  font-weight: 900;
+  color: #facc15;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: justify;
+  text-align-last: justify;
+  letter-spacing: 0.8px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+ }
+
  .shop-banner p { font-size: 12px; opacity: 0.9; color: #e4e4e7; }
- .shop-banner .contact-info { margin-top: 6px; font-weight: 700; font-size: 13px; color: #93c5fd; }
+ .shop-banner .contact-info { margin-top: 6px; font-weight: 700; font-size: 13.5px; color: #93c5fd; }
  
  .banner-btns { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
  .btn-top-rate { background: #2563eb; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
@@ -96,6 +121,7 @@
  .card-today { background: #fefce8; border-color: #facc15; color: #854d0e; }
  .card-tomorrow { background: #f0f9ff; border-color: #7dd3fc; color: #075985; }
  .card-ready { background: #fef9c3; border-color: #eab308; color: #a16207; }
+ .card-unclaimed { background: #f1f5f9; border-color: #94a3b8; color: #334155; }
  .alert-card .count { font-size: 22px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
  .alert-card .label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; }
 
@@ -222,222 +248,101 @@
  .st-unclaimed { background: #e2e8f0; color: #475569; border: 1px solid #94a3b8; }
  .st-disposed { background: #f43f5e; color: #fff; }
 
- #app-lock-overlay { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 99999; justify-content: center; align-items: center; padding: 16px; }
- .lock-card { background: #ffffff; width: 100%; max-width: 360px; padding: 26px 20px; border-radius: 14px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
-
  #invoice-print-view, #slips-print-view { display: none; }
 
+/* ============================================================ */
+ /* A5 EXACT 1-PAGE FIT FOR BILL & SLIPS                         */
+ /* ============================================================ */
  @media print {
   body { background: white !important; padding: 0 !important; margin: 0 !important; }
   .app-container, .modal-overlay, #app-lock-overlay, #customer-direct-view-bar { display: none !important; }
-  @page { size: A4 portrait; margin: 6mm 8mm; }
 
+  /* 1. बिल प्रिंट: A5 Portrait में ठीक 1 पेज (कोई दूसरा पेज नहीं बनेगा) */
+  body.mode-invoice-color {
+   @page { size: A5 portrait; margin: 3mm 4mm; }
+  }
   body.mode-invoice-color #invoice-print-view {
    display: block !important;
    width: 100% !important;
+   height: 185mm !important;
+   max-height: 185mm !important;
    box-sizing: border-box !important;
-   font-size: 12px !important;
+   font-size: 11.5px !important;
    color: #0f172a !important;
    -webkit-print-color-adjust: exact !important;
    print-color-adjust: exact !important;
+   page-break-after: avoid !important;
+   page-break-inside: avoid !important;
+   overflow: hidden !important;
   }
 
-  /* लोगो को 72px पर सख्ती से लॉक रखने के लिए */
-  .inv-header-logo-badge {
-   width: 72px !important;
-   height: 72px !important;
-   max-width: 72px !important;
-   max-height: 72px !important;
-   min-width: 72px !important;
-   min-height: 72px !important;
-   border-radius: 50% !important;
-   object-fit: cover !important;
-   display: block !important;
-   flex-shrink: 0 !important;
-  }
-
-  .color-inv-header {
-   padding: 10px 14px !important;
-   display: flex !important;
-   justify-content: space-between !important;
-   align-items: center !important;
-   border-bottom: 2px solid #d97706 !important;
-   background: #fffdf5 !important;
-  }
-
-  .staple-target-box {
-   width: 75px !important;
-   height: 55px !important;
-   border: 1px dashed #d97706 !important;
-   font-size: 8.5px !important;
-  }
-
-  .inv-watermark-img {
-   width: 380px !important;
-   height: 380px !important;
-   opacity: 0.22 !important;
-  }
-
-  /* 2. NAAP PARCHI: A5 PAPER ME 2 PARCHIYAN (A6 LANDSCAPE EACH) */
+  /* 2. नाप पर्ची प्रिंट: A5 Landscape में 2 पर्चियाँ */
   body.mode-slips {
-    @page { size: A5 portrait; margin: 5mm; }
+   @page { size: A5 landscape; margin: 3mm 4mm; }
   }
-
   body.mode-slips #slips-print-view {
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
+   display: block !important;
+   width: 100% !important;
+   box-sizing: border-box !important;
+   -webkit-print-color-adjust: exact !important;
+   print-color-adjust: exact !important;
   }
-
-  .slip-a6-page {
-    width: 100% !important;
-    height: 130mm !important;
-    max-height: 130mm !important;
-    padding: 6mm 8mm !important;
-    box-sizing: border-box !important;
-    border: 2px dashed #d97706 !important;
-    border-radius: 8px !important;
-    margin-bottom: 5mm !important;
-    page-break-inside: avoid !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    position: relative !important;
-    background: #ffffff !important;
-    overflow: hidden !important;
-  }
-
-  .slip-header-row {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    border-bottom: 3px solid #d97706 !important;
-    padding-bottom: 6px !important;
-  }
-
-  .slip-cust-bar {
-    display: flex !important;
-    justify-content: space-between !important;
-    background: #fffdf5 !important;
-    border: 1.5px solid #fef3c7 !important;
-    padding: 6px 10px !important;
-    margin: 6px 0 !important;
-    font-size: 16px !important;
-    font-weight: 800 !important;
-  }
-
-  .slip-measures-spread {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 8px 12px !important;
-    margin: 8px 0 !important;
-    flex: 1 !important;
-  }
-
-  .slip-measure-pill {
-    background: #f8fafc !important;
-    border: 1.5px solid #cbd5e1 !important;
-    border-radius: 6px !important;
-    padding: 6px 10px !important;
-    font-size: 15px !important;
-    font-weight: 800 !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-  }
-  .slip-measure-pill span {
-    color: #b45309 !important;
-    font-size: 17px !important;
-  }
-
-  .slip-watermark-img {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 300px !important;
-    height: 300px !important;
-    opacity: 0.15 !important;
-    pointer-events: none !important;
-  }
-
-  .slip-raw-sketch-img {
-    max-height: 120px !important;
-    object-fit: contain !important;
-    border: 1.5px solid #cbd5e1 !important;
-    border-radius: 6px !important;
  }
+
+ /* A5 बिल का मुख्य बॉक्स (ऊँचाई 200mm पर लॉक) */
  .color-inv-wrapper { 
-  border: 1.5px solid #d97706; 
-  border-radius: 10px; 
-  min-height: 275mm; 
+  border: 1.5px solid #b91c1c; 
+  border-radius: 6px; 
+  height: 188mm !important; 
+  max-height: 188mm !important;
   display: flex; 
   flex-direction: column; 
   justify-content: space-between; 
   background: #ffffff; 
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
  }
 
  .inv-watermark-img {
   position: absolute;
-  top: 52%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 480px;
-  height: 480px;
-  opacity: 0.25;
+  width: 260px;
+  height: 260px;
+  opacity: 0.12;
   pointer-events: none;
   z-index: 0;
   object-fit: contain;
  }
 
  .color-inv-header { 
-  padding: 12px 18px; 
+  padding: 6px 10px; 
   display: flex; 
   justify-content: space-between; 
   align-items: center; 
-  border-bottom: 2px solid #d97706; 
+  border-bottom: 2px solid #b91c1c; 
   position: relative;
   z-index: 1;
   background: #fffdf5 !important;
  }
 
  .inv-header-logo-badge {
-  width: 72px !important;
-  height: 72px !important;
-  max-width: 72px !important;
-  max-height: 72px !important;
-  min-width: 72px !important;
-  min-height: 72px !important;
+  width: 62px !important;
+  height: 62px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
-  border: 1.5px solid #d97706;
+  border: 1.5px solid #dc2626;
   flex-shrink: 0 !important;
- }
-
- .staple-target-box {
-  width: 85px;
-  height: 65px;
-  border: 1px dashed #d97706;
-  border-radius: 6px;
-  background: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 9.5px;
-  color: #78350f;
-  font-weight: 800;
-  padding: 4px;
  }
  
  .inv-body { 
-  padding: 16px 20px; 
+  padding: 6px 10px; 
   flex: 1; 
   display: flex; 
   flex-direction: column; 
+  justify-content: space-between;
   position: relative;
   z-index: 1;
  }
@@ -446,135 +351,85 @@
   display: flex; 
   justify-content: space-between; 
   background: #fffdf7; 
-  border: 1px solid #fef3c7; 
-  border-left: 4px solid #d97706;
-  border-radius: 6px; 
-  padding: 10px 14px; 
-  margin-bottom: 14px; 
-  font-size: 13px;
+  border: 1px solid #fee2e2; 
+  border-left: 4px solid #b91c1c; 
+  border-radius: 4px; 
+  padding: 5px 8px; 
+  margin-bottom: 6px; 
+  font-size: 11.5px;
  }
 
- .table-container-stretch { flex: 1; display: flex; flex-direction: column; }
- .color-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+ .table-container-stretch {
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ min-height: 40px !important;
+ max-height: 70mm !important;
+ overflow: hidden !important;
+ margin-bottom: 4px;
+}
+ 
+ .color-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
  .color-table th { 
-  background: #fffbeb !important; 
-  color: #78350f; 
-  border-bottom: 1.5px solid #d97706; 
-  border-top: 1px solid #fef3c7; 
-  padding: 10px 8px; 
-  font-weight: 800; 
+  background: #fff1f2 !important; 
+  color: #991b1b; 
+  border-bottom: 1.5px solid #b91c1c; 
+  padding: 5px 4px; 
+  font-weight: 900; 
   text-transform: uppercase; 
-  font-size: 11.5px;
-/* 1. MAIN BILL: A5 PORTRAIT WITH LARGE BOLD LETTERS */
-  body.mode-invoice-color {
-    @page { size: A5 portrait; margin: 4mm 6mm; }
-  }
+  font-size: 11px;
+ }
+ .color-table td { 
+  padding: 5px 4px; 
+  border-bottom: 1px solid rgba(185, 28, 28, 0.15); 
+  color: #0f172a; 
+ }
 
-  body.mode-invoice-color #invoice-print-view {
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    font-size: 16px !important;
-    color: #0f172a !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  .color-inv-wrapper {
-    border: 2px solid #d97706 !important;
-    border-radius: 8px !important;
-    min-height: 195mm !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    padding: 10px 14px !important;
-    position: relative !important;
-    background: #ffffff !important;
-  }
-
-  .inv-watermark-img {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 320px !important;
-    height: 320px !important;
-    opacity: 0.22 !important;
-    pointer-events: none !important;
-    z-index: 0 !important;
-  }
-
-  .color-inv-header {
-    border-bottom: 2.5px solid #d97706 !important;
-    padding-bottom: 8px !important;
-    position: relative !important;
-    z-index: 1 !important;
-  }
-
-  .color-inv-header h2 {
-    font-size: 24px !important;
-    font-weight: 900 !important;
-    color: #78350f !important;
-    letter-spacing: 0.5px !important;
-  }
-
-  .inv-meta-grid {
-    font-size: 16px !important;
-    font-weight: 800 !important;
-    padding: 10px 14px !important;
-    margin: 10px 0 !important;
-    border-left: 6px solid #d97706 !important;
-    background: #fffdf7 !important;
-    line-height: 1.6 !important;
-    position: relative !important;
-    z-index: 1 !important;
-  }
-
-  .inv-meta-grid strong {
-    font-size: 18px !important;
-    color: #0f172a !important;
-  }
-
-  .color-table th {
-    font-size: 16px !important;
-    font-weight: 800 !important;
-    padding: 10px 12px !important;
-    background: #fffbeb !important;
-    color: #78350f !important;
-  }
-
-  .color-table td {
-    font-size: 17px !important;
-    font-weight: 900 !important;
-    padding: 12px !important;
-    color: #0f172a !important;
-  }
-
-  .color-totals-table {
-    font-size: 16.5px !important;
-    font-weight: 800 !important;
-  }
-
-  .color-totals-table td {
-    padding: 8px 12px !important;
-  }
-
-  .color-totals-table tr:last-child td {
-    font-size: 18.5px !important;
-    font-weight: 900 !important;
-    color: #dc2626 !important;
-  }
-
-  .terms-note {
-    font-size: 11.5px !important;
-    line-height: 1.45 !important;
-  }
-  }
+ .inv-summary-layout { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-end; 
+  border-top: 1.5px solid #b91c1c; 
+  padding-top: 5px; 
+ }
+ 
+ .terms-note { 
+  width: 53%; 
+  font-size: 9.5px; 
+  border: 1px dashed #b91c1c; 
+  padding: 5px 6px; 
+  border-radius: 4px; 
+  line-height: 1.3; 
+  color: #451a03; 
+  background: #fffdf5; 
+ }
+ 
+ .color-totals-table { 
+  width: 44%; 
+  border-collapse: collapse; 
+  font-size: 11.5px; 
+  margin-left: auto; 
+  border: 1.5px solid #b91c1c; 
+  background: #ffffff; 
+  border-radius: 4px; 
+  overflow: hidden; 
+ }
+ .color-totals-table td { padding: 3px 6px; border-bottom: 1px solid #fee2e2; }
+ 
+ body.customer-view-active .app-container,
+ body.customer-view-active .modal-overlay { display: none !important; }
+ body.customer-view-active #invoice-print-view {
+  display: block !important;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border-radius: 8px;
+ }
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN OVERLAY -->
+<!-- LOGIN OVERLAY -->
 <div id="app-lock-overlay" style="display:flex; position:fixed; top:0; left:0; width:100%; height:100%; background:#0f172a; z-index:99999; justify-content:center; align-items:center; padding:16px;">
  <div class="lock-card" style="background:#ffffff; width:100%; max-width:360px; padding:26px 20px; border-radius:14px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.4);">
   <div style="font-size:34px; margin-bottom:8px;">🔒</div>
@@ -613,19 +468,22 @@
 </div>
 
 <div class="app-container">
+ <!-- SHOP BANNER -->
  <div class="shop-banner">
   <div class="banner-btns">
    <button type="button" class="btn-top-rate" onclick="openRateSettingsModal()">⚙️ Rates</button>
    <button type="button" class="btn-top-lock" onclick="lockAppNow()">🚪 Lock</button>
   </div>
-  <div class="shop-badge">Shiv Shakti</div>
-  <h1>Smart Tailor</h1>
-  <div class="tagline">All Type Of Clothes And Stitching</div>
+  <div class="banner-brand-box">
+   <div class="shop-badge">SHIV SHAKTI</div>
+   <div class="brand-title-heavy">SMART TAILOR</div>
+   <div class="brand-tagline-contained">ALL TYPE OF CLOTHES AND STITCHING</div>
+  </div>
   <p>Plot no-40 mahalaxmi soc Gurudutt point side road dindoli surat Pin-394210</p>
   <div class="contact-info">📞 Mo: 9662232193 / 6351325425</div>
  </div>
 
- <!-- Delivery & Alerts Tracker -->
+ <!-- ALERTS TRACKER -->
  <div class="delivery-alerts-panel">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
    <strong style="font-size:12.5px; color:#1e3a8a;">🔔 डिलीवरी व बकाया पेमेंट ट्रैकर (Live Tracker)</strong>
@@ -634,11 +492,11 @@
   <div class="alerts-grid">
    <div class="alert-card card-delivered-due" onclick="openAllCustomersModal('delivered_due')">
     <span class="count" id="count-delivered-due">₹0</span>
-    <span class="label">🔴 कपड़े ले गए (Delivered Due)</span>
+    <span class="label">🔴 कपड़े ले गए (Due)</span>
    </div>
    <div class="alert-card card-overdue" onclick="openAllCustomersModal('overdue')">
     <span class="count" id="count-overdue">0</span>
-    <span class="label">🚨 लेट ऑर्डर्स (Overdue)</span>
+    <span class="label">🚨 लेट ऑर्डर्स</span>
    </div>
    <div class="alert-card card-today" onclick="openAllCustomersModal('today')">
     <span class="count" id="count-today">0</span>
@@ -745,7 +603,7 @@
    <input type="number" id="calc-extra" value="0" oninput="calculateTotals()" placeholder="0" style="background:#faf5ff; color:#7c3aed; font-weight:bold;">
   </div>
   <div class="form-group" style="grid-column: span 1.5;">
-   <label style="color:#7c3aed;">Extra Charge Reason</label>
+   <label style="color:#7c3aed;">Extra Reason</label>
    <input type="text" id="calc-extra-reason" placeholder="उदा: Urgent, Button..." style="background:#faf5ff; font-size:12.5px; font-weight:600;">
   </div>
   <div class="form-group">
@@ -773,13 +631,111 @@
  <div class="btn-action-panel">
   <button type="button" class="btn-act btn-save" id="btn-save-main" onclick="saveCurrentBill(false)">💾 Save Bill & Send WhatsApp (F4)</button>
   <button type="button" class="btn-act btn-print-merged" onclick="generateAndPrintMergedBill()">🖨️ Print / PDF Bill</button>
-  <button type="button" class="btn-act btn-slip" onclick="generateAndPrintSlips()">✂️ Print Slips</button>
+  <button type="button" class="btn-act btn-slip" onclick="generateAndPrintSlips()">✂️ Print Slips (A5)</button>
   <button type="button" class="btn-toggle-list btn-act" onclick="openAllCustomersModal()">👥 Customers Queue (F8)</button>
   <button type="button" class="btn-act btn-broadcast" onclick="openBroadcastModal()">📢 Bulk Marketing</button>
   <button type="button" class="btn-backup" onclick="exportDataBackup()">📥 Backup File</button>
   <button type="button" class="btn-act btn-new" onclick="startNewBill()">📄 New Bill</button>
  </div>
 </div>
+
+<!-- ============================================== -->
+<!-- PRINT INVOICE VIEW (No Staple Box, Centered)  -->
+<!-- ============================================== -->
+<div id="invoice-print-view">
+ <div class="color-inv-wrapper">
+  <img class="inv-watermark-img" src="https://i.ibb.co/XZXxTVSW/1791269054414.png" alt="Watermark">
+
+  <div class="color-inv-header">
+   <!-- Left: Logo Badge -->
+   <img src="https://i.ibb.co/XZXxTVSW/1791269054414.png" alt="Logo" class="inv-header-logo-badge">
+   
+   <!-- Center: Visiting Card Style Brand Layout -->
+   <div style="text-align:center; flex:1; padding:0 12px;">
+    <div style="font-size:12px; font-weight:800; color:#b91c1c; margin-bottom:2px;">॥ श्री गणेशाय नमः ॥</div>
+    <div style="display:inline-flex; flex-direction:column; align-items:center;">
+     <div style="background:#dc2626; color:#ffffff; font-size:11px; font-weight:900; padding:2px 18px; border-radius:14px; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:2px;">SHIV SHAKTI</div>
+     <div style="font-family:'Impact', 'Arial Black', sans-serif; font-size:26px; font-weight:950; color:#000000; letter-spacing:2.5px; line-height:1; white-space:nowrap; text-shadow:1.5px 1.5px 0px #94a3b8;">SMART TAILOR</div>
+     <div style="font-size:10px; font-weight:900; color:#b45309; text-transform:uppercase; width:100%; text-align:justify; text-align-last:justify; letter-spacing:0.8px;">ALL TYPE OF CLOTHES AND STITCHING</div>
+    </div>
+    <p style="font-size:11.5px; margin-top:4px; color:#475569; font-weight:600;">Plot no-40 mahalaxmi soc Gurudutt point side road dindoli surat Pin-394210</p>
+    <div style="font-size:13px; font-weight:900; color:#991b1b; margin-top:2px;">📞 Mo: +91 96622 32193 / 6351325425</div>
+   </div>
+
+   <!-- Right: Invoice Tag (No staple box) -->
+   <div style="text-align:right; min-width:90px;">
+    <div style="font-size:24px; font-weight:950; letter-spacing:1px; color:#991b1b;">INVOICE</div>
+    <div style="font-size:14px; font-weight:900; background:#fef2f2; border:1.5px solid #b91c1c; padding:3px 12px; border-radius:4px; display:inline-block; margin-top:4px; color:#991b1b;" id="pr-inv-top">INV-101</div>
+   </div>
+  </div>
+
+  <div class="inv-body">
+   <div class="inv-meta-grid">
+    <div>
+     <span style="font-size:12px; color:#991b1b; font-weight:800; text-transform:uppercase;">Bill To:</span><br>
+     <strong style="font-size:18px; color:#0f172a;" id="pr-name">-</strong><br>
+     <span style="color:#475569; font-size:14px;">Mobile: <strong id="pr-mobile" style="color:#0f172a;">-</strong></span>
+    </div>
+    <div style="text-align:right;">
+     <span style="color:#475569;">Invoice: <strong id="pr-inv" style="color:#991b1b; font-size:16px;">-</strong></span><br>
+     <span style="color:#475569;">Booking: <span id="pr-date" style="font-weight:bold;">-</span> <span id="pr-time" style="font-weight:bold; color:#b91c1c;"></span></span><br>
+     <span style="color:#475569;">Delivery Date: <strong id="pr-delivery" style="color:#b91c1c; font-size:16px;">-</strong></span>
+    </div>
+   </div>
+
+   <div class="table-container-stretch">
+    <table class="color-table">
+     <thead>
+      <tr>
+       <th style="width:8%; text-align:center;">Sr.</th>
+       <th>Garment / Particulars</th>
+       <th style="width:14%; text-align:center;">Qty</th>
+       <th style="width:22%; text-align:right;">Amount (₹)</th>
+      </tr>
+     </thead>
+     <tbody id="pr-items-tbody"></tbody>
+    </table>
+   </div>
+
+   <div class="inv-summary-layout">
+    <div class="terms-note">
+     <strong style="color:#991b1b; font-size:12px;">नियम व शर्तें (Terms & Conditions):</strong><br>
+     1. कपड़ा लेते समय यह बिल साथ में लाना अनिवार्य है।<br>
+     2. बिना बिल के कपड़ा नहीं दिया जाएगा।<br>
+     3. किसी कारणवश डिलीवरी तारीख में थोड़ा बदलाव हो सकता है।<br>
+     4. ऑर्डर तैयार होने के 60 दिनों के भीतर कपड़ा ले जाएँ, उसके बाद हमारी कोई ज़िम्मेदारी नहीं होगी।<br>
+     5. कपड़ा डिलीवरी का समय शाम 7:00 बजे के बाद रहेगा।<br>
+     6. बिल खो जाने पर दुकान पर तुरंत संपर्क करें।
+     <div style="margin-top:16px;">
+      <div style="border-top:1.5px solid #b91c1c; width:220px; margin-bottom:4px;"></div>
+      <span style="font-weight:900; font-size:12px; color:#991b1b;">For, SHIV SHAKTI SMART TAILOR</span>
+     </div>
+    </div>
+
+    <table class="color-totals-table">
+     <tr><td style="color:#334155; font-weight:700;">Subtotal:</td><td style="text-align:right; font-weight:800; color:#0f172a;" id="pr-subtotal">₹0</td></tr>
+     <tr id="pr-disc-row" style="display:none; color:#b45309; font-weight:800;"><td>Combo Discount:</td><td style="text-align:right;" id="pr-discount">-₹0</td></tr>
+     <tr><td style="color:#334155; font-weight:700;">Cloth Amount:</td><td style="text-align:right; font-weight:800; color:#0f172a;" id="pr-cloth">₹0</td></tr>
+     <tr id="pr-extra-row" style="display:none; color:#7c3aed; font-weight:700;"><td id="pr-extra-label">Extra Charges:</td><td style="text-align:right;" id="pr-extra">₹0</td></tr>
+     <tr style="font-weight:900; font-size:15px; color:#991b1b; background:#fff1f2; border-top:1.5px solid #b91c1c; border-bottom:1.5px solid #b91c1c;">
+      <td>Grand Total:</td>
+      <td style="text-align:right;" id="pr-total">₹0</td>
+     </tr>
+     <tr>
+      <td style="color:#334155; font-weight:700;">Advance Paid <span id="pr-paymode-tag" style="font-weight:bold; color:#0284c7; font-size:12px;"></span>:</td>
+      <td style="text-align:right; font-weight:900; color:#15803d; font-size:15px;" id="pr-advance">₹0</td>
+     </tr>
+     <tr style="font-weight:950; color:#b91c1c; font-size:16px; background:#fef2f2;"><td>Due Balance:</td><td style="text-align:right;" id="pr-due">₹0</td></tr>
+    </table>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- ============================================== -->
+<!-- PRINT SLIPS VIEW (A5 LANDSCAPE: 2 SLIPS SIDE-BY-SIDE) -->
+<!-- ============================================== -->
+<div id="slips-print-view"></div>
 
 <!-- MODAL: QUICK PART PAYMENT -->
 <div class="modal-overlay" id="payment-modal" onclick="if(event.target===this) closePaymentModal();">
@@ -938,105 +894,6 @@
      <tbody id="modal-cust-tbody"></tbody>
     </table>
    </div>
-  </div>
- </div>
-</div>
-
-<!-- Main Bill Print View -->
-<div id="invoice-print-view">
- <div style="border:2px solid #d97706; border-radius:8px; padding:10px 14px; min-height:198mm; display:flex; flex-direction:column; justify-content:space-between; position:relative; background:#ffffff; box-sizing:border-box;">
-  
-  <!-- वाटरमार्क -->
-  <img src="https://i.ibb.co/B5rFfmFp/1790442552939.png" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:320px; height:320px; opacity:0.20; pointer-events:none; z-index:0;" alt="Watermark">
-
-  <div style="position:relative; z-index:1; display:flex; flex-direction:column; height:100%; justify-content:space-between; flex:1;">
-   
-   <!-- 1. हेडर (दुकान का नाम और इनवॉइस नंबर) -->
-   <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2.5px solid #d97706; padding-bottom:8px;">
-    <div style="display:flex; align-items:center; gap:12px;">
-     <img src="https://i.ibb.co/q3SDt6Hh/IMG-20260926-210127.png" style="width:68px; height:68px; border-radius:50%; border:2px solid #d97706; object-fit:cover;">
-     <div>
-      <div style="font-size:12px; font-weight:800; color:#b45309;">॥ श्री गणेशाय नमः ॥</div>
-      <h1 style="font-size:24px; font-weight:900; color:#78350f; margin:2px 0; letter-spacing:0.5px; line-height:1.1;">SHIV SHAKTI SMART TAILOR</h1>
-      <div style="font-size:11.5px; font-weight:800; color:#dc2626; text-transform:uppercase;">ALL TYPE OF CLOTHES & STITCHING</div>
-      <div style="font-size:11px; color:#475569; font-weight:600;">Plot no-40 mahalaxmi soc Gurudutt point side road dindoli surat</div>
-      <div style="font-size:12.5px; font-weight:900; color:#b45309; margin-top:2px;">📞 Mo: +91 96622 32193 / 6351325425</div>
-     </div>
-    </div>
-
-    <!-- दाईं तरफ इनवॉइस नंबर -->
-    <div style="text-align:right;">
-     <div style="font-size:22px; font-weight:900; color:#78350f; letter-spacing:1px;">INVOICE</div>
-     <div style="font-size:14px; font-weight:900; background:#fef3c7; border:2px solid #d97706; color:#92400e; padding:4px 10px; border-radius:6px; display:inline-block; margin-top:4px;" id="pr-inv-top">INV-101</div>
-    </div>
-   </div>
-
-   <!-- 2. ग्राहक विवरण बार (बड़ा और साफ़) -->
-   <div style="display:flex; justify-content:space-between; align-items:center; background:#fffdf5; border:1.5px solid #fef3c7; border-left:6px solid #d97706; border-radius:6px; padding:8px 12px; margin:10px 0; font-size:15px; font-weight:800;">
-    <div>
-     <span style="color:#92400e; font-size:12px; text-transform:uppercase;">ग्राहक:</span>
-     <strong style="font-size:17px; color:#0f172a; margin-left:4px;" id="pr-name">-</strong>
-     <span style="color:#64748b; margin-left:12px;">| मो: <strong style="color:#0f172a;" id="pr-mobile">-</strong></span>
-    </div>
-    <div style="text-align:right; font-size:14px;">
-     <span style="color:#64748b;">बुक: <span id="pr-date" style="color:#0f172a;">-</span></span>
-     <span style="color:#64748b; margin-left:10px;">डिलिवरी: <strong style="color:#dc2626; font-size:15px;" id="pr-delivery">-</strong></span>
-    </div>
-   </div>
-
-   <!-- 3. कपड़ों की टेबल (पूरा फैलाव) -->
-   <div style="flex:1; margin-top:4px;">
-    <table style="width:100%; border-collapse:collapse;">
-     <thead>
-      <tr style="background:#fffbeb; border-bottom:2px solid #d97706; border-top:1.5px solid #d97706;">
-       <th style="width:8%; padding:8px; text-align:center; font-size:15px; font-weight:900; color:#78350f;">क्र.</th>
-       <th style="padding:8px 12px; text-align:left; font-size:15px; font-weight:900; color:#78350f;">कपड़े का विवरण (Garment)</th>
-       <th style="width:14%; padding:8px; text-align:center; font-size:15px; font-weight:900; color:#78350f;">संख्या</th>
-       <th style="width:24%; padding:8px 12px; text-align:right; font-size:15px; font-weight:900; color:#78350f;">रकम (₹)</th>
-      </tr>
-     </thead>
-     <tbody id="pr-items-tbody"></tbody>
-    </table>
-   </div>
-
-   <!-- 4. नियम व शर्तें बाईं तरफ + टोटल बॉक्स दाईं तरफ -->
-   <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:2px solid #d97706; padding-top:10px; margin-top:10px;">
-    
-    <!-- बाईं तरफ: नियम व हस्ताक्षर -->
-    <div style="width:52%; font-size:10.5px; line-height:1.45; color:#334155; border:1px dashed #d97706; border-radius:6px; padding:8px 10px; background:#fffdf7;">
-     <strong style="color:#78350f; font-size:11px;">नियम व शर्तें:</strong><br>
-     1. कपड़ा लेते समय यह बिल साथ लाना अनिवार्य है।<br>
-     2. तैयार होने के 60 दिनों में कपड़ा ले जाएँ, बाद में जवाबदारी नहीं होगी।<br>
-     3. डिलिवरी का समय शाम 7:00 बजे के बाद रहेगा।
-     <div style="margin-top:12px; font-weight:900; font-size:11.5px; color:#78350f;">
-      For, SHIV SHAKTI SMART TAILOR
-     </div>
-    </div>
-
-    <!-- दाईं तरफ: पूरा टोटल बॉक्स -->
-    <div style="width:44%;">
-     <table style="width:100%; border-collapse:collapse; border:1.5px solid #d97706; border-radius:6px; overflow:hidden; font-size:14.5px;">
-      <tr style="border-bottom:1px solid #fed7aa;"><td style="padding:6px 10px; font-weight:700;">Subtotal:</td><td style="padding:6px 10px; text-align:right; font-weight:900;" id="pr-subtotal">₹0</td></tr>
-      <tr id="pr-disc-row" style="display:none; color:#b45309; border-bottom:1px solid #fed7aa;"><td style="padding:4px 10px; font-weight:700;">Discount:</td><td style="padding:4px 10px; text-align:right; font-weight:900;" id="pr-discount">-₹0</td></tr>
-      <tr style="border-bottom:1px solid #fed7aa;"><td style="padding:4px 10px; font-weight:700;">कपड़े की रकम:</td><td style="padding:4px 10px; text-align:right; font-weight:900;" id="pr-cloth">₹0</td></tr>
-      <tr id="pr-extra-row" style="display:none; color:#7c3aed; border-bottom:1px solid #fed7aa;"><td style="padding:4px 10px; font-weight:700;" id="pr-extra-label">Extra:</td><td style="padding:4px 10px; text-align:right; font-weight:900;" id="pr-extra">₹0</td></tr>
-      <tr style="background:#fffbeb; border-bottom:1.5px solid #d97706; font-size:16px; font-weight:900; color:#78350f;">
-       <td style="padding:6px 10px;">Grand Total:</td>
-       <td style="padding:6px 10px; text-align:right;" id="pr-total">₹0</td>
-      </tr>
-      <tr style="border-bottom:1px solid #fed7aa;">
-       <td style="padding:5px 10px; font-weight:700;">जमा (Advance):</td>
-       <td style="padding:5px 10px; text-align:right; font-weight:900; color:#15803d;" id="pr-advance">₹0</td>
-      </tr>
-      <tr style="background:#fef2f2; font-size:17px; font-weight:900; color:#dc2626;">
-       <td style="padding:7px 10px;">बाकी (Due):</td>
-       <td style="padding:7px 10px; text-align:right;" id="pr-due">₹0</td>
-      </tr>
-     </table>
-    </div>
-
-   </div>
-
   </div>
  </div>
 </div>
@@ -1893,7 +1750,7 @@ function lockAppNow() {
 
    <div class="draw-box-wrapper" id="draw-wrapper-${id}" onclick="setActiveDrawingPad(${id})">
     <div class="draw-box-header">
-     <div><strong style="font-size:12px; color:#1e40af;">✍️️ [${type}] रॉ स्केच पैड:</strong></div>
+     <div><strong style="font-size:12px; color:#1e40af;">✍ [${type}] रॉ स्केच पैड:</strong></div>
      <div style="display:flex; gap:6px;">
       <button type="button" class="btn-pad-activate" onclick="setActiveDrawingPad(${id}); event.stopPropagation();">🎯 ड्रॉ करें</button>
       <button type="button" class="btn-clear-draw" onclick="clearCanvas(${id}); event.stopPropagation();">🗑 साफ़ करें</button>
@@ -1910,7 +1767,7 @@ function lockAppNow() {
      <span style="font-size:11.5px; font-weight:800; color:#15803d;">✂️ कारीगर पर्ची के लिए डिज़ाइन फ़ोटो:</span>
      <div style="display:flex; gap:6px;">
       <button type="button" class="btn-cam-action btn-cam-direct" onclick="document.getElementById('photo-cam-${id}').click()">📸 Camera</button>
-      <button type="button" class="btn-cam-action btn-gallery" onclick="document.getElementById('photo-gal-${id}').click()">🖼️ Gallery</button>
+      <button type="button" class="btn-gallery" onclick="document.getElementById('photo-gal-${id}').click()">🖼️ Gallery</button>
      </div>
     </div>
     <input type="file" id="photo-cam-${id}" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoFilesAdded(${id}, this)">
@@ -2314,12 +2171,12 @@ function lockAppNow() {
   setTimeout(() => window.print(), 120);
  }
 
- /* --- NAAP PARCHI: SERIAL-WISE BADA GRID AUR CLEAR WATERMARK --- */
+/* ========================================================= */
+ /* NAAP SLIPS: EXACT 2 SLIPS PER A5 PAGE (BIG BOLD MEASURES) */
+ /* ========================================================= */
  async function generateAndPrintSlips() {
   const invNo = document.getElementById('cust-inv').value;
-  if (invNo) {
-   changeBillStatus(invNo, 'stitching');
-  }
+  if (invNo) changeBillStatus(invNo, 'stitching');
 
   const items = collectAllData();
   const name = document.getElementById('cust-name').value;
@@ -2327,86 +2184,93 @@ function lockAppNow() {
   const container = document.getElementById('slips-print-view');
   container.innerHTML = '';
 
-  items.forEach((it) => {
-   // 1. नाप को 3 कॉलम की चौड़ी ग्रिड में बड़े अक्षरों के साथ सेट करना
-   let measuresHtml = '<div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px 12px; margin:10px 0; width:100%;">';
-   it.measures.forEach(m => {
-    measuresHtml += `
-      <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:6px; padding:6px 10px; font-size:15px; font-weight:800; display:flex; justify-content:space-between; align-items:center;">
-        <span>${m.name}:</span>
-        <span style="color:#b45309; font-size:18px; font-weight:900;">${m.val}</span>
-      </div>`;
-   });
-   it.customMeasures.forEach(cm => {
-    measuresHtml += `
-      <div style="background:#f8fafc; border:1.5px solid #c084fc; border-radius:6px; padding:6px 10px; font-size:15px; font-weight:800; display:flex; justify-content:space-between; align-items:center;">
-        <span>${cm.name}:</span>
-        <span style="color:#7c3aed; font-size:18px; font-weight:900;">${cm.val}</span>
-      </div>`;
-   });
-   measuresHtml += '</div>';
+  // 1 पेज में सख्ती से सिर्फ 2 ही पर्चियाँ रखने के लिए
+  for (let i = 0; i < items.length; i += 2) {
+   const pageDiv = document.createElement('div');
+   pageDiv.className = 'slips-page-a5';
+   pageDiv.style.cssText = "height: 190mm; max-height: 190mm; display: flex; flex-direction: column; justify-content: space-between; page-break-after: always; box-sizing: border-box; overflow: hidden; padding: 2mm 0;";
 
-   // 2. स्केच या फ़ोटो में से सिर्फ एक ही दिखेगा (जगह बचाने के लिए)
-   let visualHtml = '';
-   if (it.sketchImage) {
-    visualHtml = `<div style="text-align:center; margin-top:6px;"><img src="${it.sketchImage}" style="max-height:110px; max-width:100%; object-fit:contain; border:1.5px solid #cbd5e1; border-radius:6px;"></div>`;
-   } else if (it.images && it.images.length > 0) {
-    visualHtml = `<div style="display:flex; gap:8px; margin-top:6px; justify-content:center;">`;
-    it.images.forEach(b64 => { 
-      visualHtml += `<img src="${b64}" style="width:75px; height:75px; object-fit:cover; border-radius:6px; border:1.5px solid #cbd5e1;">`; 
-    });
-    visualHtml += `</div>`;
+   pageDiv.appendChild(createSingleSlipElement(items[i], invNo, name, deliveryDate));
+
+   if (i + 1 < items.length) {
+    pageDiv.appendChild(createSingleSlipElement(items[i + 1], invNo, name, deliveryDate));
+   } else {
+    const emptyBox = document.createElement('div');
+    emptyBox.style.height = "48.5%";
+    emptyBox.style.visibility = "hidden";
+    pageDiv.appendChild(emptyBox);
    }
 
-   const optsText = it.options && it.options.length ? `<div style="font-size:13px; font-weight:800; color:#1e3a8a; margin-top:4px;"><strong>डिज़ाइन:</strong> ${it.options.join(', ')}</div>` : '';
-
-   const slipDiv = document.createElement('div');
-   slipDiv.className = 'slip-a6-page';
-   slipDiv.style.cssText = "position:relative; overflow:hidden; border:2px dashed #d97706; border-radius:8px; padding:10px 14px; margin-bottom:12px; background:#fff; min-height:125mm; display:flex; flex-direction:column; justify-content:space-between;";
-
-   slipDiv.innerHTML = `
-    <!-- साफ़ दिखने वाला वॉटरमार्क (Opacity 0.28) -->
-    <img src="https://i.ibb.co/B5rFfmFp/1790442552939.png" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:280px; height:280px; opacity:0.28; pointer-events:none; z-index:0;" alt="Watermark">
-    
-    <div style="position:relative; z-index:1; height:100%; display:flex; flex-direction:column; justify-content:space-between;">
-     
-     <!-- हेडर: दुकान का नाम, इनवॉइस और डिलीवरी डेट -->
-     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2.5px solid #d97706; padding-bottom:6px;">
-      <div>
-        <strong style="color:#78350f; font-size:16px; letter-spacing:0.5px;">SHIV SHAKTI SMART TAILOR</strong>
-        <span style="font-size:12px; color:#64748b; font-weight:bold; margin-left:6px;">(Mo: 9662232193)</span>
-      </div>
-      <div>
-        <strong style="font-size:16px; color:#b45309;">${invNo}</strong> | 
-        डिलिवरी: <strong style="color:#dc2626; font-size:15px;">${deliveryDate}</strong>
-      </div>
-     </div>
-
-     <!-- ग्राहक का नाम और आइटम (बड़ा फॉन्ट) -->
-     <div style="display:flex; justify-content:space-between; align-items:center; background:#fffdf5; border:1.5px solid #fef3c7; border-radius:6px; padding:6px 10px; margin:6px 0; font-size:16px;">
-      <span>ग्राहक: <strong style="color:#0f172a; font-size:17px;">${name}</strong></span>
-      <span style="color:#78350f; font-weight:900; font-size:16px;">${it.itemType} (Qty: ${it.quantity})</span>
-     </div>
-
-     <!-- 3 कॉलम में फैले हुए नाप -->
-     <div style="flex:1;">
-      ${measuresHtml}
-      ${visualHtml}
-     </div>
-
-     <!-- डिज़ाइन और नोट -->
-     <div style="border-top:1.5px solid #e2e8f0; padding-top:4px; margin-top:4px;">
-      ${optsText}
-      ${it.notes ? `<div style="font-size:12px; font-weight:bold; background:#fffbeb; padding:4px 8px; border-left:4px solid #b45309; margin-top:4px;"><strong>कारीगर नोट:</strong> ${it.notes}</div>` : ''}
-     </div>
-
-    </div>
-   `;
-   container.appendChild(slipDiv);
-  });
+   container.appendChild(pageDiv);
+  }
 
   document.body.className = 'mode-slips';
   setTimeout(() => window.print(), 120);
+ }
+
+ function createSingleSlipElement(it, invNo, name, deliveryDate) {
+  // नाप के अक्षर और अंक बहुत बड़े (20px-22px Bold)
+  let measuresHtml = '<div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 6px 16px;">';
+  it.measures.forEach(m => {
+   measuresHtml += `<div style="font-size:16px; font-weight:800; color:#0f172a;">${m.name}: <span style="color:#b91c1c; font-size:21px; font-weight:950;">${m.val}</span></div>`;
+  });
+  if (it.customMeasures) {
+   it.customMeasures.forEach(cm => {
+    measuresHtml += `<div style="font-size:15px; font-weight:800; color:#7c3aed;">${cm.name}: <span style="color:#7c3aed; font-size:20px; font-weight:950;">${cm.val}</span></div>`;
+   });
+  }
+  measuresHtml += '</div>';
+
+  let visualHtml = '';
+  if (it.sketchImage) {
+   visualHtml += `<img src="${it.sketchImage}" style="max-width:130px; max-height:95px; object-fit:contain; border:1px solid #cbd5e1; border-radius:4px; background:#fff;">`;
+  }
+  if (it.images && it.images.length > 0) {
+   visualHtml += `<div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:2px;">`;
+   it.images.forEach(b64 => { 
+    visualHtml += `<div style="width:65px; height:65px; border:1px solid #cbd5e1; border-radius:4px; overflow:hidden;"><img src="${b64}" style="width:100%; height:100%; object-fit:cover;"></div>`; 
+   });
+   visualHtml += `</div>`;
+  }
+
+  const optsText = it.options && it.options.length ? `<div style="font-size:12px; font-weight:800; color:#1e3a8a; margin-top:4px; background:#eff6ff; padding:2px 8px; border-radius:4px;"><strong>डिज़ाइन:</strong> ${it.options.join(', ')}</div>` : '';
+
+  const slip = document.createElement('div');
+  slip.className = 'slip-half-card';
+  // पर्ची का कार्ड: पूरी 48.5% जगह घेरेगा ताकि नाप ऊपर से नीचे तक भरपूर बड़ा आए
+  slip.style.cssText = "height: 47.5%; max-height: 47.5%; border: 1.5px solid #b91c1c; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; background: #ffffff; position: relative; overflow: hidden;";
+   slip.innerHTML = `
+   <!-- बिल्कुल फीका पारदर्शी वॉटरमार्क -->
+   <img src="https://i.ibb.co/XZXxTVSW/1791269054414.png" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:130px; height:130px; opacity:0.10; pointer-events:none; z-index:0; object-fit:contain;">
+
+   <div style="position:relative; z-index:1; height:100%; display:flex; flex-direction:column; justify-content:space-between;">
+    <div>
+     <!-- Header (दुकान का नाम हटा दिया गया है) -->
+     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #b91c1c; padding-bottom:3px; margin-bottom:3px;">
+      <span style="font-size:17px; font-weight:950; color:#b91c1c;">${invNo}</span>
+      <span style="font-size:17px; font-weight:950; color:#0f172a; text-transform:uppercase;">${it.itemType} (Qty: ${it.quantity})</span>
+      <span style="font-size:12px; font-weight:700; color:#475569;">डिलिवरी: <strong style="color:#b91c1c; font-size:14px;">${deliveryDate}</strong></span>
+     </div>
+
+     <!-- Meta row: ग्राहक का नाम छोटा रखा गया है -->
+     <div style="background:#fff1f2; border:1px solid #fecdd3; padding:2px 8px; margin:2px 0 4px 0; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-size:12px; color:#475569; font-weight:600;">ग्राहक: <strong style="color:#0f172a; font-size:13px;">${name}</strong></span>
+      <span style="font-size:10.5px; font-weight:bold; color:#991b1b;">कारीगर नाप पर्ची</span>
+     </div>
+
+     <!-- Measures and Visuals -->
+     <div style="display:flex; gap:12px; margin-top:4px;">
+      <div style="flex:1.2;">${measuresHtml}</div>
+      ${visualHtml ? `<div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;">${visualHtml}</div>` : ''}
+     </div>
+     
+     ${optsText}
+    </div>
+
+    ${it.notes ? `<div style="background:#fffbeb; padding:2px 6px; font-size:11px; font-weight:800; border-left:3px solid #b45309; margin-top:2px; line-height:1.2;"><strong>कारीगर नोट:</strong> ${it.notes}</div>` : ''}
+   </div>
+  `;
+  return slip;
  }
 
  async function changeBillStatus(invNo, newStatus) {
@@ -2632,7 +2496,7 @@ function lockAppNow() {
    else if (b.mainBillPhoto) sampleImg = b.mainBillPhoto;
 
    if (sampleImg) {
-    photoThumbHtml = `<img src="${sampleImg}" onclick="openImageZoomModal('${sampleImg}')" style="width:34px; height:34px; object-fit:cover; border-radius:4px; border:1px solid #d97706; cursor:pointer; margin-top:3px;" title="कपड़ा सैंपल देखें">`;
+    photoThumbHtml = `<img src="${sampleImg}" onclick="openImageZoomModal('${sampleImg}')" style="width:34px; height:34px; object-fit:cover; border-radius:4px; border:1px solid #b91c1c; cursor:pointer; margin-top:3px;" title="कपड़ा सैंपल देखें">`;
    }
 
    let actions = `<button class="btn-sm-act btn-tbl-open" onclick="loadBillFromModal('${b.invNo}')" title="इसी बिल को बदलें/सुधारें">✏️ Edit</button>`;
@@ -2869,4 +2733,4 @@ function lockAppNow() {
  });
 </script>
 </body>
-   </html>
+</html>
