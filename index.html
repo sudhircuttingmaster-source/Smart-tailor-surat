@@ -538,10 +538,6 @@
     <label>Mobile Number *</label>
     <input type="tel" id="cust-mobile" placeholder="Mobile no..." autocomplete="off" oninput="handleLiveMobileSearch(this.value)" onfocus="handleLiveMobileSearch(this.value)">
     <div id="mobile-search-dropdown" class="search-results-dropdown"></div>
-    <div class="quick-contact-btns">
-     <a href="#" id="quick-call-btn" class="q-btn q-call">📞 Call</a>
-     <a href="#" id="quick-sms-btn" class="q-btn q-sms">✉ SMS</a>
-    </div>
    </div>
    <div class="form-group">
     <label>Order Date</label>
@@ -2532,7 +2528,9 @@ function lockAppNow() {
       <strong>${b.name}</strong>
       ${photoThumbHtml}
      </td>
-     <td>${b.mobile || '-'}</td>
+     <td>
+  ${b.mobile ? `<div style="display:inline-flex; align-items:center; gap:5px;"><span style="font-weight:600;">${b.mobile}</span><a href="tel:${b.mobile}" style="background:#16a34a; color:#fff; text-decoration:none; padding:2px 6px; border-radius:4px; font-size:11px; font-weight:bold;">📞 Call</a></div>` : '-'}
+</td>
      <td>${badge}</td>
      <td>₹${b.total}<br><span style="color:${b.due > 0 ? '#dc2626':'#16a34a'}; font-weight:bold;">Due: ₹${b.due}</span></td>
      <td style="white-space:nowrap;">${actions}</td>
