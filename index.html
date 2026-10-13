@@ -12,7 +12,7 @@
 <meta name="theme-color" content="#18181b">
 
 <!-- PWA Manifest Data for Android Home Screen -->
-<link rel="manifest" href='data:application/manifest+json,{"name":"Smart Tailor","short_name":"Smart Tailor","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#18181b","icons":[{"src":"https://i.ibb.co/XZXxTVSW/1791269054414.png","sizes":"192x192","type":"image/png"},{"src":"https://i.ibb.co/XZXxTVSW/1791269054414.png","sizes":"512x512","type":"image/png"}]}'>
+<link rel="manifest" href=':application/manifest+json,{"name":"Smart Tailor","short_name":"Smart Tailor","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#18181b","icons":[{"src":"https://i.ibb.co/XZXxTVSW/1791269054414.png","sizes":"192x192","type":"image/png"},{"src":"https://i.ibb.co/XZXxTVSW/1791269054414.png","sizes":"512x512","type":"image/png"}]}'>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -28,7 +28,7 @@
   projectId: "smart-tailor-dindoli",
   storageBucket: "smart-tailor-dindoli.firebasestorage.app",
   messagingSenderId: "344126090577",
-  appId: "1:344126090577:web:d9871588c2ffe99e6bb770",
+  appId: "1::web:d9871588c2ffe99e6bb770",
   measurementId: "G-16ZVF2LFJ6"
  };
 
@@ -539,6 +539,7 @@
     <input type="tel" id="cust-mobile" placeholder="Mobile no..." autocomplete="off" oninput="handleLiveMobileSearch(this.value)" onfocus="handleLiveMobileSearch(this.value)">
     <div id="mobile-search-dropdown" class="search-results-dropdown"></div>
    </div>
+   
    <div class="form-group">
     <label>Order Date</label>
     <input type="date" id="cust-date">
@@ -2393,10 +2394,8 @@ function lockAppNow() {
   }
  }
 
- ```javascript
-function setupQuickContacts() {
- // Buttons removed
-}
+ function setupQuickContacts() {
+ }
 
  function triggerMainBillCamera() { document.getElementById('main-bill-cam-input').click(); }
  function triggerMainBillGallery() { document.getElementById('main-bill-gal-input').click(); }
@@ -2518,28 +2517,28 @@ function setupQuickContacts() {
     actions += `<button class="btn-sm-act btn-tbl-dispose" onclick="openDisposalModal('${b.invNo}')">📦 Dispose</button>`;
    }
    actions += `<button class="btn-sm-act btn-tbl-del" onclick="deleteBillFromModal('${b.invNo}')">✕</button>`;
-   
-   html += `
-   <tr>
-    <td><strong>${formatDateToDMY(b.delivery)}</strong></td>
-    <td><strong>${b.invNo}</strong></td>
-    <td>
-     <strong>${b.name}</strong>
-     ${photoThumbHtml}
-    </td>
-    <td>${b.mobile ? b.mobile + ' <a href="tel:' + b.mobile + '" style="background:green;color:white;padding:2px 5px;border-radius:3px;text-decoration:none;font-size:11px;">📞 Call</a>' : '-'}</td>
-    <td>${badge}</td>
-    <td>₹${b.total}<br><span style="color:${b.due > 0 ? '#dc2626' : '#16a34a'};font-weight:bold;">₹${b.due}</span></td>
-    <td style="white-space:nowrap;">${actions}</td>
-   </tr>
-  `;
- });
- tbody.innerHTML = html;
-}
 
-function loadBillFromModal(invNo) {
- const b = customerDirectory.find(x => x.invNo === invNo);
-   if (!b) return;
+   html += `
+    <tr>
+     <td><strong>${formatDateToDMY(b.delivery)}</strong></td>
+     <td><strong>${b.invNo}</strong></td>
+     <td>
+      <strong>${b.name}</strong>
+      ${photoThumbHtml}
+     </td>
+     <td>${b.mobile ? b.mobile + ' <a href="tel:' + b.mobile + '" style="background:#16a34a;color:white;padding:2px 6px;border-radius:4px;text-decoration:none;font-size:11px;font-weight:bold;margin-left:5px;">📞 Call</a>' : '-'}</td>
+     <td>${badge}</td>
+     <td>₹${b.total}<br><span style="color:${b.due > 0 ? '#dc2626':'#16a34a'}; font-weight:bold;">Due: ₹${b.due}</span></td>
+     <td style="white-space:nowrap;">${actions}</td>
+    </tr>
+   `;
+  });
+  tbody.innerHTML = html;
+ }
+
+ function loadBillFromModal(invNo) {
+  const b = customerDirectory.find(x => x.invNo === invNo);
+  if (!b) return;
 
   isEditingExistingBill = true;
   document.getElementById('form-mode-title').innerHTML = `<span style="color:#dc2626;">✏️ Editing: ${b.invNo}</span>`;
@@ -2728,4 +2727,4 @@ function loadBillFromModal(invNo) {
  });
 </script>
 </body>
-</html>
+     </html>
