@@ -2393,11 +2393,10 @@ function lockAppNow() {
   }
  }
 
- function setupQuickContacts() {
-  const m = document.getElementById('cust-mobile').value.trim();
-  document.getElementById('quick-call-btn').href = m ? "tel:" + m : "#";
-  document.getElementById('quick-sms-btn').href = m ? "sms:" + m : "#";
- }
+ ```javascript
+function setupQuickContacts() {
+ // Buttons removed
+}
 
  function triggerMainBillCamera() { document.getElementById('main-bill-cam-input').click(); }
  function triggerMainBillGallery() { document.getElementById('main-bill-gal-input').click(); }
