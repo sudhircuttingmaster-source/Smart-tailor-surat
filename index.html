@@ -2518,30 +2518,28 @@ function setupQuickContacts() {
     actions += `<button class="btn-sm-act btn-tbl-dispose" onclick="openDisposalModal('${b.invNo}')">📦 Dispose</button>`;
    }
    actions += `<button class="btn-sm-act btn-tbl-del" onclick="deleteBillFromModal('${b.invNo}')">✕</button>`;
-
+   
    html += `
-    <tr>
-     <td><strong>${formatDateToDMY(b.delivery)}</strong></td>
-     <td><strong>${b.invNo}</strong></td>
-     <td>
-      <strong>${b.name}</strong>
-      ${photoThumbHtml}
-     </td>
-     <td>
-  ${b.mobile ? `<div style="display:inline-flex; align-items:center; gap:5px;"><span style="font-weight:600;">${b.mobile}</span><a href="tel:${b.mobile}" style="background:#16a34a; color:#fff; text-decoration:none; padding:2px 6px; border-radius:4px; font-size:11px; font-weight:bold;">📞 Call</a></div>` : '-'}
-</td>
-     <td>${badge}</td>
-     <td>₹${b.total}<br><span style="color:${b.due > 0 ? '#dc2626':'#16a34a'}; font-weight:bold;">Due: ₹${b.due}</span></td>
-     <td style="white-space:nowrap;">${actions}</td>
-    </tr>
-   `;
-  });
-  tbody.innerHTML = html;
- }
+   <tr>
+    <td><strong>${formatDateToDMY(b.delivery)}</strong></td>
+    <td><strong>${b.invNo}</strong></td>
+    <td>
+     <strong>${b.name}</strong>
+     ${photoThumbHtml}
+    </td>
+    <td>${b.mobile ? `${b.mobile} <a href="tel:${b.mobile}" style="background:#16a34a;color:#fff;text-decoration:none;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:bold;margin-left:4px;">📞 Call</a>` : '-'}</td>
+    <td>${badge}</td>
+    <td>₹${b.total}<br><span style="color:${b.due > 0 ? '#dc2626' : '#16a34a'};font-weight:bold;">₹${b.due}</span></td>
+    <td style="white-space:nowrap;">${actions}</td>
+   </tr>
+  `;
+ });
+ tbody.innerHTML = html;
+}
 
- function loadBillFromModal(invNo) {
-  const b = customerDirectory.find(x => x.invNo === invNo);
-  if (!b) return;
+function loadBillFromModal(invNo) {
+ const b = customerDirectory.find(x => x.invNo === invNo);
+   if (!b) return;
 
   isEditingExistingBill = true;
   document.getElementById('form-mode-title').innerHTML = `<span style="color:#dc2626;">✏️ Editing: ${b.invNo}</span>`;
