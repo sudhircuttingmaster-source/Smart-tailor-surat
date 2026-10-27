@@ -255,24 +255,19 @@
   body { background: white !important; padding: 0 !important; margin: 0 !important; }
   .app-container, .modal-overlay, #app-lock-overlay, #customer-direct-view-bar { display: none !important; }
 
-  /* 1. बिल प्रिंट: A5 Portrait में ठीक 1 पेज (कोई दूसरा पेज नहीं बनेगा) */
-  body.mode-invoice-color {
-   @page { size: auto; margin: 4mm; }
-  }
-  body.mode-invoice-color #invoice-print-view {
-   display: block !important;
-   width: 100% !important;
-   height: 195mm !important;
-   max-height: 195mm !important;
-   box-sizing: border-box !important;
-   font-size: 11px !important;
-   color: #0f172a !important;
-   -webkit-print-color-adjust: exact !important;
-   print-color-adjust: exact !important;
-   page-break-after: avoid !important;
-   page-break-inside: avoid !important;
-   overflow: hidden !important;
-  }
+  /* 1. बिल प्रिंट: A4 / A5 Auto Scale 1 Page Fit */
+ @page { size: A4 portrait; margin: 8mm 10mm; }
+
+ body.mode-invoice-color #invoice-print-view {
+  display: block !important;
+  width: 100% !important;
+  min-height: 275mm !important;
+  box-sizing: border-box !important;
+  font-size: 12.5px !important;
+  color: #0f172a !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+ }
 
   /* 2. नाप पर्ची प्रिंट: A5 Landscape में 2 पर्चियाँ */
   body.mode-slips {
@@ -288,16 +283,14 @@
  }
 
  /* A5 बिल का मुख्य बॉक्स (ऊँचाई 200mm पर लॉक) */
- .color-inv-wrapper {
-  border: 1.5px solid #b91c1c;
-  border-radius: 6px;
-  width: 100%;
-  height: 188mm !important;
-  max-height: 188mm !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: #ffffff;
+ .color-inv-wrapper { 
+  border: 1.5px solid #b91c1c; 
+  border-radius: 10px; 
+  min-height: 275mm; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+  background: #ffffff; 
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
