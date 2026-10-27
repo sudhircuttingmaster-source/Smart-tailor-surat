@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Shiv Shakti Smart Tailor - Pro Billing & Automation</title>
 <!-- Real Mobile App Icon & PWA Manifest -->
-<link rel="icon" type="image/png" href="https://i.ibb.co/JR9pPfqS/1791269054414.png">
- <link rel="apple-touch-icon" href="https://i.ibb.co/JR9pPfqS/1791269054414.png">
+<!-- Real Mobile App Icon & PWA Manifest -->
+ <link rel="icon" type="image/png" href="./icon.png">
+ <link rel="apple-touch-icon" href="./icon.png">
  <meta name="apple-mobile-web-app-capable" content="yes">
  <meta name="mobile-web-app-capable" content="yes">
  <meta name="theme-color" content="#18181b">
 
- <link rel="manifest" href='data:application/manifest+json,{"name":"Smart Tailor","short_name":"Smart Tailor","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#18181b","icons":[{"src":"https://i.ibb.co/JR9pPfqS/1791269054414.png","sizes":"192x192","type":"image/png"},{"src":"https://i.ibb.co/JR9pPfqS/1791269054414.png","sizes":"512x512","type":"image/png"}]}'>
+ <link rel="manifest" href='data:application/manifest+json,{"name":"Smart Tailor","short_name":"Smart Tailor","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#18181b","icons":[{"src":"./icon.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"./icon.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -256,12 +257,12 @@
   .app-container, .modal-overlay, #app-lock-overlay, #customer-direct-view-bar { display: none !important; }
 
   /* 1. बिल प्रिंट: A4 / A5 Auto Scale 1 Page Fit */
- @page { size: A4 portrait; margin: 8mm 10mm; }
+@page { size: auto; margin: 4mm 5mm; }
 
  body.mode-invoice-color #invoice-print-view {
   display: block !important;
   width: 100% !important;
-  min-height: 275mm !important;
+  min-height: 188mm !important;
   box-sizing: border-box !important;
   font-size: 12.5px !important;
   color: #0f172a !important;
@@ -286,7 +287,7 @@
  .color-inv-wrapper { 
   border: 1.5px solid #b91c1c; 
   border-radius: 10px; 
-  min-height: 275mm; 
+  min-height: 188mm; 
   display: flex; 
   flex-direction: column; 
   justify-content: space-between; 
@@ -314,7 +315,7 @@
   display: flex; 
   justify-content: space-between; 
   align-items: center; 
-  border-bottom: 2px solid #b91c1c; 
+  border-bottom: 1.5px solid #b91c1c; 
   position: relative;
   z-index: 1;
   background: #fffdf5 !important;
@@ -329,37 +330,34 @@
   flex-shrink: 0 !important;
  }
  
- .inv-body { 
-  padding: 6px 10px; 
-  flex: 1; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: space-between;
+ .inv-body {
+  padding: 6px 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   position: relative;
   z-index: 1;
  }
 
- .inv-meta-grid { 
-  display: flex; 
-  justify-content: space-between; 
-  background: #fffdf7; 
-  border: 1px solid #fee2e2; 
-  border-left: 4px solid #b91c1c; 
-  border-radius: 4px; 
-  padding: 5px 8px; 
-  margin-bottom: 6px; 
+ .inv-meta-grid {
+  display: flex;
+  justify-content: space-between;
+  background: #fffdf7;
+  border: 1px solid #fee2e2;
+  border-left: 4px solid #b91c1c;
+  border-radius: 4px;
+  padding: 5px 8px;
+  margin-bottom: 6px;
   font-size: 11.5px;
  }
 
  .table-container-stretch {
- flex: 1;
- display: flex;
- flex-direction: column;
- min-height: 40px !important;
- max-height: 70mm !important;
- overflow: hidden !important;
- margin-bottom: 4px;
-}
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+ }
  
  .color-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
  .color-table th { 
