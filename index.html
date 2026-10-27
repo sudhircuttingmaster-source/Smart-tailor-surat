@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Shiv Shakti Smart Tailor - Pro Billing & Automation</title>
 <!-- Real Mobile App Icon & PWA Manifest -->
-<link rel="icon" type="image/png" href="https://i.ibb.co/XZXxTVSW/1791269054414.png">
-<link rel="apple-touch-icon" href="https://i.ibb.co/XZXxTVSW/1791269054414.png">
+<link rel="icon" type="image/png" href="https://i.ibb.co/JR9pPfqS/1791269054414.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/JR9pPfqS/1791269054414.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#18181b">
 
 <!-- PWA Manifest Data for Android Home Screen -->
-<link rel="manifest" href=':application/manifest+json,{"name":"Smart Tailor","short_name":"Smart Tailor","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#18181b","icons":[{"src":"https://i.ibb.co/XZXxTVSW/1791269054414.png","sizes":"192x192","type":"image/png"},{"src":"https://i.ibb.co/XZXxTVSW/1791269054414.png","sizes":"512x512","type":"image/png"}]}'>
+<link rel="manifest" href='data:application/manifest+json,{"name":"Smart Tailor","short_name":"Smart Tailor","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#18181b","icons":[{"src":"https://i.ibb.co/JR9pPfqS/1791269054414.png","sizes":"192x192","type":"image/png"},{"src":"https://i.ibb.co/JR9pPfqS/1791269054414.png","sizes":"512x512","type":"image/png"}]}'>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -259,13 +259,13 @@
 
   /* 1. बिल प्रिंट: A5 Portrait में ठीक 1 पेज (कोई दूसरा पेज नहीं बनेगा) */
   body.mode-invoice-color {
-   @page { size: A5 portrait; margin: 3mm 4mm; }
+   @page { size: auto; margin: 4mm; }
   }
   body.mode-invoice-color #invoice-print-view {
    display: block !important;
    width: 100% !important;
-   height: 185mm !important;
-   max-height: 185mm !important;
+   max-width: 142mm !important;
+   margin: 0 auto !important;
    box-sizing: border-box !important;
    font-size: 11.5px !important;
    color: #0f172a !important;
@@ -273,7 +273,6 @@
    print-color-adjust: exact !important;
    page-break-after: avoid !important;
    page-break-inside: avoid !important;
-   overflow: hidden !important;
   }
 
   /* 2. नाप पर्ची प्रिंट: A5 Landscape में 2 पर्चियाँ */
@@ -290,11 +289,12 @@
  }
 
  /* A5 बिल का मुख्य बॉक्स (ऊँचाई 200mm पर लॉक) */
- .color-inv-wrapper { 
+  .color-inv-wrapper { 
   border: 1.5px solid #b91c1c; 
   border-radius: 6px; 
-  height: 188mm !important; 
-  max-height: 188mm !important;
+  width: 100%;
+  height: 98vh !important;
+  min-height: 185mm;
   display: flex; 
   flex-direction: column; 
   justify-content: space-between; 
@@ -2727,4 +2727,4 @@ function lockAppNow() {
  });
 </script>
 </body>
-     </html>
+ </html>
